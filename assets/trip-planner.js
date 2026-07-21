@@ -129,6 +129,9 @@
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
     .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
+    .trtp-rec{background:#092a4d;color:#fff;border-radius:6px;padding:15px 18px;margin:4px 0 16px;}
+    .trtp-rec .rt{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:#fff;}
+    .trtp-rec .rr{font-size:13.5px;color:#cdd8e6;margin-top:3px;}
     .trtp-booking{background:#fff;border:1px solid #e4ddcd;border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:14px 18px;margin:0 0 18px;}
     .trtp-booking h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 10px;font-weight:600;}
     .trtp-book-row{padding:8px 0;border-bottom:1px dashed #e4ddcd;}
@@ -445,13 +448,35 @@
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Getting here" }));
           m.appendChild(el("h1", { class: "trtp-h", text: "How will you get to Medora?" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "Medora is closer than most people think. Driving, or flying into a regional airport and renting a car — including flying into one airport and out of another." }));
-          var sa = suggestAirport();
-          if (sa) m.appendChild(el("div", { class: "trtp-note", html: "Based on your stops, flying into <b>" + sa.code + "</b> (" + airport(sa.code).name.replace(/ –.*/, "") + ") makes the most sense — " + sa.why + "." }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "Medora is closer than most people think. Driving, or flying into a regional airport and renting a car — including flying into one airport and out of another when that saves backtracking." }));
+          var rec = recommendAirports();
+          // Recommendation banner with a one-click apply (fully overridable below)
+          var recBox = el("div", { class: "trtp-rec" });
+          var recTitle = rec.open ? ("Fly into " + rec.entry.code + ", out of " + rec.exit.code) : ("Fly in & out of " + rec.entry.code);
+          recBox.appendChild(el("div", { class: "rt", text: "Our airport pick: " + recTitle }));
+          recBox.appendChild(el("div", { class: "rr", text: rec.reason + "." + (rec.open ? " One-way rental with " + rec.shared[0] + "." : "") }));
+          recBox.appendChild(el("button", {
+            class: "trtp-btn primary", style: "margin-top:10px;padding:9px 16px;font-size:12px",
+            onclick: function () {
+              S.arrival = "air"; S.airport = rec.entry.code; S.diffReturn = rec.open; S.airportOut = rec.open ? rec.exit.code : null;
+              var opts = rentalOptions(); if (rec.open && rec.shared) S.rental = rec.shared[0]; else if (S.rental && opts.indexOf(S.rental) < 0) S.rental = null;
+              render();
+            }
+          }, ["Use these airports"]));
+          m.appendChild(recBox);
+
           cardGrid(m, [
             { id: "car", name: "Driving", note: S.origin && S.origin.driveHours ? ("About " + S.origin.driveHours + " hours from " + S.origin.label) : "Your own vehicle, all the flexibility" },
             { id: "air", name: "Flying + rental car", note: "Fly into a regional airport, drive the rest" }
-          ], { selected: function (o) { return S.arrival === o.id; }, blurb: function (o) { return o.note; }, onclick: function (o) { S.arrival = o.id; render(); } });
+          ], {
+            selected: function (o) { return S.arrival === o.id; }, blurb: function (o) { return o.note; },
+            onclick: function (o) {
+              S.arrival = o.id;
+              // Choosing "Flying" for the first time pre-fills our recommendation (still overridable)
+              if (o.id === "air" && !S.airport) { S.airport = rec.entry.code; S.diffReturn = rec.open; S.airportOut = rec.open ? rec.exit.code : null; if (rec.open && rec.shared) S.rental = rec.shared[0]; }
+              render();
+            }
+          });
 
           if (S.arrival === "air") {
             var aps = D.airports.airports.slice().sort(function (a, b) { return a.driveToMedoraMin - b.driveToMedoraMin; });
@@ -459,7 +484,7 @@
             cardGrid(m, aps, {
               wide: true, selected: function (a) { return S.airport === a.code; },
               blurb: function (a) { return a.note; },
-              meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min / " + a.driveToMedoraMiles + " mi to Medora" + (sa && sa.code === a.code ? " · ★ suggested" : ""); },
+              meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min / " + a.driveToMedoraMiles + " mi to Medora" + (rec.entry.code === a.code ? " · ★ recommended in" : ""); },
               onclick: function (a) { S.airport = a.code; if (S.rental && rentalOptions().indexOf(S.rental) < 0) S.rental = null; render(); }
             });
 
@@ -472,7 +497,7 @@
               cardGrid(m, aps, {
                 wide: true, selected: function (a) { return S.airportOut === a.code; },
                 blurb: function (a) { return a.note; },
-                meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min to Medora"; },
+                meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min to Medora" + (rec.open && rec.exit.code === a.code ? " · ★ recommended out" : ""); },
                 onclick: function (a) { S.airportOut = a.code; if (S.rental && rentalOptions().indexOf(S.rental) < 0) S.rental = null; render(); }
               });
             }
@@ -568,15 +593,52 @@
     ];
   }
 
-  // Suggest a fly-in airport from the guest's selected regional stops (falls back to origin's nearest).
-  function suggestAirport() {
-    var ids = S.picks.route;
-    var has = function (arr) { return arr.some(function (x) { return ids.indexOf(x) > -1; }); };
-    if (has(["yellowstone", "grand-teton", "cody", "beartooth"])) return { code: "BIL", why: "you added western parks like Yellowstone, the Tetons or Cody" };
-    if (has(["glacier"])) return { code: "BIL", why: "you're heading toward Glacier" };
-    if (has(["mount-rushmore", "devils-tower", "wind-cave", "custer-state-park", "badlands-np", "deadwood", "spearfish-canyon"])) return { code: "RAP", why: "you added Black Hills stops like Mount Rushmore, Devils Tower or Custer" };
-    if (S.origin && S.origin.nearestAirport) return { code: S.origin.nearestAirport, why: "it's the closest to your starting point" };
-    return { code: "DIK", why: "it's the closest airport to Medora" };
+  // Recommend the best fly-in / fly-out airports for the chosen far stops.
+  // Considers every airport pair, models the drive as entry → far stops → Medora →
+  // far stops → exit (nearest-neighbour), and prefers an open-jaw (different in/out)
+  // only when it meaningfully beats the best round-trip AND a rental serves both.
+  function recommendAirports() {
+    var M = D.config.brand.anchor, aps = D.airports.airports;
+    var far = S.picks.route.map(function (id) { return byId(D.destinations.destinations, id); })
+      .filter(function (d) { return d && d.milesFromMedora > NEAR_MI && d.lat != null; });
+
+    if (!far.length) {
+      var near = aps.slice().sort(function (a, b) { return a.driveToMedoraMin - b.driveToMedoraMin; })[0];
+      return { entry: near, exit: near, open: false, reason: "you're focused on Medora, so the closest airport (" + near.code + ") in and out is simplest" };
+    }
+    function chain(sLat, sLng, stops, eLat, eLng) {
+      var cur = { lat: sLat, lng: sLng }, rem = stops.slice(), total = 0;
+      while (rem.length) {
+        var bi = 0, bd = Infinity;
+        rem.forEach(function (s, i) { var dd = haversine(cur.lat, cur.lng, s.lat, s.lng); if (dd < bd) { bd = dd; bi = i; } });
+        total += bd; cur = { lat: rem[bi].lat, lng: rem[bi].lng }; rem.splice(bi, 1);
+      }
+      return total + haversine(cur.lat, cur.lng, eLat, eLng);
+    }
+    function cost(A, B) {
+      var inb = [], outb = [];
+      far.forEach(function (f) { var da = haversine(f.lat, f.lng, A.lat, A.lng), db = haversine(f.lat, f.lng, B.lat, B.lng); (da <= db ? inb : outb).push(f); });
+      return chain(A.lat, A.lng, inb, M.lat, M.lng) + chain(M.lat, M.lng, outb, B.lat, B.lng);
+    }
+    var bestRound = null, bestOpen = null;
+    aps.forEach(function (A) {
+      var c = cost(A, A);
+      if (!bestRound || c < bestRound.cost) bestRound = { entry: A, exit: A, cost: c };
+      aps.forEach(function (B) {
+        if (A.code === B.code) return;
+        var shared = A.rentalCars.filter(function (r) { return B.rentalCars.indexOf(r) > -1; });
+        if (!shared.length) return;
+        var co = cost(A, B);
+        if (!bestOpen || co < bestOpen.cost) bestOpen = { entry: A, exit: B, cost: co, shared: shared };
+      });
+    });
+    var SAVE = 120; // miles of backtracking saved to justify a one-way rental
+    if (bestOpen && bestOpen.cost + SAVE < bestRound.cost) {
+      return { entry: bestOpen.entry, exit: bestOpen.exit, open: true, shared: bestOpen.shared,
+        reason: "your stops line up across the region — flying into " + bestOpen.entry.code + " and out of " + bestOpen.exit.code + " saves roughly " + Math.round((bestRound.cost - bestOpen.cost) / 10) * 10 + " miles of backtracking" };
+    }
+    return { entry: bestRound.entry, exit: bestRound.exit, open: false,
+      reason: "a round trip through " + bestRound.entry.code + " covers your stops with the least driving" };
   }
 
   function availMeta(a) {
@@ -975,5 +1037,5 @@
   else boot();
 
   // expose for tests
-  if (typeof window !== "undefined") window.__TRTP = { state: S, build: buildSchedule, data: D };
+  if (typeof window !== "undefined") window.__TRTP = { state: S, build: buildSchedule, data: D, recommend: recommendAirports };
 })();

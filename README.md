@@ -70,7 +70,7 @@ The flow leads with what the guest wants to see, then handles logistics:
 4. **Your Medora day** → a deep catalog (60+ items) grouped into See & do, Outdoors & recreation, Guided tours & rides, Shows & evenings, Where to eat, Where to shop, and Festivals & special events — all season-filtered
 5. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
 6. **Where are you coming from?** → starting point, drive time
-7. **Getting here** → car, or fly in; suggests the best airport **based on the stops picked**, supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
+7. **Getting here** → car, or fly in; **recommends the best fly-in/fly-out airports** for the chosen stops — proposing an open-jaw (into one airport, out of another) when it beats a round-trip and a rental serves both — with a one-click "Use these airports" and full manual override
 8. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
 9. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
 10. **Day-by-day schedule** → a dated, hour-by-hour plan → Print / save
