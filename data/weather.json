@@ -1,0 +1,85 @@
+{
+  "note": "Typical climate norms for the Medora / Theodore Roosevelt National Park area (western North Dakota). hi/lo in °F, precip in inches. Approximate long-term averages for planning — not a forecast. months indexed Jan..Dec.",
+  "source": "Regional climate normals, western North Dakota Badlands",
+  "months": [
+    { "m": 1, "hi": 26, "lo": 6, "precip": 0.4, "note": "Cold and snowy; short days" },
+    { "m": 2, "hi": 31, "lo": 11, "precip": 0.4, "note": "Cold; occasional snow" },
+    { "m": 3, "hi": 43, "lo": 21, "precip": 0.7, "note": "Thawing; wind and mud" },
+    { "m": 4, "hi": 58, "lo": 31, "precip": 1.2, "note": "Warm days, cold nights; variable" },
+    { "m": 5, "hi": 69, "lo": 42, "precip": 2.2, "note": "Green-up; afternoon storms possible" },
+    { "m": 6, "hi": 78, "lo": 51, "precip": 3.0, "note": "Warm; the wettest month, pop-up storms" },
+    { "m": 7, "hi": 86, "lo": 56, "precip": 2.2, "note": "Hot and mostly dry; occasional storms" },
+    { "m": 8, "hi": 85, "lo": 54, "precip": 1.6, "note": "Hot; dry with some storms" },
+    { "m": 9, "hi": 73, "lo": 43, "precip": 1.3, "note": "Mild days, cold nights; fall color late" },
+    { "m": 10, "hi": 58, "lo": 31, "precip": 1.0, "note": "Crisp; first frosts and wind" },
+    { "m": 11, "hi": 41, "lo": 19, "precip": 0.5, "note": "Cold; snow begins" },
+    { "m": 12, "hi": 29, "lo": 9, "precip": 0.4, "note": "Cold and snowy; short days" }
+  ],
+  "seasons": {
+    "summer": {
+      "label": "Summer",
+      "pack": [
+        "Lightweight, breathable layers",
+        "Wide-brim hat and sunglasses",
+        "High-SPF sunscreen — there's little shade in the Badlands",
+        "A refillable water bottle; it's dry country",
+        "Sturdy closed-toe walking shoes",
+        "A light rain shell for afternoon storms",
+        "Insect repellent (ticks and mosquitoes, especially early summer)",
+        "A warm layer for cool evenings and the outdoor Medora Musical"
+      ],
+      "prepare": [
+        "Hot afternoons (often 85–95°F) with intense sun and wind — hydrate and reapply sunscreen",
+        "Thunderstorms can build fast; check radar and get off exposed buttes if lightning or hail threatens",
+        "Nights cool off quickly — the Musical is outdoors, so bring a layer",
+        "Give bison and wildlife a wide berth, and expect spotty cell service in the park"
+      ]
+    },
+    "spring": {
+      "label": "Spring",
+      "pack": [
+        "Layers you can add and shed through the day",
+        "A warm insulated jacket and a rain shell",
+        "Gloves and a hat for chilly mornings",
+        "Waterproof shoes for muddy trails",
+        "Sunscreen and sunglasses"
+      ],
+      "prepare": [
+        "Big day-to-night temperature swings and strong wind",
+        "Trails get slick — Badlands clay turns to gumbo when wet",
+        "Some seasonal attractions and shows don't open until late May (Memorial Day)"
+      ]
+    },
+    "fall": {
+      "label": "Fall",
+      "pack": [
+        "Layers for warm days and cold nights",
+        "A warm jacket and gloves for mornings",
+        "A rain shell for passing showers",
+        "Sturdy walking shoes",
+        "Sunscreen and sunglasses"
+      ],
+      "prepare": [
+        "Comfortable days but cold nights — first frosts arrive by late September",
+        "Wind is common; fall color peaks late September into early October",
+        "Seasonal shows and some attractions wind down after mid-September"
+      ]
+    },
+    "winter": {
+      "label": "Winter",
+      "pack": [
+        "A heavy insulated coat, warm hat, and gloves",
+        "Insulated, waterproof boots",
+        "Thermal base layers and warm mid-layers",
+        "Traction cleats for icy paths",
+        "Sunglasses for snow glare"
+      ],
+      "prepare": [
+        "Cold, with wind chills that can drop well below zero and blowing snow",
+        "Roads may be snow-packed or icy — check ND 511 before driving and carry a winter emergency kit",
+        "Short daylight; plan outdoor time around midday",
+        "Many Medora shops, restaurants and the Musical are closed off-season — the Library and the park stay open year-round"
+      ]
+    }
+  }
+}

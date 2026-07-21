@@ -126,6 +126,15 @@ Availability lives in each item's `avail` block in the data files:
 `season: [openMonth, closeMonth]`, `open`/`close` daily window, and
 `fixed: [{ days:[0=Sun..6=Sat], start, end }]` for time-anchored departures.
 
+### Weather & packing
+
+The schedule (and printout) includes a **typical weather & what-to-pack** block
+tailored to the guest's month(s): average high/low and conditions for each
+selected month, plus a season-specific packing list and "prepare for" notes
+(summer sun and pop-up thunderstorms, cold nights at the outdoor Musical, muddy
+spring trails, icy winter roads and off-season closures). A one-line teaser also
+appears on the Season step. Climate norms live in `data/weather.json`.
+
 ### Printer-friendly output
 
 **Print / save itinerary** opens a purpose-built print page (its own window and

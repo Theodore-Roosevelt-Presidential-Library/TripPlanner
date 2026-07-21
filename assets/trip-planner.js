@@ -129,6 +129,19 @@
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
     .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
+    .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
+    .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 12px;font-weight:600;}
+    .trtp-weather .wmonths{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+    .trtp-weather .wmo{flex:1;min-width:120px;background:var(--tr-paper);border:1px solid #e4ddcd;border-radius:5px;padding:9px 11px;}
+    .trtp-weather .wm{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--tr-secondary);font-weight:600;}
+    .trtp-weather .wt{font-family:'Clearface',Georgia,serif;font-size:18px;color:var(--tr-primary);font-weight:600;margin:1px 0;}
+    .trtp-weather .wc{font-size:11.5px;color:#6c6f72;line-height:1.35;}
+    .trtp-weather .wcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    @media(max-width:560px){.trtp-weather .wcols{grid-template-columns:1fr;}}
+    .trtp-weather .wlbl{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px;color:var(--tr-secondary);font-weight:600;margin-bottom:4px;}
+    .trtp-weather .wlist{margin:0;padding-left:17px;}
+    .trtp-weather .wlist li{font-size:13px;color:#4a4d50;margin:3px 0;line-height:1.4;}
+    .trtp-weather .wnote{font-size:12px;color:#8a8d90;margin-top:10px;font-style:italic;}
     .trtp-rec{background:#092a4d;color:#fff;border-radius:6px;padding:15px 18px;margin:4px 0 16px;}
     .trtp-rec .rt{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:#fff;}
     .trtp-rec .rr{font-size:13.5px;color:#cdd8e6;margin-top:3px;}
@@ -173,7 +186,7 @@
     var host = document.getElementById(CONTAINER_ID);
     if (!host) { console.warn("[TRTP] container #" + CONTAINER_ID + " not found"); return; }
     host.innerHTML = '<div class="trtp-loading">Saddling up your trip planner…</div>';
-    var files = ["config", "origins", "airports", "destinations", "lodging", "medora", "itineraries", "library", "events"];
+    var files = ["config", "origins", "airports", "destinations", "lodging", "medora", "itineraries", "library", "events", "weather"];
     Promise.all(files.map(function (f) { return fetch(DATA + f + ".json").then(function (r) { return r.json(); }); }))
       .then(function (res) {
         files.forEach(function (f, i) { D[f] = res[i]; });
@@ -197,6 +210,50 @@
     if (!S.months.length) return true;
     if (!avail || !avail.season) return true;
     return S.months.some(function (m) { return m >= avail.season[0] && m <= avail.season[1]; });
+  }
+
+  // ---- weather & packing --------------------------------------------------
+  function tripMonths() {
+    if (S.months.length) return S.months.slice().sort(function (a, b) { return a - b; });
+    if (S.startDate) return [parseInt(S.startDate.split("-")[1], 10)];
+    return [];
+  }
+  function seasonOfMonth(m) { if (m >= 6 && m <= 8) return "summer"; if (m === 4 || m === 5) return "spring"; if (m === 9 || m === 10) return "fall"; return "winter"; }
+  function weatherInfo() {
+    var W = D.weather, ms = tripMonths();
+    if (!ms.length) return null;
+    var rows = ms.map(function (m) { return W.months[m - 1]; });
+    var seasons = uniq(ms.map(seasonOfMonth));
+    var pack = [], prepare = [];
+    seasons.forEach(function (s) {
+      (W.seasons[s].pack || []).forEach(function (p) { if (pack.indexOf(p) < 0) pack.push(p); });
+      (W.seasons[s].prepare || []).forEach(function (p) { if (prepare.indexOf(p) < 0) prepare.push(p); });
+    });
+    return { rows: rows, seasons: seasons.map(function (s) { return W.seasons[s].label; }), pack: pack, prepare: prepare };
+  }
+  function renderWeather(m) {
+    var w = weatherInfo();
+    var box = el("div", { class: "trtp-weather" });
+    box.appendChild(el("h4", { text: "Typical weather & what to pack" }));
+    if (!w) { box.appendChild(el("div", { class: "wnote", html: "Pick the month(s) you're considering on the <b>Season</b> step and we'll show typical Badlands weather and a tailored packing list." })); m.appendChild(box); return; }
+    var strip = el("div", { class: "wmonths" });
+    w.rows.forEach(function (r) {
+      strip.appendChild(el("div", { class: "wmo" }, [
+        el("div", { class: "wm", text: MON[r.m - 1] }),
+        el("div", { class: "wt", html: r.hi + "&deg; / " + r.lo + "&deg;F" }),
+        el("div", { class: "wc", text: r.note })
+      ]));
+    });
+    box.appendChild(strip);
+    var cols = el("div", { class: "wcols" });
+    var packCol = el("div", {}); packCol.appendChild(el("div", { class: "wlbl", text: "Pack" }));
+    var pl = el("ul", { class: "wlist" }); w.pack.forEach(function (p) { pl.appendChild(el("li", { text: p })); }); packCol.appendChild(pl);
+    var prepCol = el("div", {}); prepCol.appendChild(el("div", { class: "wlbl", text: "Prepare for" }));
+    var rl = el("ul", { class: "wlist" }); w.prepare.forEach(function (p) { rl.appendChild(el("li", { text: p })); }); prepCol.appendChild(rl);
+    cols.appendChild(packCol); cols.appendChild(prepCol);
+    box.appendChild(cols);
+    box.appendChild(el("div", { class: "wnote", text: "Typical averages for planning — check a forecast close to your trip." }));
+    m.appendChild(box);
   }
   function toggle(bucket, id) { var a = S.picks[bucket]; var i = a.indexOf(id); if (i > -1) a.splice(i, 1); else a.push(id); render(); }
   function isPicked(bucket, id) { return S.picks[bucket].indexOf(id) > -1; }
@@ -371,6 +428,8 @@
             var openCount = D.medora.attractions.filter(function (a) { return monthsBrowseOk(a.avail); }).length;
             var seasonalHidden = D.medora.attractions.length - openCount;
             m.appendChild(el("div", { class: "trtp-note", text: "Showing what's open in " + S.months.slice().sort(function (a, b) { return a - b; }).map(function (x) { return MON[x - 1]; }).join(", ") + "." + (seasonalHidden > 0 ? " " + seasonalHidden + " seasonal option(s) will be hidden on the next step." : "") }));
+            var wi = weatherInfo();
+            if (wi) m.appendChild(el("div", { class: "trtp-note", html: "<b>Typical weather:</b> " + wi.rows.map(function (r) { return MON[r.m - 1] + " " + r.hi + "&deg;/" + r.lo + "&deg;F"; }).join(", ") + ". You'll get a full packing list with your finished plan." }));
           }
         },
         canAdvance: function () { return true; }, nextLabel: "Build my Medora day →"
@@ -943,6 +1002,8 @@
       w.innerHTML = "<b>Couldn't fit these into your dates</b> — availability or time ran short:<br>" + sched.overflow.map(function (o) { return "• " + o.item.name + " — " + o.reason; }).join("<br>");
       m.appendChild(w);
     }
+
+    renderWeather(m);
     m.appendChild(el("div", { class: "trtp-note", html: "The <b>Print / save itinerary</b> button opens a clean, printer-friendly page with every stop, its booking link and phone number — ready to print or save as PDF." }));
   }
   function hasAnyPick() { return S.picks.route.length || S.picks.medora.length || S.picks.library.length; }
@@ -989,6 +1050,18 @@
 
     var overflow = sched.overflow.length ? "<div class='warn'><b>Check availability / didn't fit:</b><ul>" + sched.overflow.map(function (o) { return "<li>" + esc(o.item.name) + " — " + esc(o.reason) + "</li>"; }).join("") + "</ul></div>" : "";
 
+    // Weather & packing
+    var wi = weatherInfo();
+    var weatherHtml = "";
+    if (wi) {
+      weatherHtml = "<h2>Weather &amp; what to pack</h2>" +
+        "<p style='font-size:13px;margin:0 0 8px'>" + wi.rows.map(function (r) { return "<b>" + MON[r.m - 1] + ":</b> " + r.hi + "°/" + r.lo + "°F, " + esc(r.note); }).join(" &nbsp;·&nbsp; ") + "</p>" +
+        "<table style='width:100%'><tr>" +
+        "<td style='width:50%;vertical-align:top;padding-right:12px'><b>Pack</b><ul style='margin:4px 0;padding-left:18px;font-size:13px'>" + wi.pack.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul></td>" +
+        "<td style='width:50%;vertical-align:top'><b>Prepare for</b><ul style='margin:4px 0;padding-left:18px;font-size:13px'>" + wi.prepare.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("") + "</ul></td>" +
+        "</tr></table>";
+    }
+
     // reservations checklist (things that need booking)
     var toBook = [];
     S.picks.library.forEach(function (id) { var o = libItem(id); toBook.push([o.name, o.booking, o.phone]); });
@@ -1026,7 +1099,7 @@
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +
       "<h1>" + (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip</h1>" +
       "<div class='facts'>" + facts.map(function (f) { return "<div>" + f + "</div>"; }).join("") + "</div>" +
-      bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + bookHtml +
+      bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + weatherHtml + bookHtml +
       "<div class='foot'>Planned with the Theodore Roosevelt Presidential Library trip planner · trlibrary.com/visit · Times and availability are estimates — please confirm when you book.</div>" +
       "</body></html>";
     w.document.open(); w.document.write(html); w.document.close();
