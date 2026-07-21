@@ -425,6 +425,1069 @@
         "close": "20:00"
       },
       "image": "assets/img/13337ae5a4.jpg"
+    },
+    {
+      "id": "medora-riding-stables-trail-rides",
+      "name": "Medora Riding Stables & Trail Rides",
+      "category": "tour",
+      "duration": 60,
+      "tags": [
+        "culture",
+        "outdoors"
+      ],
+      "featured": false,
+      "blurb": "Saddle up and ride the buttes and canyons of the Badlands the way Roosevelt did in 1883, on guided 30-minute, 1-hour, or 2-hour trail rides.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/trailrides/",
+      "image": "assets/img/98e17c71ce.jpg",
+      "price": "From $47.95",
+      "avail": {
+        "season": [
+          5,
+          10
+        ],
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "little-bully-pulpit-mini-golf",
+      "name": "Little Bully Pulpit Mini Golf",
+      "category": "recreation",
+      "duration": 60,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "An 18-hole miniature golf course where the front nine celebrate North Dakota and the back nine are built into the Badlands bluffs.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/470fede00e.jpg",
+      "price": "Adults $15.95",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "manitou-zipline",
+      "name": "Manitou Zipline",
+      "category": "recreation",
+      "duration": 15,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Buckle two-abreast into this seated zipline hauled up backward for a sweeping view of Medora, then dropped on a thrilling ride down.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/0ee60fcf4e.jpg",
+      "price": "$12.95",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "lazy-lil-mo-lazy-river-wade-in-pool",
+      "name": "Lazy Lil Mo Lazy River & Wade-In Pool",
+      "category": "recreation",
+      "duration": 90,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Float the lazy river and splash in the wade-in pool modeled after the Little Missouri.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/82f675861b.jpg",
+      "price": "Adults $16.95",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "perception-illusion-house",
+      "name": "Perception Illusion House",
+      "category": "attraction",
+      "duration": 30,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A tilted, gravity-defying shack of optical illusions run by cowboy showmen in a magical Badlands funhouse.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/c4163e367c.jpg",
+      "price": "Adults $15",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "08:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "point-to-point-park-splash-pad-jump-pill",
+      "name": "Point to Point Park Splash Pad & Jump Pillow",
+      "category": "recreation",
+      "duration": 45,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Free family fun with a giant bounce-pillow and interactive splash pad for hot Badlands afternoons.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/f5d5cf16f7.jpg",
+      "price": "Free",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "pickleball-at-point-to-point-park",
+      "name": "Pickleball at Point to Point Park",
+      "category": "recreation",
+      "duration": 60,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A free two-court pickleball area near the poolhouse — bring your own paddles or borrow a set.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/pointtopoint/",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "point-to-point-trails",
+      "name": "Point to Point Trails",
+      "category": "recreation",
+      "duration": 60,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Free footpaths carved into the bluffs above town with the best overlook of Medora.",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/feff1830aa.jpg",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "medora-children-s-park",
+      "name": "Medora Children's Park",
+      "category": "recreation",
+      "duration": 45,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A whimsical wooden playground fronted by a replica Old-West town facade, steps from downtown.",
+      "booking": "https://medora.com/pointtopoint/",
+      "image": "assets/img/d5655f0ccd.jpg",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "free-medora-trolley",
+      "name": "Free Medora Trolley",
+      "category": "recreation",
+      "duration": 20,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Hop the free Medora Stageline Trolley between downtown, the amphitheatre, and the sights — no parking hassle.",
+      "booking": "https://medora.com/trolley/",
+      "price": "Free",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "ruff-riders-dog-park",
+      "name": "Ruff Riders Dog Park",
+      "category": "recreation",
+      "duration": 30,
+      "tags": [
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A free, year-round off-leash dog park near the campground to let your companion stretch its legs.",
+      "booking": "https://medora.com/dogpark/",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "medora-musical-backstage-tour",
+      "name": "Medora Musical Backstage Tour",
+      "category": "tour",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "outdoors"
+      ],
+      "featured": false,
+      "blurb": "A 35-minute walking tour behind the scenes of the Burning Hills Amphitheatre.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/behindthescenes/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "footsteps-into-medora-s-past-walking-tou",
+      "name": "Footsteps into Medora's Past Walking Tour",
+      "category": "tour",
+      "duration": 60,
+      "tags": [
+        "culture",
+        "outdoors"
+      ],
+      "featured": false,
+      "blurb": "A guided stroll through North Dakota's most historic town, tracing the Marquis de Mores and Roosevelt.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/walkingtour/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "the-von-hoffman-house",
+      "name": "The Von Hoffman House",
+      "category": "attraction",
+      "duration": 30,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A restored historic home of original furniture telling the story of two of Medora's founding families.",
+      "booking": "https://medora.com/vonhoffman/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "08:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "harold-schafer-heritage-center",
+      "name": "Harold Schafer Heritage Center",
+      "category": "attraction",
+      "duration": 45,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A free downtown center on Harold Schafer, the Gold Seal businessman whose vision revived Medora.",
+      "booking": "https://medora.com/",
+      "price": "Free",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "08:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "de-mores-park",
+      "name": "De Mores Park",
+      "category": "attraction",
+      "duration": 20,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A downtown park anchored by a statue of the Marquis de Mores, the nobleman who founded Medora.",
+      "booking": "https://medora.com/demorespark/",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "medora-gospel-brunch",
+      "name": "Medora Gospel Brunch",
+      "category": "evening",
+      "duration": 90,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "The most inspiring morning in Medora pairs an endless brunch buffet with a rousing live gospel performance.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/listing/medora-gospel-brunch/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "17:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "the-teddy-roosevelt-show",
+      "name": "The Teddy Roosevelt Show",
+      "category": "evening",
+      "duration": 120,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Roosevelt reprisor Joe Wiegand brings the 26th President to life over a brunch or dinner buffet at the Town Square Showhall.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/teddyrooseveltshow/",
+      "image": "assets/img/ef21eaddfd.jpg",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "17:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "t-r-the-strenuous-life",
+      "name": "T.R. – The Strenuous Life",
+      "category": "evening",
+      "duration": 60,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Performer Kurt Skinner channels a young Theodore Roosevelt in a one-man show about the strenuous life.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/listing/t-r-the-strenuous-life/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "17:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "the-great-american-folk-show",
+      "name": "The Great American Folk Show",
+      "category": "evening",
+      "duration": 90,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Folk musician Tom Brosseau spins songs and stories of great American folks in an intimate evening performance.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/listing/great-american-folk-show/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "17:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "live-music-on-the-town-square-patio",
+      "name": "Live Music on the Town Square Patio",
+      "category": "evening",
+      "duration": 60,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Free afternoon live music by rotating performers in the heart of downtown Medora.",
+      "booking": "https://medora.com/listing/live-music-on-the-town-square-patio/",
+      "price": "Free",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "14:00",
+            "end": "15:00"
+          }
+        ]
+      },
+      "area": "medora"
+    },
+    {
+      "id": "badlands-pizza-saloon",
+      "name": "Badlands Pizza & Saloon",
+      "category": "dining",
+      "duration": 60,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A family-friendly downtown pizza parlor and saloon serving zesty pies, chicken, and buffet favorites.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/listing/badlands-pizza-saloon/",
+      "meal": "dinner",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "sheriff-bear-s-ice-cream-burgers",
+      "name": "Sheriff Bear's Ice Cream & Burgers",
+      "category": "dining",
+      "duration": 40,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A shaded downtown stop for burgers, ice cream, and live music to cool off on a hot Badlands day.",
+      "booking": "https://medora.com/sheriffbears/",
+      "meal": "lunch",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "medora-fudge-ice-cream-depot",
+      "name": "Medora Fudge & Ice Cream Depot",
+      "category": "dining",
+      "duration": 20,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A quintessential small-town sweet shop dishing up fudge, ice cream, and old-fashioned treats.",
+      "booking": "https://medora.com/listing/fudge-depot/",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "tr-s-tavern",
+      "name": "TR's Tavern",
+      "category": "dining",
+      "duration": 60,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Inside Theodore's Dining Room, a year-round tavern pouring cocktails with a Roosevelt twist and local beers.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/teddystavern/",
+      "meal": "dinner",
+      "avail": {
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "cowboy-lyle-s-candy-barn",
+      "name": "Cowboy Lyle's Candy Barn",
+      "category": "shopping",
+      "duration": 20,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A 1905 red barn packed with Jelly Belly beans, handmade chocolates, truffles, and giant lollipops.",
+      "booking": "https://medora.com/candybarn/",
+      "image": "assets/img/67e3a762b1.jpg",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "rough-riders-gift",
+      "name": "Rough Riders Gift",
+      "category": "shopping",
+      "duration": 30,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A high-end shop of designer women's clothing, custom glasswork, purses, jewelry, and art.",
+      "booking": "https://medora.com/roughridersgift/",
+      "image": "assets/img/5150ac474e.jpg",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "buffalo-gap-gift-shop",
+      "name": "Buffalo Gap Gift Shop",
+      "category": "shopping",
+      "duration": 30,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Medora's historic gift shop of unique giftware, home decor, souvenirs, and handmade goods.",
+      "booking": "https://medora.com/buffalogap/",
+      "image": "assets/img/bae11d4fc8.jpg",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "teddy-s-bears",
+      "name": "Teddy's Bears",
+      "category": "shopping",
+      "duration": 30,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A build-your-own stuffed animal shop where kids craft bears and dinos with outfits and accessories.",
+      "booking": "https://medora.com/teddysbears/",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "north-unit-scenic-drive",
+      "name": "North Unit Scenic Drive",
+      "category": "recreation",
+      "duration": 90,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A quieter 28-mile out-and-back drive to the historic River Bend Overlook and Oxbow Overlook.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/planyourvisit/north-unit.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "wind-canyon-trail",
+      "name": "Wind Canyon Trail",
+      "category": "recreation",
+      "duration": 30,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A short, moderate South Unit trail to an iconic sunset view of the Little Missouri bending through the badlands.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/hike-wind-canyon-trail.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "boicourt-overlook-trail",
+      "name": "Boicourt Overlook Trail",
+      "category": "recreation",
+      "duration": 20,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A short, easy South Unit walk to an elevated overlook with a jaw-dropping Badlands panorama.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/hike-boicourt-trail.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "coal-vein-trail",
+      "name": "Coal Vein Trail",
+      "category": "recreation",
+      "duration": 40,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A 0.8-mile South Unit loop revealing where an underground coal vein burned for decades and baked the earth.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/hike-coal-vein-trail.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "little-mo-nature-trail",
+      "name": "Little Mo Nature Trail",
+      "category": "recreation",
+      "duration": 40,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A gentle North Unit nature trail with a footbridge, interpreting the badlands' geology and riverbottom ecology.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/hike-the-little-mo-nature-trail.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "skyline-vista-trail",
+      "name": "Skyline Vista Trail",
+      "category": "recreation",
+      "duration": 15,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "An accessible paved South Unit path near the entrance with a quick, wheelchair-friendly Badlands view.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/hike-skyline-vista-trail.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "buck-hill",
+      "name": "Buck Hill",
+      "category": "recreation",
+      "duration": 30,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A short steep climb to one of the highest points in the South Unit, with a 360-degree badlands panorama.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/planyourvisit/south-unit.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "badlands-wildlife-viewing",
+      "name": "Badlands Wildlife Viewing",
+      "category": "recreation",
+      "duration": 120,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Watch bison, wild horses, prairie dogs, elk, and bighorn sheep across one of the best wildlife spots in the West.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/planyourvisit/wildlife-viewing.htm",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "birding-the-badlands",
+      "name": "Birding the Badlands",
+      "category": "recreation",
+      "duration": 90,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Scan for 180+ bird species, from yellow-breasted chats to golden eagles, across prairie, river, and butte.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thingstodo/birding-in-theodore-roosevelt-national-park.htm",
+      "avail": {
+        "season": [
+          4,
+          9
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "junior-ranger-program",
+      "name": "Junior Ranger Program",
+      "category": "recreation",
+      "duration": 90,
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Kids earn a badge by completing an activity booklet on wildlife, geology, and Roosevelt history.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/planyourvisit/justforkids.htm",
+      "price": "Free",
+      "avail": {
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "ranger-led-program",
+      "name": "Ranger-Led Program",
+      "category": "tour",
+      "duration": 60,
+      "tags": [
+        "parks",
+        "outdoors",
+        "culture"
+      ],
+      "featured": false,
+      "blurb": "Join a ranger for a guided hike, a bison chat, or a cabin tour during summer's free interpretive programs.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/planyourvisit/things2do.htm",
+      "price": "Free",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "dakota-nights-astronomy-festival",
+      "name": "Dakota Nights Astronomy Festival",
+      "category": "event",
+      "duration": 180,
+      "tags": [
+        "parks",
+        "outdoors",
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A three-day September celebration of dark skies with telescope viewing, presentations, and rocket launches.",
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/learn/nature/dakota-nights-festival.htm",
+      "price": "Free",
+      "avail": {
+        "season": [
+          9,
+          9
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "park"
+    },
+    {
+      "id": "maah-daah-hey-100-bike-race",
+      "name": "Maah Daah Hey 100 Bike Race",
+      "category": "event",
+      "duration": 120,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "An epic August endurance mountain bike race across 100+ miles of the legendary Maah Daah Hey singletrack.",
+      "booking": "https://medora.com/maahdaahhey100/",
+      "avail": {
+        "season": [
+          8,
+          8
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "champions-ride-saddle-bronc-rodeo",
+      "name": "Champions Ride Saddle Bronc Rodeo",
+      "category": "event",
+      "duration": 180,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A high-flying August rodeo of top saddle bronc riders at Home on the Range near Sentinel Butte.",
+      "booking": "https://medora.com/calendar/home-on-the-range-champions-ride-rodeo/",
+      "avail": {
+        "season": [
+          8,
+          8
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "spring-into-summer-wine-walk",
+      "name": "Spring Into Summer Wine Walk",
+      "category": "event",
+      "duration": 120,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A festive spring stroll where Medora businesses pour wine tastings paired with scrumptious bites.",
+      "booking": "https://medora.com/calendar/winewalk/",
+      "avail": {
+        "season": [
+          5,
+          6
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "wild-west-fall-fest",
+      "name": "Wild West Fall Fest",
+      "category": "event",
+      "duration": 120,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "An autumn tribute showdown — Johnny Cash faces Elvis for your vote — with music and Badlands fall color.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/fallfest/",
+      "avail": {
+        "season": [
+          9,
+          10
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "medora"
+    },
+    {
+      "id": "cowboy-christmas",
+      "name": "Cowboy Christmas",
+      "category": "event",
+      "duration": 120,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A merry Badlands holiday with the 7:30 pm A Very Merry Badlands Christmas Show featuring Medora Musical stars.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/cowboychristmas/",
+      "avail": {
+        "season": [
+          12,
+          12
+        ],
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "19:30",
+            "end": "21:30"
+          }
+        ]
+      },
+      "area": "medora"
+    },
+    {
+      "id": "dakota-nights-new-year-s-eve-gala",
+      "name": "Dakota Nights New Year's Eve Gala",
+      "category": "event",
+      "duration": 180,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Ring in the New Year Medora-style in formal attire at a gala hosted by 'Teddy Roosevelt' himself.",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/newyearseve/",
+      "avail": {
+        "season": [
+          12,
+          12
+        ],
+        "open": "09:00",
+        "close": "22:00"
+      },
+      "area": "medora"
     }
   ]
 }

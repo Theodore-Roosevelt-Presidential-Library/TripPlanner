@@ -46,6 +46,7 @@
     maxStep: 0,
     origin: null,
     startDate: null,   // "YYYY-MM-DD"
+    months: [],        // months being considered (1-12) — filters activities by season
     days: null,
     pace: "balanced",
     arrival: null,     // 'car' | 'air'
@@ -59,7 +60,7 @@
   };
   var D = {};
   var STEPS = [];
-  var STEP_LABELS = ["Interests", "Road trip", "Medora", "Library", "Coming from", "Getting here", "Dates", "Stay", "Schedule"];
+  var STEP_LABELS = ["Interests", "Road trip", "Season", "Medora", "Library", "Coming from", "Getting here", "Dates", "Stay", "Schedule"];
 
   // ---- styling ------------------------------------------------------------
   function injectCSS(c) {
@@ -146,6 +147,11 @@
     .trtp-seg button{font:inherit;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12px;font-weight:600;padding:8px 14px;border:none;background:#fff;color:var(--tr-secondary);cursor:pointer;border-right:1px solid #e4ddcd;}
     .trtp-seg button:last-child{border-right:none;}
     .trtp-seg button.on{background:var(--tr-primary);color:#25282a;}
+    .trtp-months{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px;}
+    .trtp-chip{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:13px;font-weight:600;
+      padding:9px 16px;border:1px solid #d8cfb9;border-radius:20px;background:#fff;color:var(--tr-secondary);cursor:pointer;transition:all .12s;}
+    .trtp-chip:hover{border-color:var(--tr-muted);transform:translateY(-1px);}
+    .trtp-chip.on{background:var(--tr-primary);border-color:var(--tr-primary);color:#25282a;}
     @media print{.trtp-side,.trtp-nav,.trtp-steps{display:none !important;}.trtp-wrap{grid-template-columns:1fr;}}
     `;
     document.head.appendChild(el("style", { id: "trtp-style", html: css }));
@@ -175,6 +181,12 @@
   function airport(code) { var a = D.airports.airports; for (var i = 0; i < a.length; i++) if (a[i].code === code) return a[i]; return null; }
   function libItem(id) { return byId(D.library._all, id); }
   function matchesStyle(tags) { return !S.styles.length || S.styles.some(function (s) { return tags && tags.indexOf(s) > -1; }); }
+  // Browse filter: is this item open in any of the months the guest is considering?
+  function monthsBrowseOk(avail) {
+    if (!S.months.length) return true;
+    if (!avail || !avail.season) return true;
+    return S.months.some(function (m) { return m >= avail.season[0] && m <= avail.season[1]; });
+  }
   function toggle(bucket, id) { var a = S.picks[bucket]; var i = a.indexOf(id); if (i > -1) a.splice(i, 1); else a.push(id); render(); }
   function isPicked(bucket, id) { return S.picks[bucket].indexOf(id) > -1; }
   function rentalOptions() {
@@ -330,19 +342,43 @@
         canAdvance: function () { return true; }, nextLabel: "Plan my Medora day →"
       },
 
-      // 2 Medora day
+      // 2 Season / months
+      {
+        render: function (m) {
+          m.appendChild(el("p", { class: "trtp-kicker", text: "Time of year" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Which months are you considering?" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "Medora is seasonal — the Musical, trail rides, tours and many shops run summer only, while the Badlands and the Library are open far wider. Pick the month(s) you might visit and we'll show only what's actually running. Not sure yet? Skip it and we'll show everything." }));
+          var chips = el("div", { class: "trtp-months" });
+          for (var i = 1; i <= 12; i++) (function (mo) {
+            chips.appendChild(el("button", {
+              class: "trtp-chip" + (S.months.indexOf(mo) > -1 ? " on" : ""), type: "button",
+              onclick: function () { var k = S.months.indexOf(mo); if (k > -1) S.months.splice(k, 1); else S.months.push(mo); render(); }
+            }, [MON[mo - 1]]));
+          })(i);
+          m.appendChild(chips);
+          if (S.months.length) {
+            var openCount = D.medora.attractions.filter(function (a) { return monthsBrowseOk(a.avail); }).length;
+            var seasonalHidden = D.medora.attractions.length - openCount;
+            m.appendChild(el("div", { class: "trtp-note", text: "Showing what's open in " + S.months.slice().sort(function (a, b) { return a - b; }).map(function (x) { return MON[x - 1]; }).join(", ") + "." + (seasonalHidden > 0 ? " " + seasonalHidden + " seasonal option(s) will be hidden on the next step." : "") }));
+          }
+        },
+        canAdvance: function () { return true; }, nextLabel: "Build my Medora day →"
+      },
+
+      // 3 Medora day
       {
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Your day in Medora" }));
           m.appendChild(el("h1", { class: "trtp-h", text: "Build your Medora day" }));
           m.appendChild(el("p", { class: "trtp-sub", text: "The Badlands that shaped Roosevelt and a town that still runs on Western hospitality. Click what you want to do, see, eat and watch — we'll slot each into your schedule at the right time." }));
-          var groups = [{ key: "attraction", label: "See & do" }, { key: "evening", label: "Evenings & entertainment" }, { key: "dining", label: "Where to eat" }, { key: "shopping", label: "Where to shop" }];
+          if (S.months.length) m.appendChild(el("div", { class: "trtp-note", html: "Filtered to what's open in <b>" + S.months.slice().sort(function (a, b) { return a - b; }).map(function (x) { return MON[x - 1]; }).join(", ") + "</b>. <a href='#' onclick='return false' style='color:var(--tr-primary)'>Change months on the Season step ↑</a>" }));
+          var groups = [{ key: "attraction", label: "See & do" }, { key: "recreation", label: "Outdoors & recreation" }, { key: "tour", label: "Guided tours & rides" }, { key: "evening", label: "Shows & evenings" }, { key: "dining", label: "Where to eat" }, { key: "shopping", label: "Where to shop" }, { key: "event", label: "Festivals & special events" }];
           groups.forEach(function (g) {
-            var items = D.medora.attractions.filter(function (a) { return a.category === g.key; });
+            var items = D.medora.attractions.filter(function (a) { return a.category === g.key && monthsBrowseOk(a.avail); });
             if (!items.length) return;
             m.appendChild(el("div", { class: "trtp-sub-h", text: g.label }));
             cardGrid(m, items, {
-              wide: g.key === "attraction" || g.key === "evening",
+              wide: g.key === "attraction" || g.key === "evening" || g.key === "tour" || g.key === "event" || g.key === "recreation",
               selected: function (a) { return isPicked("medora", a.id); },
               blurb: function (a) { return a.blurb; },
               meta: function (a) { return availMeta(a); },
@@ -552,7 +588,14 @@
   function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
   function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, area: d.milesFromMedora > 15 ? "regional" : "medora", miles: d.milesFromMedora, kind: "destination" }; }
 
-  function seasonOk(av, month) { if (!av || !av.season || month == null) return true; return month >= av.season[0] && month <= av.season[1]; }
+  // Season check: use the exact-date month when known, otherwise fall back to the
+  // months the guest is considering (so seasonal items still get filtered sensibly).
+  function seasonOk(av, month) {
+    if (!av || !av.season) return true;
+    var months = month != null ? [month] : (S.months.length ? S.months : null);
+    if (!months) return true;
+    return months.some(function (m) { return m >= av.season[0] && m <= av.season[1]; });
+  }
   function fixedWindowFor(av, wd) { if (!av || !av.fixed) return null; if (wd == null) return av.fixed[0]; for (var i = 0; i < av.fixed.length; i++) if (av.fixed[i].days.indexOf(wd) > -1) return av.fixed[i]; return null; }
   function dayOk(av, wd) { if (!av) return true; if (av.fixed) return fixedWindowFor(av, wd) != null; if (av.days && wd != null) return av.days.indexOf(wd) > -1; return true; }
 
@@ -677,7 +720,7 @@
     } else {
       var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
       var flex = day.items.filter(function (i) { return !i.avail.fixed; });
-      var order = { breakfast: 0, attraction: 1, destination: 1, lunch: 2, admission: 1, shopping: 3, dinner: 5 };
+      var order = { breakfast: 0, attraction: 1, destination: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
       flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
       var placeFlexUntil = function (lim) {
         while (flex.length && cursor + flex[0].duration <= lim) {
@@ -706,10 +749,13 @@
     day.entries = entries.sort(function (a, b) { return a.start - b.start; });
   }
   function descFor(it) {
-    if (it.kind === "tour") return "Library specialty tour" + (it.price ? " · $" + it.price : " · included");
+    if (it.kind === "tour" && it.area === "library") return "Library specialty tour" + (it.price ? " · $" + it.price : " · included");
     if (it.kind === "admission") return "Self-guided galleries & grounds";
+    if (it.category === "tour") return "Guided tour / ride · Medora";
+    if (it.category === "recreation") return it.area === "park" ? "Outdoors · TR National Park" : "Outdoors & recreation · Medora";
+    if (it.category === "event") return "Festival / special event";
     if (it.category === "dining") return "Meal · Medora";
-    if (it.category === "evening") return "Evening · book ahead";
+    if (it.category === "evening") return "Evening show · book ahead";
     if (it.category === "shopping") return "Shopping · downtown Medora";
     if (it.area === "regional") return "Day trip · " + it.miles + " mi";
     return it.where || "Medora";

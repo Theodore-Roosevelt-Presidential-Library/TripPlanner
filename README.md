@@ -66,13 +66,18 @@ The flow leads with what the guest wants to see, then handles logistics:
 
 1. **What do you want to see & do?** → interests that surface the best stops
 2. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips)
-3. **Your Medora day** → see/do, eat, shop, evenings + live events
-4. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
-5. **Where are you coming from?** → starting point, drive time
-6. **Getting here** → car, or fly in; suggests the best airport **based on the stops picked**, supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
-7. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
-8. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
-9. **Day-by-day schedule** → a dated, hour-by-hour plan → Print / save
+3. **Which months?** → the guest picks the month(s) they're considering; the next step is filtered to what's actually open then (the Musical, trail rides and many shops are summer-only)
+4. **Your Medora day** → a deep catalog (60+ items) grouped into See & do, Outdoors & recreation, Guided tours & rides, Shows & evenings, Where to eat, Where to shop, and Festivals & special events — all season-filtered
+5. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
+6. **Where are you coming from?** → starting point, drive time
+7. **Getting here** → car, or fly in; suggests the best airport **based on the stops picked**, supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
+8. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
+9. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
+10. **Day-by-day schedule** → a dated, hour-by-hour plan → Print / save
+
+The months step also feeds the scheduler: with no exact date set, seasonal
+availability is still checked against the months being considered, so a
+summer-only show won't land on a December plan.
 
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the
