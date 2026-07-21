@@ -59,18 +59,46 @@ TripPlanner/
 
 ### The guest flow
 
-1. **Where are you starting?** → drive time + a suggested backbone itinerary
-2. **How many days?** → scopes how far afield we suggest roaming
-3. **Getting here** → car, or fly into a regional airport + pick a rental company
-4. **What are you here for?** → travel styles that filter the road-trip stops
-5. **Build your road trip** → click national parks, monuments, towns, state parks
-6. **Comfort level** → camping/RV → premium; shows matching stays
-7. **Your Medora day** → see/do, eat, shop, evenings + live events
-8. **The Library** → admission/tour/café options + a direct booking link
-9. **Finished trip** → a clean summary they can Print / Save to PDF
+A clickable step header runs across the top — guests can jump back to any
+visited step to change answers, no Back-button hunting.
 
-Selections collect in the right-hand panel the whole way through, so the
-itinerary builds up visibly as they click.
+1. **Where are you starting?** → drive time + a suggested backbone itinerary
+2. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
+3. **Getting here** → car, or fly in; supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
+4. **What are you here for?** → travel styles that surface the best road-trip stops
+5. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips)
+6. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
+7. **Your Medora day** → see/do, eat, shop, evenings + live events
+8. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
+9. **Day-by-day schedule** → a dated, hour-by-hour plan → Print / save
+
+Selections collect in the right-hand panel the whole way through.
+
+### Scheduling & availability
+
+The final step runs a heuristic scheduler that turns the guest's picks into a
+dated, timed itinerary:
+
+- **Time-anchored** items (Library tours, the Medora Musical, Pitchfork Fondue)
+  are placed at their actual start times, only on days of the week they run.
+- **Flexible** activities fill the day around those anchors within opening
+  hours, up to the chosen pace budget (relaxed ≈ 6h, balanced ≈ 8h, packed ≈ 10h/day).
+- **Regional stops** (Devils Tower, Mount Rushmore, etc.) become their own day
+  trips with drive-time rows there and back.
+- **Season and weekday** are checked against the arrival date; anything that
+  can't run on the chosen dates is moved to a clearly-labeled "check
+  availability / didn't fit" list with the reason.
+
+Availability lives in each item's `avail` block in the data files:
+`season: [openMonth, closeMonth]`, `open`/`close` daily window, and
+`fixed: [{ days:[0=Sun..6=Sat], start, end }]` for time-anchored departures.
+
+### Printer-friendly output
+
+**Print / save itinerary** opens a purpose-built print page (its own window and
+stylesheet — not a raw browser dump of the widget) with the dated schedule, a
+booking link and **phone number** for every planned stop, the lodging list, and
+a "Reservations to make" checklist. Guests print it or save as PDF.
 
 ---
 
