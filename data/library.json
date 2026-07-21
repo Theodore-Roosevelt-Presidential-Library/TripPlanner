@@ -17,7 +17,7 @@
       "open": "09:00",
       "close": "17:00"
     },
-    "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/tr-library-butte.jpg.webp?itok=cz3aW1A5"
+    "image": "assets/img/34bd88cc67.jpg"
   },
   "tours": [
     {
@@ -47,7 +47,7 @@
           }
         ]
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/cta_desktop_1x/public/2025-11/2025-08-06_NarrativeGallery.jpg.webp?itok=IW3gGer6"
+      "image": "assets/img/0d0f854269.jpg"
     },
     {
       "id": "architecture-tour",
@@ -73,7 +73,7 @@
           }
         ]
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/cta_desktop_1x/public/2025-07/Snohetta-TRPL-4-Lobby-CopyrightPlomp-FINAL.jpg.webp?itok=iotzIsSU"
+      "image": "assets/img/6e6f659f2d.jpg"
     },
     {
       "id": "badlands-landscape-tour",
@@ -99,7 +99,7 @@
           }
         ]
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/cta_desktop_1x/public/2026-03/Roof.jpeg.webp?itok=_NkPnz91"
+      "image": "assets/img/477a98a8e9.jpg"
     },
     {
       "id": "tr-deep-dive-tour",
@@ -130,7 +130,7 @@
           }
         ]
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/cta_desktop_1x/public/2026-03/Keystone_Edited.png.webp?itok=rU4Xumqw"
+      "image": "assets/img/c22b43a64d.jpg"
     },
     {
       "id": "behind-the-arena-tour",
@@ -164,7 +164,7 @@
           }
         ]
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/cta_desktop_1x/public/2025-07/Snohetta-TRPL-2-Entry-CopyrightPlomp-optimized-v2.jpg.webp?itok=JOdI5mfe"
+      "image": "assets/img/5f1ef852b1.jpg"
     }
   ],
   "options": [

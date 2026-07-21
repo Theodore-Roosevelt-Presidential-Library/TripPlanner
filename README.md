@@ -158,6 +158,30 @@ source with standard Event markup.
 
 ---
 
+## Images
+
+Every activity card shows a photo so guests can see what they're committing to;
+the photo also appears as a thumbnail in the schedule and the printed itinerary.
+
+Photos are **cached locally** in `assets/img/` and served from our own domain —
+we never hotlink other sites' servers. Each item's `image` field is a local path
+(e.g. `assets/img/<hash>.jpg`); the embed resolves it against the script's origin
+so it works when embedded on trlibrary.com.
+
+Sources are a mix of the official sites (medora.com for lodging/dining, the
+Library's own gallery for tours) and **Wikimedia Commons / Wikipedia** lead
+images for parks, monuments and towns (chosen to be iconic and unique per place).
+
+To add or refresh a photo: set an item's `image` to a remote URL, then run
+
+    python3 scripts/cache-images.py    # downloads, resizes, repoints to local
+
+**Attribution note:** the Wikimedia/Commons photos are freely licensed but most
+carry a CC-BY / CC-BY-SA requirement to credit the photographer. Before public
+launch, add a credits page (or per-image `credit` field) listing the source and
+license for the Commons images. The official medora.com / NPS / Library images
+are used to promote those partners.
+
 ## Design notes
 
 The planner mirrors the trlibrary.com look: badlands terracotta (`#E7805D`),

@@ -14,7 +14,7 @@
       "blurb": "Luxury meets Western charm in the restored 1885 hotel on Medora's main street — the town's signature stay.",
       "booking": "https://medora.com/roughridershotel/",
       "phone": "+1-701-623-4444",
-      "image": "https://medora.com/wp-content/uploads/2022/11/Rough-Riders-Hotel-1.jpg"
+      "image": "assets/img/81fa94663c.jpg"
     },
     {
       "id": "ferris-inn",
@@ -32,7 +32,7 @@
       "blurb": "Medora's most historic stay — where Teddy Roosevelt lodged while visiting town, each room honoring a piece of the story.",
       "booking": "https://medora.com/listing/ferris-inn/",
       "phone": "+1-701-623-4444",
-      "image": "https://medora.com/wp-content/uploads/2025/07/Ferris-Inn-Exterior-Feature-22-e1752703706801.jpg"
+      "image": "assets/img/2646b1f71f.jpg"
     },
     {
       "id": "hotel-1883",
@@ -47,7 +47,7 @@
       "blurb": "New in 2026 — steps from the National Park, the Medora Musical, and the Presidential Library.",
       "booking": "https://medora.com/listing/hotel-1883/",
       "phone": "+1-800-633-6721",
-      "image": "https://medora.com/wp-content/uploads/2026/06/1883-Feature-1.jpg"
+      "image": "assets/img/d702329abd.jpg"
     },
     {
       "id": "hyde-house",
@@ -63,7 +63,7 @@
       "blurb": "Nestled into downtown Medora, seconds from the Old West action by day and a quiet home by night.",
       "booking": "https://medora.com/hydehouse/",
       "phone": "+1-701-623-4444",
-      "image": "https://medora.com/wp-content/uploads/2022/03/hyde-house-4-scaled.jpg"
+      "image": "assets/img/adebc89b10.jpg"
     },
     {
       "id": "wooly-boys",
@@ -79,7 +79,7 @@
       "blurb": "Named for the movie filmed in the Badlands — a unique downtown inn.",
       "booking": "https://medora.com/listing/wooly-boys-inn/",
       "phone": "+1-800-633-6721",
-      "image": "https://medora.com/wp-content/uploads/2022/03/1500x1000-Wooly-Boys-1.jpg"
+      "image": "assets/img/94f80fe9a6.jpg"
     },
     {
       "id": "badlands-motel",
@@ -94,7 +94,7 @@
       "blurb": "Drive right up to your door. Western charm, walkable to downtown, with pet-friendly rooms available.",
       "booking": "https://medora.com/listing/badlands-motel/",
       "phone": "+1-701-623-4444",
-      "image": "https://medora.com/wp-content/uploads/2022/11/Badlands-Single-Bedroom-11-scaled.jpg"
+      "image": "assets/img/63b561d981.jpg"
     },
     {
       "id": "elkhorn-quarters",
@@ -112,7 +112,7 @@
       "blurb": "Named for TR's ranch — a 'tiny-house style' stay Teddy would applaud for its efficiency.",
       "booking": "https://medora.com/listing/elkhorn-quarters/",
       "phone": "+1-701-623-4444",
-      "image": "https://medora.com/wp-content/uploads/2022/03/Elkhorn-Feature-Image.jpg"
+      "image": "assets/img/48628b2b31.jpg"
     },
     {
       "id": "medora-campground",
@@ -132,7 +132,7 @@
       "blurb": "The newly expanded campground within walking distance of town, under large cottonwoods.",
       "booking": "https://medora.com/medoracampground/",
       "phone": "+1-800-633-6721",
-      "image": "https://medora.com/wp-content/uploads/2024/04/Campground-MC-RV-Feature-2.jpg"
+      "image": "assets/img/ee340b28ef.jpg"
     },
     {
       "id": "conestoga-wagons",
@@ -151,7 +151,7 @@
       "blurb": "A modern-day settler's paradise — sleep in a covered wagon along the Little Missouri.",
       "booking": "https://medora.com/listing/conestoga-wagon/",
       "phone": "+1-800-633-6721",
-      "image": "https://medora.com/wp-content/uploads/2026/04/Campground-Wagon-Feature-Ext-1.jpg"
+      "image": "assets/img/9ad5e15695.jpg"
     },
     {
       "id": "medora-cabins",
@@ -169,7 +169,7 @@
       "blurb": "Experience the Badlands cabin-style, just like TR did — within walking distance of town.",
       "booking": "https://medora.com/listing/medora-campground-cabins/",
       "phone": "+1-800-633-6721",
-      "image": "https://medora.com/wp-content/uploads/2026/07/Rivers-Edge-Cabin-Feature-1.jpg"
+      "image": "assets/img/8938f15847.jpg"
     },
     {
       "id": "red-trail",
@@ -189,7 +189,7 @@
       "blurb": "Full-hookup RV and tent camping a block off Medora's main street.",
       "booking": "https://redtrailcampground.com/",
       "phone": "+1-701-623-4317",
-      "image": "https://img1.wsimg.com/isteam/ip/fdbf8907-aae2-4cc0-991e-2d7943f2bf38/blob-0010.png"
+      "image": "assets/img/9af8d22527.jpg"
     },
     {
       "id": "sully-creek-camp",
@@ -209,7 +209,7 @@
       "blurb": "Riverside sites and the Maah Daah Hey trailhead, 3 miles south of town — good for horses.",
       "booking": "https://www.parkrec.nd.gov/sully-creek-state-park",
       "phone": "+1-701-623-2024",
-      "image": "https://www.parkrec.nd.gov/sites/www/files/documents/Destinations/Sully/RRSP_IMG_2962.JPEG"
+      "image": "assets/img/c232cd2513.jpg"
     },
     {
       "id": "cottonwood",
@@ -224,8 +224,7 @@
       ],
       "blurb": "The National Park Service campground inside the South Unit, along the Little Missouri.",
       "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm",
-      "phone": "+1-701-623-4466",
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "phone": "+1-701-623-4466"
     },
     {
       "id": "juniper",
@@ -240,8 +239,7 @@
       ],
       "blurb": "Quiet NPS campground in the North Unit, 70 miles north.",
       "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm",
-      "phone": "+1-701-623-4466",
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "phone": "+1-701-623-4466"
     },
     {
       "id": "dickinson-hotels",

@@ -25,7 +25,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "image": "assets/img/f35d72f8fd.jpg"
     },
     {
       "id": "trnp-north",
@@ -52,7 +52,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "image": "assets/img/3793643f1f.jpg"
     },
     {
       "id": "painted-canyon",
@@ -78,7 +78,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "image": "assets/img/9e860227e0.jpg"
     },
     {
       "id": "elkhorn",
@@ -103,7 +103,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/thro/planyourvisit/images/Elkhorn-Ranch-Unit-places-to-go-banner-image.jpg"
+      "image": "assets/img/488e7eec93.jpg"
     },
     {
       "id": "devils-tower",
@@ -129,7 +129,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/imr/homepage/7AF39A98-D676-35B5-B9179792F91D706D.jpg"
+      "image": "assets/img/012961f8d3.jpg"
     },
     {
       "id": "mount-rushmore",
@@ -155,7 +155,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/7217C5F3-F744-0CD3-B2F714471E441F8A.jpg"
+      "image": "assets/img/69b59b7619.jpg"
     },
     {
       "id": "wind-cave",
@@ -180,7 +180,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/CC25AAB0-1DD8-B71B-0B48DF48A0B8DE84.JPG"
+      "image": "assets/img/413a5707f1.jpg"
     },
     {
       "id": "badlands-np",
@@ -206,7 +206,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/C4524107-A9DF-29E3-80B8554266867C06.jpg"
+      "image": "assets/img/db3b519f1b.jpg"
     },
     {
       "id": "yellowstone",
@@ -232,7 +232,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/imr/homepage/22D0798C-F552-D488-C5047B379DB6005C.jpg"
+      "image": "assets/img/c687ca93f6.jpg"
     },
     {
       "id": "grand-teton",
@@ -258,7 +258,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/imr/homepage/B3CF0402-0C72-2247-816D63B41D1B3300.jpg"
+      "image": "assets/img/43680b3e39.jpg"
     },
     {
       "id": "glacier",
@@ -284,7 +284,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/imr/homepage/C5A56E57-BB50-A74E-C7FA6F9F2218D91F.jpg"
+      "image": "assets/img/290ceeb4ec.jpg"
     },
     {
       "id": "knife-river",
@@ -309,7 +309,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/672DACD6-1DD8-B71B-0B0D35D40DFDE105.jpg"
+      "image": "assets/img/9c13834671.jpg"
     },
     {
       "id": "fort-lincoln",
@@ -335,7 +335,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.parkrec.nd.gov/sites/www/files/documents/Fort%20Lincoln/DSC_3835_CC%20crop.jpg"
+      "image": "assets/img/b5639207b5.jpg"
     },
     {
       "id": "custer-state-park",
@@ -362,7 +362,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://gfp.sd.gov/userdocs/Paddle_Boarding_Legion_Lake_-52-.JPG"
+      "image": "assets/img/ea3de9149c.jpg"
     },
     {
       "id": "sully-creek",
@@ -387,7 +387,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.parkrec.nd.gov/sites/www/files/documents/Destinations/Sully/RRSP_IMG_2962.JPEG"
+      "image": "assets/img/c232cd2513.jpg"
     },
     {
       "id": "little-missouri-sp",
@@ -436,7 +436,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://www.deadwood.com/wp/wp-content/uploads/2026/05/shootout_homepage.jpg"
+      "image": "assets/img/0286bd6485.jpg"
     },
     {
       "id": "cody",
@@ -462,7 +462,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://growthzonecmsprodeastus.azureedge.net/sites/2667/2026/02/2022_Rodeo_0001_Sukle-1920.jpg"
+      "image": "assets/img/d3b4113166.jpg"
     },
     {
       "id": "spearfish-canyon",
@@ -487,7 +487,7 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "https://visitspearfish.com/images/uploads/60/_z7a1961-edit__related.jpg"
+      "image": "assets/img/6f65a87b0d.jpg"
     },
     {
       "id": "beartooth",
@@ -516,7 +516,7 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "https://www.fs.usda.gov/sites/nfs/files/legacy-media/custergallatin/Beartooth%20Hwy.jpg"
+      "image": "assets/img/99100fd9c2.jpg"
     },
     {
       "id": "enchanted-highway-stop",
@@ -541,7 +541,8 @@
       "avail": {
         "open": "08:00",
         "close": "18:00"
-      }
+      },
+      "image": "assets/img/1206ece5b5.jpg"
     },
     {
       "id": "dickinson-museum",
@@ -578,7 +579,7 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "image": "https://www.dickinsongov.com/sites/g/files/vyhlif13786/files/styles/museum_background_image/public/media/home-page/image/776/main-image.png?itok=1_3UCZzE"
+      "image": "assets/img/5e1fecb2b8.jpg"
     }
   ]
 }

@@ -13,6 +13,9 @@
   var BASE = THIS.src.replace(/assets\/trip-planner\.js.*$/, "");
   var CONTAINER_ID = THIS.getAttribute("data-container") || "tr-trip-planner";
   var DATA = BASE + "data/";
+  // Resolve local image paths (e.g. "assets/img/x.jpg") against the script's own
+  // origin so cached photos load correctly even when embedded on another site.
+  function imgURL(src) { return src && !/^https?:\/\//.test(src) ? BASE + src : src; }
 
   // ---- helpers ------------------------------------------------------------
   function el(tag, attrs, kids) {
@@ -94,7 +97,7 @@
     .trtp-card.sel{border-color:var(--tr-primary);box-shadow:0 0 0 2px var(--tr-primary) inset;}
     .trtp-card.dis{opacity:.5;}
     .trtp-card.has-img{padding-top:0;overflow:hidden;}
-    .trtp-card .cimg{display:block;width:calc(100% + 32px);height:130px;object-fit:cover;margin:-15px -16px 11px;background:#e9e2d2;}
+    .trtp-card .cimg{display:block;width:calc(100% + 30px)!important;max-width:none!important;height:140px;object-fit:cover;margin:-14px -15px 12px -15px;background:#e9e2d2;border-bottom:1px solid #e4ddcd;}
     .trtp-card .t{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);margin:0 0 3px;}
     .trtp-card .b{font-size:13px;color:#5c5f62;margin:0;}
     .trtp-card .meta{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary);margin-top:8px;font-weight:600;}
@@ -274,7 +277,7 @@
       var dis = opts.disabled ? opts.disabled(it) : false;
       var img = null;
       if (it.image) {
-        img = el("img", { class: "cimg", src: it.image, alt: it[opts.title || "name"], loading: "lazy" });
+        img = el("img", { class: "cimg", src: imgURL(it.image), alt: it[opts.title || "name"], loading: "lazy" });
         // hide gracefully if the photo fails to load
         img.addEventListener("error", function () { if (img.parentNode) img.parentNode.removeChild(img); });
       }
@@ -739,7 +742,7 @@
       day.entries.forEach(function (e) {
         var row = el("div", { class: "trtp-row" + (e.drive ? " drive" : "") });
         row.appendChild(el("div", { class: "tm", text: minToLabel(e.start) }));
-        if (e.image) { var th = el("img", { class: "rthumb", src: e.image, alt: e.name, loading: "lazy" }); th.addEventListener("error", function () { if (th.parentNode) th.parentNode.removeChild(th); }); row.appendChild(th); }
+        if (e.image) { var th = el("img", { class: "rthumb", src: imgURL(e.image), alt: e.name, loading: "lazy" }); th.addEventListener("error", function () { if (th.parentNode) th.parentNode.removeChild(th); }); row.appendChild(th); }
         var bd = el("div", { class: "bd" });
         bd.appendChild(el("div", { class: "nm", text: e.name }));
         if (e.ds) bd.appendChild(el("div", { class: "ds", text: e.ds }));
@@ -794,7 +797,7 @@
         var book = "";
         if (e.booking) book += "<a href='" + e.booking + "'>" + esc(e.booking) + "</a>";
         if (e.phone) book += (book ? " · " : "") + esc(e.phone);
-        var thumb = e.image ? "<td class='thc'><img class='thm' src='" + e.image + "' onerror='this.style.display=\"none\"'></td>" : "<td class='thc'></td>";
+        var thumb = e.image ? "<td class='thc'><img class='thm' src='" + imgURL(e.image) + "' onerror='this.style.display=\"none\"'></td>" : "<td class='thc'></td>";
         rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
       });
       day.notes.forEach(function (n) { rows += "<tr><td></td><td class='ds'>" + esc(n) + "</td></tr>"; });

@@ -20,7 +20,7 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "image": "assets/img/9e860227e0.jpg"
     },
     {
       "id": "trnp-loop",
@@ -42,7 +42,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+      "image": "assets/img/b8c2658b13.jpg"
     },
     {
       "id": "maltese-cross",
@@ -61,7 +61,8 @@
       "avail": {
         "open": "09:00",
         "close": "17:00"
-      }
+      },
+      "image": "assets/img/905cf8920c.jpg"
     },
     {
       "id": "cowboy-hall",
@@ -86,7 +87,7 @@
         "open": "09:00",
         "close": "17:30"
       },
-      "image": "https://northdakotacowboy.org/wp-content/uploads/2022/03/slide1.jpg"
+      "image": "assets/img/e3c65418b4.jpg"
     },
     {
       "id": "chateau",
@@ -111,7 +112,7 @@
         "open": "08:30",
         "close": "18:00"
       },
-      "image": "https://www.history.nd.gov/historicsites/chateau/images/chateausplash2.jpg"
+      "image": "assets/img/1fb0374047.jpg"
     },
     {
       "id": "chimney-park",
@@ -153,7 +154,7 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "https://medora.com/wp-content/uploads/2022/03/1500x1000-BP.jpg"
+      "image": "assets/img/498c11a3d4.jpg"
     },
     {
       "id": "maah-daah-hey",
@@ -172,7 +173,7 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "https://www.parkrec.nd.gov/sites/www/files/documents/Destinations/Sully/RRSP_IMG_2962.JPEG"
+      "image": "assets/img/ddb0960d4f.jpg"
     },
     {
       "id": "medora-musical",
@@ -210,7 +211,7 @@
           }
         ]
       },
-      "image": "https://medora.com/wp-content/uploads/2025/07/Medora-Musical-MM-2025-Feature-6.jpeg"
+      "image": "assets/img/c302646ce8.jpg"
     },
     {
       "id": "pitchfork-fondue",
@@ -248,7 +249,7 @@
           }
         ]
       },
-      "image": "https://medora.com/wp-content/uploads/2023/05/TRMF_Web_2Column_540x340_PitchforkSteakFondue.jpg"
+      "image": "assets/img/714558c6a3.jpg"
     },
     {
       "id": "library-cafe",
@@ -267,8 +268,7 @@
       "avail": {
         "open": "11:00",
         "close": "15:00"
-      },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/tr-library-butte.jpg.webp?itok=cz3aW1A5"
+      }
     },
     {
       "id": "theodores",
@@ -289,7 +289,7 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "image": "https://medora.com/wp-content/uploads/2024/03/Theodores-Dining-Room-Theos-Feature-6-1024x683.jpg"
+      "image": "assets/img/08c1b471d6.jpg"
     },
     {
       "id": "little-missouri-saloon",
@@ -314,7 +314,7 @@
         "open": "11:00",
         "close": "22:00"
       },
-      "image": "https://images.squarespace-cdn.com/content/v1/67b4e88657ace41f421ba980/1741727078314-P5HED9QGIBZB39TJ739C/5I3A6543-edit.jpg"
+      "image": "assets/img/9a81464162.jpg"
     },
     {
       "id": "boots-bar",
@@ -337,8 +337,7 @@
         ],
         "open": "11:00",
         "close": "21:00"
-      },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+      }
     },
     {
       "id": "farmhouse-cafe",
@@ -357,8 +356,7 @@
       "avail": {
         "open": "07:00",
         "close": "13:00"
-      },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+      }
     },
     {
       "id": "western-edge",
@@ -380,8 +378,7 @@
         ],
         "open": "09:00",
         "close": "18:00"
-      },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+      }
     },
     {
       "id": "ferris-store",
@@ -404,8 +401,7 @@
         ],
         "open": "09:00",
         "close": "18:00"
-      },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+      }
     },
     {
       "id": "medora-shops",
@@ -428,7 +424,7 @@
         "open": "09:00",
         "close": "20:00"
       },
-      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+      "image": "assets/img/13337ae5a4.jpg"
     }
   ]
 }
