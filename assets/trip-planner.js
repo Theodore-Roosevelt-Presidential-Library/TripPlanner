@@ -31,6 +31,7 @@
     return n;
   }
   function byId(list, id) { for (var i = 0; i < (list || []).length; i++) if (list[i].id === id) return list[i]; return null; }
+  function uniq(a) { return a.filter(function (v, i) { return a.indexOf(v) === i; }); }
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
   function hmToMin(s) { var p = s.split(":"); return (+p[0]) * 60 + (+p[1]); }
   function minToLabel(m) { var h = Math.floor(m / 60), mm = m % 60; var ap = h >= 12 ? "PM" : "AM"; var h12 = ((h + 11) % 12) + 1; return h12 + ":" + pad2(mm) + " " + ap; }
@@ -128,6 +129,13 @@
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
     .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
+    .trtp-booking{background:#fff;border:1px solid #e4ddcd;border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:14px 18px;margin:0 0 18px;}
+    .trtp-booking h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 10px;font-weight:600;}
+    .trtp-book-row{padding:8px 0;border-bottom:1px dashed #e4ddcd;}
+    .trtp-book-row:last-child{border-bottom:none;}
+    .trtp-book-row .bcity{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);}
+    .trtp-book-row .bdet{font-family:Oswald,sans-serif;letter-spacing:.04em;font-size:12.5px;color:var(--tr-primary);margin-top:1px;}
+    .trtp-book-row .bwhy{font-size:12.5px;color:#6c6f72;margin-top:2px;}
     .trtp-day{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:0;margin:0 0 14px;overflow:hidden;}
     .trtp-day-head{background:var(--tr-secondary);color:#fff;padding:11px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
     .trtp-day-head .dt{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:14px;}
@@ -525,18 +533,29 @@
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Where you'll stay" }));
           m.appendChild(el("h1", { class: "trtp-h", text: "Pick your level of comfort" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "From a tent under the stars to the restored Rough Riders Hotel. Choose a comfort level and we'll show the right stays." }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "This is your base in Medora for the whole visit. Pick a comfort level and we'll show the right in-town stays. (For any national parks on your route, we'll tell you which town to overnight in on your schedule — no need to pick those here.)" }));
           cardGrid(m, D.config.comfortTiers, {
             title: "label", selected: function (t) { return S.tier === t.id; }, blurb: function (t) { return t.blurb; }, meta: function (t) { return t.priceHint; },
             onclick: function (t) { S.tier = t.id; render(); }
           });
           if (S.tier) {
-            var stays = D.lodging.lodging.filter(function (l) { return l.tier === S.tier; });
-            m.appendChild(el("div", { class: "trtp-sub-h", text: S.tier === "camp" ? "Camping & RV options" : "Places to stay" }));
+            var stays = D.lodging.lodging.filter(function (l) { return !l.nearbyBase && l.area === "Medora" && l.tier === S.tier; });
+            m.appendChild(el("div", { class: "trtp-sub-h", text: S.tier === "camp" ? "Camping & RV in Medora" : "Places to stay in Medora" }));
             cardGrid(m, stays, {
               wide: true, selected: function (l) { return isPicked("lodging", l.id); },
               blurb: function (l) { return l.blurb; },
-              meta: function (l) { return l.area + (l.season ? " · " + MON[l.season[0] - 1] + "–" + MON[l.season[1] - 1] : " · year-round") + (l.priceHint ? " · " + l.priceHint : ""); },
+              meta: function (l) { return (l.season ? MON[l.season[0] - 1] + "–" + MON[l.season[1] - 1] : "Year-round") + (l.priceHint ? " · " + l.priceHint : ""); },
+              onclick: function (l) { toggle("lodging", l.id); }
+            });
+            // Nearby drive-in bases — highlighted for summer overflow
+            var bases = D.lodging.lodging.filter(function (l) { return l.nearbyBase; });
+            var summer = S.months.some(function (mo) { return mo >= 6 && mo <= 8; });
+            m.appendChild(el("div", { class: "trtp-sub-h", text: "Or stay nearby and drive in" }));
+            m.appendChild(el("div", { class: summer ? "trtp-warn" : "trtp-note", html: (summer ? "<b>Heads up:</b> " : "") + "Medora books up fast and gets pricey in summer. These towns are a short drive on I-94 and often have more rooms for less — pick one to base your Medora days there instead." }));
+            cardGrid(m, bases, {
+              wide: true, selected: function (l) { return isPicked("lodging", l.id); },
+              blurb: function (l) { return l.blurb; },
+              meta: function (l) { return l.driveMin + " min / " + l.driveMiles + " mi to Medora" + (l.priceHint ? " · " + l.priceHint : ""); },
               onclick: function (l) { toggle("lodging", l.id); }
             });
           }
@@ -586,7 +605,31 @@
   // Normalize a pick into a schedulable object.
   function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, image: o.image, area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
   function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
-  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, area: d.milesFromMedora > 15 ? "regional" : "medora", miles: d.milesFromMedora, kind: "destination" }; }
+  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, miles: d.milesFromMedora, lat: d.lat, lng: d.lng, overnight: d.overnight || null, visitDays: d.visitDays || 1, kind: "destination" }; }
+
+  // ---- routing helpers ----------------------------------------------------
+  var NEAR_MI = 110;          // stops within this range are day-trips from Medora; beyond it, en-route legs
+  function haversine(aLat, aLng, bLat, bLng) {
+    if (aLat == null || bLat == null) return null;
+    var R = 3959, toR = Math.PI / 180;
+    var dLat = (bLat - aLat) * toR, dLng = (bLng - aLng) * toR, la1 = aLat * toR, la2 = bLat * toR;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return 2 * R * Math.asin(Math.sqrt(h)) * 1.15; // ×1.15 straight-line → road fudge
+  }
+  function driveHrs(mi) { return Math.max(1, Math.round((mi || 0) / 60)); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function fmtD(d) { return MON[d.getMonth()] + " " + d.getDate(); }
+  function entryPoint() {
+    if (S.arrival === "air" && S.airport) { var a = airport(S.airport); return { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true }; }
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false };
+    return null;
+  }
+  function exitPoint() {
+    if (S.arrival === "air") { var a = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport); return a ? { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true } : null; }
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false };
+    return null;
+  }
+  function baseDriveMin(city) { var b = null; D.lodging.lodging.forEach(function (l) { if (l.nearbyBase && (l.name === city || l.area === city)) b = l; }); return b ? b.driveMin : 30; }
 
   // Season check: use the exact-date month when known, otherwise fall back to the
   // months the guest is considering (so seasonal items still get filtered sensibly).
@@ -600,96 +643,98 @@
   function dayOk(av, wd) { if (!av) return true; if (av.fixed) return fixedWindowFor(av, wd) != null; if (av.days && wd != null) return av.days.indexOf(wd) > -1; return true; }
 
   function buildSchedule() {
-    var lib = S.picks.library.map(function (id) { return normLib(libItem(id)); }).filter(function (x) { return x.duration > 0 || x.kind === "tour" || x.kind === "admission"; });
-    var med = S.picks.medora.map(function (id) { return normMed(byId(D.medora.attractions, id)); });
-    var dest = S.picks.route.map(function (id) { return normDest(byId(D.destinations.destinations, id)); });
-    var regional = dest.filter(function (d) { return d.area === "regional"; }).sort(function (a, b) { return a.miles - b.miles; });
-    var local = lib.concat(med, dest.filter(function (d) { return d.area === "medora"; }));
-
-    var N = Math.max(S.days || 0, regional.length + (local.length ? 1 : 0), 1);
-    var days = [];
-    for (var i = 0; i < N; i++) { var dt = dateForDay(i); days.push({ index: i, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, regional: null, items: [], entries: [], notes: [] }); }
-
-    // Weave in getting-to-Medora travel on day 1 and the return on the last day.
-    attachTravel(days, N);
-
-    // Assign regional excursions to the MIDDLE days first, keeping the arrival day
-    // and departure day lighter (they already carry travel). Day 0 is last resort.
-    var mid = days.filter(function (d) { return d.index !== 0 && d.index !== N - 1; });
-    var regDayOrder = mid.concat(days.filter(function (d) { return N > 1 && d.index === N - 1; }), days.filter(function (d) { return d.index === 0; }));
+    var lib = S.picks.library.map(function (id) { return libItem(id); }).filter(Boolean).map(normLib).filter(function (x) { return x.duration > 0 || x.kind === "tour" || x.kind === "admission"; });
+    var med = S.picks.medora.map(function (id) { return byId(D.medora.attractions, id); }).filter(Boolean).map(normMed);
+    var dest = S.picks.route.map(function (id) { return byId(D.destinations.destinations, id); }).filter(Boolean).map(normDest);
+    var near = dest.filter(function (d) { return d.miles <= NEAR_MI; });
+    var far = dest.filter(function (d) { return d.miles > NEAR_MI; });
+    // near stops fold into the Medora block as day trips (visit + round-trip drive)
+    var nearLocal = near.map(function (n) { var rt = driveHrs(n.miles) * 2 * 60; return { id: n.id, name: n.name, duration: n.duration + rt, avail: n.avail, phone: n.phone, booking: n.booking, image: n.image, kind: "daytrip", miles: n.miles }; });
+    var local = lib.concat(med, nearLocal);
     var overflow = [];
-    regional.forEach(function (r) {
-      var day = null;
-      for (var j = 0; j < regDayOrder.length; j++) { if (!regDayOrder[j].regional) { day = regDayOrder[j]; break; } }
-      if (!day) { overflow.push({ item: r, reason: "not enough days for this drive" }); return; }
-      if (!seasonOk(r.avail, day.month)) day.notes.push(r.name + " may be seasonal — check before you go.");
-      day.regional = r;
+
+    // classify far stops into inbound vs outbound relative to the entry/exit airports
+    var entry = entryPoint(), exit = exitPoint(), MEDORA = D.config.brand.anchor;
+    far.forEach(function (f) {
+      f._dEntry = entry ? haversine(f.lat, f.lng, entry.lat, entry.lng) : f.miles;
+      f._dExit = exit ? haversine(f.lat, f.lng, exit.lat, exit.lng) : f.miles;
     });
+    var inbound = far.filter(function (f) { return f._dEntry <= f._dExit; }).sort(function (a, b) { return a._dEntry - b._dEntry; });
+    var outbound = far.filter(function (f) { return f._dEntry > f._dExit; }).sort(function (a, b) { return a.miles - b.miles; });
 
-    // Local days = days without a regional excursion (fall back to day 0 if all taken).
-    var localDays = days.filter(function (d) { return !d.regional; });
-    if (!localDays.length) localDays = [days[0]];
+    // which town are we based in for the Medora block? (a nearby drive-in base, or Medora itself)
+    var baseLodge = null; S.picks.lodging.forEach(function (id) { var l = byId(D.lodging.lodging, id); if (l && l.nearbyBase) baseLodge = l; });
+    var medoraBase = baseLodge ? baseLodge.name : "Medora";
 
-    // Assign local items to local days (season + weekday + travel-time aware, budget-limited).
+    // Medora nights from the local activity load at the chosen pace (min 1)
     var budget = PACE[S.pace] || 480;
-    localDays.forEach(function (d) { d.used = (d.travelConsumed || 0); });
-    // anchored (fixed-time) first so they claim the right weekday
+    var totalLocal = local.reduce(function (s, i) { return s + i.duration; }, 0);
+    var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), Math.ceil(totalLocal / budget));
+    if (medoraDays < 1 && !far.length) medoraDays = 1;
+
+    // Build the ordered plan: inbound legs → contiguous Medora block → outbound legs
+    var plan = [];
+    inbound.forEach(function (f) { for (var k = 0; k < f.visitDays; k++) plan.push({ kind: "leg", dir: "in", stop: f, baseCity: f.overnight ? f.overnight.city : null, contd: k > 0, lastOfStop: k === f.visitDays - 1 }); });
+    for (var i = 0; i < medoraDays; i++) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: i === 0, lastMedora: i === medoraDays - 1 });
+    outbound.forEach(function (f) { for (var k = 0; k < f.visitDays; k++) plan.push({ kind: "leg", dir: "out", stop: f, baseCity: f.overnight ? f.overnight.city : null, contd: k > 0, lastOfStop: k === f.visitDays - 1 }); });
+    if (!plan.length) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: true, lastMedora: true });
+
+    var days = plan.map(function (p, idx) { var dt = dateForDay(idx); return { index: idx, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, kind: p.kind, dir: p.dir, stop: p.stop, baseCity: p.baseCity, firstMedora: p.firstMedora, lastMedora: p.lastMedora, contd: p.contd, lastOfStop: p.lastOfStop, items: [], entries: [], notes: [] }; });
+    var N = days.length;
+    var medoraDayObjs = days.filter(function (d) { return d.kind === "medora"; });
+
+    // Assign local items across the Medora block (season + weekday + budget aware)
+    var commute = medoraBase !== "Medora" ? 2 * baseDriveMin(medoraBase) : 0;
+    medoraDayObjs.forEach(function (d) { d.used = commute; });
     local.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
     local.forEach(function (it) {
       var best = null;
-      for (var j = 0; j < localDays.length; j++) {
-        var d = localDays[j];
+      for (var j = 0; j < medoraDayObjs.length; j++) {
+        var d = medoraDayObjs[j];
         if (!seasonOk(it.avail, d.month)) continue;
         if (!dayOk(it.avail, d.wd)) continue;
-        if (it.avail.fixed) {
-          if (conflictsFixed(d, it)) continue;
-          var w = fixedWindowFor(it.avail, d.wd);
-          if (w && d.startMin && hmToMin(w.start) < d.startMin) continue;      // before you've arrived
-          if (w && d.endMin && hmToMin(w.end) > d.endMin) continue;            // after you've left for home
-        }
-        if (d.used + it.duration > budget + 60) continue;
+        if (it.avail.fixed && conflictsFixed(d, it)) continue;
+        if (d.used + it.duration > budget + 90) continue;
         if (!best || d.used < best.used) best = d;
       }
       if (best) { best.items.push(it); best.used += it.duration; }
-      else overflow.push({ item: it, reason: reasonUnfit(it, localDays) });
+      else overflow.push({ item: it, reason: reasonUnfit(it, medoraDayObjs) });
     });
 
+    // Routing pass: chain drive segments entry → legs → Medora → legs → exit
+    var prev = entry;
+    days.forEach(function (d) {
+      if (d.kind === "leg") {
+        if (!d.contd && prev) { d._driveInMi = haversine(prev.lat, prev.lng, d.stop.lat, d.stop.lng); d._driveFrom = prev.label; }
+        if (!d.contd) prev = { lat: d.stop.lat, lng: d.stop.lng, label: d.baseCity || d.stop.name };
+      } else if (d.kind === "medora" && d.firstMedora) {
+        if (prev) { d._driveInMi = haversine(prev.lat, prev.lng, MEDORA.lat, MEDORA.lng); d._driveFrom = prev.label; }
+        prev = { lat: MEDORA.lat, lng: MEDORA.lng, label: "Medora" };
+      }
+    });
+    if (entry && entry.air) days[0]._arriveAir = entry;
+    if (exit && prev) { var last = days[N - 1]; last._exit = { to: exit.label, code: exit.code, air: exit.air, driveMi: haversine(prev.lat, prev.lng, exit.lat, exit.lng) }; }
+
     days.forEach(function (d) { layoutDay(d); });
-    return { days: days, overflow: overflow };
+    var booking = buildBooking(days);
+    return { days: days, overflow: overflow, booking: booking, medoraDays: medoraDayObjs.length, medoraBase: medoraBase };
   }
 
-  // Build arrival (day 0) and departure (last day) travel entries and reserve their time.
-  function attachTravel(days, N) {
-    var d0 = days[0], dL = days[N - 1];
-    if (S.arrival === "air" && S.airport) {
-      var ap = airport(S.airport);
-      d0.arrival = [
-        { start: 11 * 60, dur: 60, name: "Arrive at " + ap.name.replace(/ –.*/, "") + " (" + ap.code + ")", ds: "Land and pick up your " + (S.rental || "rental") + " car" },
-        { start: 12 * 60, dur: ap.driveToMedoraMin, drive: true, name: "Drive to Medora", ds: "~" + durLabel(ap.driveToMedoraMin) + " from " + ap.code, phone: null }
-      ];
-      d0.startMin = 12 * 60 + ap.driveToMedoraMin + 15;
-      d0.travelConsumed = d0.startMin - 9 * 60;
-    } else if (S.arrival === "car" && S.origin && S.origin.driveHours) {
-      var dm = Math.round(S.origin.driveHours * 60), shown = Math.min(dm, 600);
-      d0.arrival = [{ start: 8 * 60, dur: shown, drive: true, name: "Drive to Medora from " + S.origin.label, ds: "~" + S.origin.driveHours + " hours" + (S.origin.distanceMiles ? " (" + S.origin.distanceMiles + " mi)" : "") + (dm > shown ? " — likely split over more than one day" : "") }];
-      d0.startMin = 8 * 60 + shown + 15;
-      d0.travelConsumed = d0.startMin - 9 * 60;
-    }
-    if (S.arrival === "air") {
-      var apo = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport);
-      if (apo) {
-        dL.departure = [
-          { start: 0, dur: apo.driveToMedoraMin, drive: true, name: "Drive to " + apo.name.replace(/ –.*/, "") + " (" + apo.code + ")", ds: "~" + durLabel(apo.driveToMedoraMin) + " — leave plenty of time for your flight" },
-          { start: 0, dur: 0, name: "Depart " + apo.code, ds: "Return flight home" }
-        ];
-        dL.departReserve = apo.driveToMedoraMin + 120;
-        dL.endMin = 20 * 60 - dL.departReserve;
-      }
-    } else if (S.arrival === "car" && S.origin && S.origin.driveHours) {
-      dL.departure = [{ start: 0, dur: Math.min(Math.round(S.origin.driveHours * 60), 600), drive: true, name: "Drive home to " + S.origin.label, ds: "~" + S.origin.driveHours + " hours" }];
-      dL.departReserve = 30;
-    }
-    if (dL.departReserve) dL.travelConsumed = (dL.travelConsumed || 0) + dL.departReserve;
+  // Group consecutive same-city days into lodging bookings (the Medora block is contiguous).
+  function buildBooking(days) {
+    var groups = [];
+    days.forEach(function (d) {
+      var city = d.kind === "medora" ? d.baseCity : d.baseCity;
+      if (!city) return;
+      var last = groups[groups.length - 1];
+      if (last && last.city === city && last.kind === d.kind) last.days.push(d);
+      else groups.push({ city: city, kind: d.kind, days: [d] });
+    });
+    return groups.map(function (g) {
+      var nights = g.days.length, ci = g.days[0].date, co = ci ? addDays(ci, nights) : null;
+      var stops = uniq(g.days.filter(function (d) { return d.stop; }).map(function (d) { return d.stop.name; }));
+      return { city: g.city, kind: g.kind, nights: nights, checkIn: ci, checkOut: co, stops: stops };
+    });
   }
   function conflictsFixed(day, it) {
     var w = fixedWindowFor(it.avail, day.wd); if (!w) return true;
@@ -703,24 +748,27 @@
   }
   function layoutDay(day) {
     var entries = [];
-    var cursor = day.startMin || 9 * 60;
-    // arrival travel (day 1)
-    (day.arrival || []).forEach(function (e) { entries.push(e); cursor = Math.max(cursor, e.start + e.dur + 15); });
-    var limit = (day.endMin || 22 * 60);
+    var cursor = 9 * 60, limit = 22 * 60;
+    // flight arrival on the very first day
+    if (day._arriveAir) { entries.push({ start: 11 * 60, dur: 60, name: "Arrive at " + day._arriveAir.label + " (" + day._arriveAir.code + ")", ds: "Land and pick up your " + (S.rental || "rental") + " car" }); cursor = 12 * 60 + 15; }
+    // drive to reach this day's place (from the previous overnight / airport / home)
+    if (day._driveInMi != null) {
+      var h = driveHrs(day._driveInMi), sd = Math.max(cursor, 8 * 60);
+      var dn = day.kind === "medora" ? "Medora" : day.stop.name.replace(/ \(.*\)/, "");
+      entries.push({ start: sd, dur: h * 60, drive: true, name: "Drive to " + dn, ds: "~" + h + "h from " + day._driveFrom });
+      cursor = sd + h * 60 + 15;
+    }
 
-    if (day.regional) {
-      var r = day.regional, driveH = Math.max(1, Math.round(r.miles / 60));
-      var start = Math.max(cursor, 8 * 60);
-      entries.push({ start: start, dur: driveH * 60, drive: true, name: "Drive to " + r.name.replace(/ \(.*\)/, ""), ds: "~" + driveH + "h each way from Medora" });
-      var vs = start + driveH * 60;
-      entries.push({ start: vs, dur: r.duration, name: r.name, ds: "Explore (~" + Math.round(r.duration / 60) + "h)", booking: r.booking, phone: r.phone, image: r.image });
-      cursor = vs + r.duration;
-      entries.push({ start: cursor, dur: driveH * 60, drive: true, name: "Drive back to Medora", ds: "~" + driveH + "h" });
-      cursor += driveH * 60 + 15;
-    } else {
+    if (day.kind === "leg") {
+      var s = day.stop;
+      entries.push({ start: Math.max(cursor, 9 * 60), dur: s.duration, name: s.name + (day.contd ? " (continued)" : ""), ds: day.contd ? "A second day to explore" : "Explore (~" + Math.round(s.duration / 60) + "h)", booking: s.booking, phone: s.phone, image: s.image });
+      cursor = Math.max(cursor, 9 * 60) + s.duration + 15;
+      if (day.baseCity) day.notes.push("Overnight in " + day.baseCity);
+    } else if (day.kind === "medora") {
+      if (day.baseCity && day.baseCity !== "Medora") { var bd = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd, drive: true, name: "Drive into Medora from " + day.baseCity, ds: "~" + durLabel(bd) }); cursor += bd + 10; }
       var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
       var flex = day.items.filter(function (i) { return !i.avail.fixed; });
-      var order = { breakfast: 0, attraction: 1, destination: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
+      var order = { breakfast: 0, attraction: 1, destination: 1, daytrip: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
       flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
       var placeFlexUntil = function (lim) {
         while (flex.length && cursor + flex[0].duration <= lim) {
@@ -740,12 +788,18 @@
         entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, anchor: true });
         cursor = Math.max(cursor, a.end + 15);
       }
-      placeFlexUntil(limit);
+      placeFlexUntil(day._exit ? 17 * 60 : limit);
+      if (day.baseCity && day.baseCity !== "Medora" && !day._exit) { var bd2 = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd2, drive: true, name: "Return to " + day.baseCity, ds: "~" + durLabel(bd2) }); cursor += bd2 + 10; }
       flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
     }
 
-    // departure travel (last day) — appended after the day's activities
-    (day.departure || []).forEach(function (e) { e.start = cursor; entries.push(e); cursor += e.dur + 15; });
+    // exit travel on the final day (drive to airport + depart, or drive home)
+    if (day._exit) {
+      var h2 = driveHrs(day._exit.driveMi);
+      entries.push({ start: cursor, dur: h2 * 60, drive: true, name: day._exit.air ? "Drive to " + day._exit.to + " (" + day._exit.code + ")" : "Drive home to " + day._exit.to, ds: "~" + h2 + "h" + (day._exit.air ? " — leave time for your flight" : "") });
+      cursor += h2 * 60 + 15;
+      if (day._exit.air) entries.push({ start: cursor, dur: 0, name: "Depart " + day._exit.code, ds: "Return flight home" });
+    }
     day.entries = entries.sort(function (a, b) { return a.start - b.start; });
   }
   function descFor(it) {
@@ -757,7 +811,7 @@
     if (it.category === "dining") return "Meal · Medora";
     if (it.category === "evening") return "Evening show · book ahead";
     if (it.category === "shopping") return "Shopping · downtown Medora";
-    if (it.area === "regional") return "Day trip · " + it.miles + " mi";
+    if (it.kind === "daytrip") return "Day trip from Medora · ~" + it.miles + " mi each way";
     return it.where || "Medora";
   }
 
@@ -766,20 +820,36 @@
     var sched = buildSchedule();
     m.appendChild(el("p", { class: "trtp-kicker", text: "Your itinerary" }));
     m.appendChild(el("h1", { class: "trtp-h display", text: (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip" }));
-    m.appendChild(el("p", { class: "trtp-sub", text: "Here's your day-by-day plan, timed around what's actually open and running. Adjust the pace, jump back to any step to change picks, then print a clean copy with booking numbers." }));
+    m.appendChild(el("p", { class: "trtp-sub", text: "Here's your day-by-day plan. Far-flung stops are strung together on the way in and out; your time in Medora is kept as one contiguous stay so you only book one hotel there. The panel below shows how many nights to book in each town, and when." }));
     var seg = el("div", { class: "trtp-seg" });
     [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
     m.appendChild(seg);
 
     if (!hasAnyPick()) m.appendChild(el("div", { class: "trtp-note", text: "You haven't added anything yet. Jump back to Road trip, Medora or Library and click what appeals — it'll lay out here by day and time." }));
 
+    // Where to book — contiguous nights per town, with dates
+    if (sched.booking.length) {
+      var bp = el("div", { class: "trtp-booking" });
+      bp.appendChild(el("h4", { text: "Where to book" }));
+      sched.booking.forEach(function (b) {
+        var row = el("div", { class: "trtp-book-row" });
+        var main = el("div", {});
+        main.appendChild(el("div", { class: "bcity", text: b.city }));
+        var det = b.nights + " night" + (b.nights > 1 ? "s" : "") + (b.checkIn ? " · " + fmtD(b.checkIn) + " – " + fmtD(b.checkOut) : "");
+        main.appendChild(el("div", { class: "bdet", text: det }));
+        if (b.kind === "medora") main.appendChild(el("div", { class: "bwhy", text: "Your Medora base" + (b.city !== "Medora" ? " (short drive in)" : "") + " — book early; it fills up and gets pricey in summer." }));
+        else if (b.stops.length) main.appendChild(el("div", { class: "bwhy", text: "Overnight near " + b.stops.join(", ") }));
+        row.appendChild(main);
+        bp.appendChild(row);
+      });
+      m.appendChild(bp);
+    }
+
     sched.days.forEach(function (day) {
       var card = el("div", { class: "trtp-day" });
       var head = el("div", { class: "trtp-day-head" });
       var title = "Day " + (day.index + 1);
-      var sub = day.regional ? "Day trip" : "In & around Medora";
-      if (day.arrival) sub = "Arrival day" + (day.regional ? " · day trip" : "");
-      else if (day.departure) sub = "Departure day" + (day.regional ? " · day trip" : "");
+      var sub = day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + day.baseCity : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + day.baseCity : "In & around Medora");
       if (day.date) title += " · " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate();
       head.appendChild(el("span", { class: "dt", text: title }));
       head.appendChild(el("span", { class: "sd", text: sub }));
@@ -831,12 +901,17 @@
     else if (S.arrival === "car") facts.push("Driving your own vehicle");
     if (S.tier) facts.push("Comfort level: " + esc(byId(D.config.comfortTiers, S.tier).label) + " · Pace: " + esc(S.pace));
 
-    var lodging = S.picks.lodging.map(function (id) { return byId(D.lodging.lodging, id); });
-    var lodgingHtml = lodging.length ? "<h2>Where you're staying</h2><ul>" + lodging.map(function (l) { return "<li><b>" + esc(l.name) + "</b> — " + esc(l.area) + (l.phone ? " · " + esc(l.phone) : "") + " · <a href='" + l.booking + "'>book</a></li>"; }).join("") + "</ul>" : "";
+    // Where to book: contiguous nights per town
+    var bookingHtml = sched.booking.length ? "<h2>Where to book</h2><table class='book'>" + sched.booking.map(function (b) {
+      var why = b.kind === "medora" ? "Your Medora base — book early (fills up in summer)" : (b.stops.length ? "Near " + esc(b.stops.join(", ")) : "");
+      return "<tr><td><b>" + esc(b.city) + "</b></td><td>" + b.nights + " night" + (b.nights > 1 ? "s" : "") + (b.checkIn ? " · " + fmtD(b.checkIn) + "–" + fmtD(b.checkOut) : "") + "</td><td>" + why + "</td></tr>";
+    }).join("") + "</table>" : "";
+    var lodging = S.picks.lodging.map(function (id) { return byId(D.lodging.lodging, id); }).filter(function (l) { return l && !l.nearbyBase; });
+    var lodgingHtml = lodging.length ? "<h2>Your Medora lodging picks</h2><ul>" + lodging.map(function (l) { return "<li><b>" + esc(l.name) + "</b> — " + esc(l.area) + (l.phone ? " · " + esc(l.phone) : "") + " · <a href='" + l.booking + "'>book</a></li>"; }).join("") + "</ul>" : "";
 
     sched.days.forEach(function (day) {
       var title = "Day " + (day.index + 1) + (day.date ? " — " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate() : "");
-      var psub = day.arrival ? "Arrival day" : day.departure ? "Departure day" : day.regional ? "Day trip" : "In &amp; around Medora";
+      var psub = day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + esc(day.baseCity) : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + esc(day.baseCity) : "In &amp; around Medora");
       rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + psub + "</span></h3><table>";
       if (!day.entries.length) rows += "<tr><td colspan=3 class='free'>Open day — explore at your own pace.</td></tr>";
       day.entries.forEach(function (e) {
@@ -889,7 +964,7 @@
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +
       "<h1>" + (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip</h1>" +
       "<div class='facts'>" + facts.map(function (f) { return "<div>" + f + "</div>"; }).join("") + "</div>" +
-      lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + bookHtml +
+      bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + bookHtml +
       "<div class='foot'>Planned with the Theodore Roosevelt Presidential Library trip planner · trlibrary.com/visit · Times and availability are estimates — please confirm when you book.</div>" +
       "</body></html>";
     w.document.open(); w.document.write(html); w.document.close();

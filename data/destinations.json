@@ -1,5 +1,5 @@
 {
-  "note": "Road-trip building blocks. type, corridor, tags, milesFromMedora (approx driving mi). duration=minutes to budget. avail.open/close = daylight visiting window; season=[m,m] if seasonal. phone for booking/info.",
+  "note": "Road-trip building blocks. type, corridor, tags, milesFromMedora (approx driving mi). duration=minutes. avail. phone. FAR stops (>110mi) carry overnight={city,search} + visitDays so the scheduler routes them as en-route legs with a suggested overnight city instead of daily round-trips from Medora.",
   "destinations": [
     {
       "id": "trnp-south",
@@ -129,7 +129,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/012961f8d3.jpg"
+      "image": "assets/img/012961f8d3.jpg",
+      "overnight": {
+        "city": "Sundance, WY",
+        "search": "https://www.google.com/search?q=hotels%20in%20Sundance%2C%20WY"
+      },
+      "visitDays": 1
     },
     {
       "id": "mount-rushmore",
@@ -155,7 +160,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/69b59b7619.jpg"
+      "image": "assets/img/69b59b7619.jpg",
+      "overnight": {
+        "city": "Keystone, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Keystone%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "wind-cave",
@@ -180,7 +190,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/413a5707f1.jpg"
+      "image": "assets/img/413a5707f1.jpg",
+      "overnight": {
+        "city": "Hot Springs, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Hot%20Springs%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "badlands-np",
@@ -206,7 +221,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/db3b519f1b.jpg"
+      "image": "assets/img/db3b519f1b.jpg",
+      "overnight": {
+        "city": "Wall, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Wall%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "yellowstone",
@@ -232,7 +252,12 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/c687ca93f6.jpg"
+      "image": "assets/img/c687ca93f6.jpg",
+      "overnight": {
+        "city": "Cody, WY",
+        "search": "https://www.google.com/search?q=hotels%20in%20Cody%2C%20WY"
+      },
+      "visitDays": 2
     },
     {
       "id": "grand-teton",
@@ -258,7 +283,12 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/43680b3e39.jpg"
+      "image": "assets/img/43680b3e39.jpg",
+      "overnight": {
+        "city": "Jackson, WY",
+        "search": "https://www.google.com/search?q=hotels%20in%20Jackson%2C%20WY"
+      },
+      "visitDays": 2
     },
     {
       "id": "glacier",
@@ -284,7 +314,12 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/290ceeb4ec.jpg"
+      "image": "assets/img/290ceeb4ec.jpg",
+      "overnight": {
+        "city": "West Glacier, MT",
+        "search": "https://www.google.com/search?q=hotels%20in%20West%20Glacier%2C%20MT"
+      },
+      "visitDays": 2
     },
     {
       "id": "knife-river",
@@ -309,7 +344,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/9c13834671.jpg"
+      "image": "assets/img/9c13834671.jpg",
+      "overnight": {
+        "city": "Bismarck, ND",
+        "search": "https://www.google.com/search?q=hotels%20in%20Bismarck%2C%20ND"
+      },
+      "visitDays": 1
     },
     {
       "id": "fort-lincoln",
@@ -335,7 +375,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/b5639207b5.jpg"
+      "image": "assets/img/b5639207b5.jpg",
+      "overnight": {
+        "city": "Bismarck, ND",
+        "search": "https://www.google.com/search?q=hotels%20in%20Bismarck%2C%20ND"
+      },
+      "visitDays": 1
     },
     {
       "id": "custer-state-park",
@@ -362,7 +407,12 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/ea3de9149c.jpg"
+      "image": "assets/img/ea3de9149c.jpg",
+      "overnight": {
+        "city": "Custer, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Custer%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "sully-creek",
@@ -436,7 +486,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/0286bd6485.jpg"
+      "image": "assets/img/0286bd6485.jpg",
+      "overnight": {
+        "city": "Deadwood, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Deadwood%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "cody",
@@ -462,7 +517,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/d3b4113166.jpg"
+      "image": "assets/img/d3b4113166.jpg",
+      "overnight": {
+        "city": "Cody, WY",
+        "search": "https://www.google.com/search?q=hotels%20in%20Cody%2C%20WY"
+      },
+      "visitDays": 1
     },
     {
       "id": "spearfish-canyon",
@@ -487,7 +547,12 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "image": "assets/img/6f65a87b0d.jpg"
+      "image": "assets/img/6f65a87b0d.jpg",
+      "overnight": {
+        "city": "Spearfish, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Spearfish%2C%20SD"
+      },
+      "visitDays": 1
     },
     {
       "id": "beartooth",
@@ -516,7 +581,12 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "assets/img/99100fd9c2.jpg"
+      "image": "assets/img/99100fd9c2.jpg",
+      "overnight": {
+        "city": "Red Lodge, MT",
+        "search": "https://www.google.com/search?q=hotels%20in%20Red%20Lodge%2C%20MT"
+      },
+      "visitDays": 1
     },
     {
       "id": "enchanted-highway-stop",

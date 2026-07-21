@@ -79,6 +79,28 @@ The months step also feeds the scheduler: with no exact date set, seasonal
 availability is still checked against the months being considered, so a
 summer-only show won't land on a December plan.
 
+### Efficient routing & a contiguous Medora stay
+
+The scheduler routes the trip, it doesn't just drive to Medora and back each
+day. Stops within ~110 miles fold into the Medora block as day trips; anything
+farther becomes an **en-route leg** on the way in from (or out to) the airport,
+ordered by geography, with an **overnight in a suggested gateway city** (e.g.
+Yellowstone → Cody, Devils Tower → Sundance, Mount Rushmore → Keystone). The
+time in Medora is kept as **one contiguous block** so the guest books a single
+Medora hotel.
+
+The schedule leads with a **"Where to book"** panel: how many nights in each
+town and the check-in/out dates — the Medora nights and range front and center,
+plus the gateway-city nights for each far leg.
+
+Lodging only offers **Medora** stays to pick (far legs show the city to book,
+not specific hotels). Because Medora fills up and gets pricey in summer, the
+step also surfaces **nearby drive-in bases** — Belfield, Dickinson, Beach (ND)
+and Glendive (MT) — flagged in summer; choosing one bases the Medora days there
+with a short drive in, and the booking panel updates accordingly. Gateway cities
+and drive-in bases live in `data/destinations.json` (`overnight`, `visitDays`)
+and `data/lodging.json` (`nearbyBase`).
+
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the
 return drive/flight into the last day, so the plan reflects real travel time.

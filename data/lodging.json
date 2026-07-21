@@ -1,5 +1,5 @@
 {
-  "note": "Lodging + camping. tier: camp | value | comfort | premium (maps to config.json). season = [openMonth, closeMonth] inclusive; omit = year-round. Medora properties from medora.com/stay. Most TRMF properties book through the central reservations line.",
+  "note": "Lodging + camping. tier: camp|value|comfort|premium. season=[m,m] inclusive (omit=year-round). Medora properties from medora.com. nearbyBase entries are drive-in towns to book when Medora is full/pricey in summer (shown as a city + hotel-search link, not a specific hotel).",
   "lodging": [
     {
       "id": "rough-riders",
@@ -242,16 +242,55 @@
       "phone": "+1-701-623-4466"
     },
     {
-      "id": "dickinson-hotels",
-      "name": "Dickinson chain hotels",
+      "id": "belfield-base",
+      "name": "Belfield, ND",
+      "area": "Belfield",
+      "nearbyBase": true,
+      "driveMin": 20,
+      "driveMiles": 16,
+      "tier": "value",
+      "priceHint": "$$",
+      "blurb": "The closest drive-in town — a handful of motels 20 minutes east on I-94, often cheaper than in-town Medora.",
+      "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Belfield%20ND",
+      "phone": null
+    },
+    {
+      "id": "dickinson-base",
+      "name": "Dickinson, ND",
       "area": "Dickinson",
+      "nearbyBase": true,
+      "driveMin": 40,
+      "driveMiles": 42,
       "tier": "comfort",
       "priceHint": "$$$",
-      "tags": [
-        "chain"
-      ],
-      "blurb": "A cluster of national-brand hotels 40 minutes east — the fallback when Medora is full in peak summer.",
-      "booking": "https://www.visitdickinson.com/",
+      "blurb": "A full set of national-brand hotels 40 minutes east — the go-to base when Medora books up in summer.",
+      "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Dickinson%20ND",
+      "phone": null
+    },
+    {
+      "id": "beach-base",
+      "name": "Beach, ND",
+      "area": "Beach",
+      "nearbyBase": true,
+      "driveMin": 25,
+      "driveMiles": 25,
+      "tier": "value",
+      "priceHint": "$$",
+      "blurb": "A small town 25 minutes west on I-94 at the Montana line, with simple, affordable motels.",
+      "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Beach%20ND",
+      "phone": null
+    },
+    {
+      "id": "glendive-base",
+      "name": "Glendive, MT",
+      "area": "Glendive",
+      "nearbyBase": true,
+      "driveMin": 50,
+      "driveMiles": 52,
+      "tier": "comfort",
+      "priceHint": "$$$",
+      "blurb": "A larger Montana town about 50 minutes west with chain hotels and Makoshika State Park nearby.",
+      "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Glendive%20MT",
       "phone": null
     }
   ]
