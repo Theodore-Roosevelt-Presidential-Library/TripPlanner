@@ -56,7 +56,7 @@
   };
   var D = {};
   var STEPS = [];
-  var STEP_LABELS = ["Start", "Dates", "Getting here", "Interests", "Road trip", "Stay", "Medora", "Library", "Schedule"];
+  var STEP_LABELS = ["Interests", "Road trip", "Medora", "Library", "Coming from", "Getting here", "Dates", "Stay", "Schedule"];
 
   // ---- styling ------------------------------------------------------------
   function injectCSS(c) {
@@ -285,58 +285,112 @@
   // ---- steps --------------------------------------------------------------
   function defineSteps() {
     STEPS = [
-      // 0 Origin
+      // 0 Interests (lead)
       {
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Plan your visit" }));
-          m.appendChild(el("h1", { class: "trtp-h display", text: "Build your Roosevelt Country trip" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "The Library sits in the middle of the best road-trip country in America. Answer a few questions and click what appeals — we'll assemble a dated, hour-by-hour plan you can print and book. First: where are you starting from?" }));
+          m.appendChild(el("h1", { class: "trtp-h display", text: "What do you want to see and do?" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "The Library sits in the middle of the best road-trip country in America. Start with what draws you — we'll surface the best stops, then sort out how you get here and lay it all into a dated, hour-by-hour plan you can print and book. Pick anything that sounds like you." }));
+          cardGrid(m, D.config.travelStyles, {
+            title: "label", selected: function (s) { return S.styles.indexOf(s.id) > -1; },
+            onclick: function (s) { var i = S.styles.indexOf(s.id); if (i > -1) S.styles.splice(i, 1); else S.styles.push(s.id); render(); }
+          });
+        },
+        canAdvance: function () { return true; }, nextLabel: "Build my road trip →"
+      },
+
+      // 1 Road trip
+      {
+        render: function (m) {
+          m.appendChild(el("p", { class: "trtp-kicker", text: "The ultimate road trip" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Add stops you want to see" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "National parks, monuments, great Western towns and state parks within reach of Medora. Pick the ones you want — regional stops become their own day trips in your schedule." }));
+          var items = D.destinations.destinations.filter(function (d) { return matchesStyle(d.tags); }).sort(function (a, b) { return a.milesFromMedora - b.milesFromMedora; });
+          var tl = { national_park: "National Park", national_monument: "National Monument", state_park: "State Park", town: "Western Town", cultural: "History & Culture", scenic: "Scenic" };
+          cardGrid(m, items, {
+            wide: true, selected: function (d) { return isPicked("route", d.id); },
+            blurb: function (d) { return d.blurb; },
+            meta: function (d) { return tl[d.type] + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
+            onclick: function (d) { toggle("route", d.id); }
+          });
+        },
+        canAdvance: function () { return true; }, nextLabel: "Plan my Medora day →"
+      },
+
+      // 2 Medora day
+      {
+        render: function (m) {
+          m.appendChild(el("p", { class: "trtp-kicker", text: "Your day in Medora" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Build your Medora day" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "The Badlands that shaped Roosevelt and a town that still runs on Western hospitality. Click what you want to do, see, eat and watch — we'll slot each into your schedule at the right time." }));
+          var groups = [{ key: "attraction", label: "See & do" }, { key: "evening", label: "Evenings & entertainment" }, { key: "dining", label: "Where to eat" }, { key: "shopping", label: "Where to shop" }];
+          groups.forEach(function (g) {
+            var items = D.medora.attractions.filter(function (a) { return a.category === g.key; });
+            if (!items.length) return;
+            m.appendChild(el("div", { class: "trtp-sub-h", text: g.label }));
+            cardGrid(m, items, {
+              wide: g.key === "attraction" || g.key === "evening",
+              selected: function (a) { return isPicked("medora", a.id); },
+              blurb: function (a) { return a.blurb; },
+              meta: function (a) { return availMeta(a); },
+              onclick: function (a) { toggle("medora", a.id); }
+            });
+          });
+          var evs = D.events.events || [];
+          if (evs.length) {
+            m.appendChild(el("div", { class: "trtp-sub-h", text: "Happening while you're here" }));
+            var note = el("div", { class: "trtp-note" });
+            note.innerHTML = evs.map(function (e) { return "<div style='margin:2px 0'><b>" + e.title + "</b>" + (e.location ? " — " + e.location : "") + " <a href='" + e.url + "' target='_blank' rel='noopener'>details ↗</a></div>"; }).join("") + "<div style='margin-top:8px;font-size:12px;opacity:.7'>Auto-updated from medora.com, the ND Cowboy Hall of Fame, the National Park and the Medora Chamber.</div>";
+            m.appendChild(note);
+          }
+        },
+        canAdvance: function () { return true; }, nextLabel: "Choose your Library visit →"
+      },
+
+      // 3 Library
+      {
+        render: function (m) {
+          m.appendChild(el("p", { class: "trtp-kicker", text: "The main event" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Your visit to the Library" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: D.library.hoursNote + " Start with general admission, then add a specialty tour or two — each runs on set days and times, and we'll place them in your schedule accordingly." }));
+          m.appendChild(el("div", { class: "trtp-sub-h", text: "Admission" }));
+          cardGrid(m, [D.library.generalAdmission], {
+            wide: true, selected: function (o) { return isPicked("library", o.id); }, blurb: function (o) { return o.blurb; },
+            meta: function () { return "Self-guided · ~2.5h · Free timed entry"; }, onclick: function (o) { toggle("library", o.id); }
+          });
+          m.appendChild(el("div", { class: "trtp-sub-h", text: "Specialty tours" }));
+          cardGrid(m, D.library.tours, {
+            wide: true, selected: function (o) { return isPicked("library", o.id); }, blurb: function (o) { return o.blurb; },
+            meta: function (o) { return tourMeta(o); }, onclick: function (o) { toggle("library", o.id); }
+          });
+          m.appendChild(el("div", { class: "trtp-note", html: "Book ahead: <a href='" + D.library.ticketsUrl + "' target='_blank' rel='noopener'><b>General admission ↗</b></a> · <a href='" + D.library.toursUrl + "' target='_blank' rel='noopener'>all tours ↗</a>. Reserve the Medora Musical and Pitchfork Steak Fondue early in summer, too." }));
+        },
+        canAdvance: function () { return true; }, nextLabel: "Where are you coming from? →"
+      },
+
+      // 4 Coming from (origin)
+      {
+        render: function (m) {
+          m.appendChild(el("p", { class: "trtp-kicker", text: "Getting you here" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Where are you coming from?" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "Now the logistics. Tell us your starting point and we'll work out the best way in — and build the drive (or flight plus airport drive) right into your schedule." }));
           cardGrid(m, D.origins.origins, {
             title: "label", selected: function (o) { return S.origin && S.origin.id === o.id; },
             meta: function (o) { return o.driveHours ? o.driveHours + " hrs · " + o.distanceMiles + " mi" : "Flying in"; },
-            onclick: function (o) { S.origin = o; S.airport = o.nearestAirport; if (o.arrival !== "either") S.arrival = o.arrival; render(); }
+            onclick: function (o) { S.origin = o; if (!S.airport) S.airport = o.nearestAirport; if (o.arrival !== "either" && !S.arrival) S.arrival = o.arrival; render(); }
           });
         },
         canAdvance: function () { return !!S.origin; }
       },
 
-      // 1 Dates + days + pace
-      {
-        render: function (m) {
-          m.appendChild(el("p", { class: "trtp-kicker", text: "When & how long" }));
-          m.appendChild(el("h1", { class: "trtp-h", text: "Your dates and pace" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "Tell us when you're arriving and how many days you have. An arrival date lets us line up tours and shows on the exact days they actually run." }));
-          var fld = el("div", { class: "trtp-field" });
-          fld.appendChild(el("label", { text: "Arrival date (optional, but recommended)" }));
-          fld.appendChild(el("input", { type: "date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
-          m.appendChild(fld);
-          m.appendChild(el("div", { class: "trtp-sub-h", text: "How many days do you have?" }));
-          var opts = [
-            { d: 1, label: "A day or less", note: "The Library + the South Unit loop" },
-            { d: 3, label: "A weekend (2–3 days)", note: "Medora, properly" },
-            { d: 6, label: "About a week (4–7 days)", note: "Add the Black Hills or River Road" },
-            { d: 12, label: "The big one (8+ days)", note: "Several national parks" }
-          ];
-          cardGrid(m, opts, { title: "label", selected: function (o) { return S.days === o.d; }, blurb: function (o) { return o.note; }, onclick: function (o) { S.days = o.d; render(); } });
-          m.appendChild(el("div", { class: "trtp-sub-h", text: "What's your pace?" }));
-          var seg = el("div", { class: "trtp-seg" });
-          [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) {
-            seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]]));
-          });
-          m.appendChild(seg);
-          m.appendChild(el("div", { class: "trtp-note", text: S.pace === "relaxed" ? "Relaxed: about 6 hours of activity a day, with room to breathe." : S.pace === "packed" ? "Packed: up to 10 hours a day — see as much as possible." : "Balanced: about 8 hours of activity a day." }));
-          var sug = suggestedItinerary();
-          if (sug) m.appendChild(el("div", { class: "trtp-note", html: "A great backbone for your trip: <b>" + sug.title + "</b> — " + sug.blurb + " <a href='" + sug.url + "' target='_blank' rel='noopener'>See it ↗</a>" }));
-        },
-        canAdvance: function () { return !!S.days; }
-      },
-
-      // 2 Getting here
+      // 5 Getting here
       {
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Getting here" }));
           m.appendChild(el("h1", { class: "trtp-h", text: "How will you get to Medora?" }));
           m.appendChild(el("p", { class: "trtp-sub", text: "Medora is closer than most people think. Driving, or flying into a regional airport and renting a car — including flying into one airport and out of another." }));
+          var sa = suggestAirport();
+          if (sa) m.appendChild(el("div", { class: "trtp-note", html: "Based on your stops, flying into <b>" + sa.code + "</b> (" + airport(sa.code).name.replace(/ –.*/, "") + ") makes the most sense — " + sa.why + "." }));
           cardGrid(m, [
             { id: "car", name: "Driving", note: S.origin && S.origin.driveHours ? ("About " + S.origin.driveHours + " hours from " + S.origin.label) : "Your own vehicle, all the flexibility" },
             { id: "air", name: "Flying + rental car", note: "Fly into a regional airport, drive the rest" }
@@ -348,7 +402,7 @@
             cardGrid(m, aps, {
               wide: true, selected: function (a) { return S.airport === a.code; },
               blurb: function (a) { return a.note; },
-              meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min / " + a.driveToMedoraMiles + " mi to Medora"; },
+              meta: function (a) { return a.code + " · " + a.driveToMedoraMin + " min / " + a.driveToMedoraMiles + " mi to Medora" + (sa && sa.code === a.code ? " · ★ suggested" : ""); },
               onclick: function (a) { S.airport = a.code; if (S.rental && rentalOptions().indexOf(S.rental) < 0) S.rental = null; render(); }
             });
 
@@ -386,39 +440,38 @@
         canAdvance: function () { return S.arrival === "car" || (S.arrival === "air" && !!S.airport && (!S.diffReturn || !!S.airportOut)); }
       },
 
-      // 3 Interests
+      // 6 Dates + days + pace
       {
         render: function (m) {
-          m.appendChild(el("p", { class: "trtp-kicker", text: "Your kind of trip" }));
-          m.appendChild(el("h1", { class: "trtp-h", text: "What are you here for?" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "Pick anything that sounds like you. We'll use it to surface the best stops for your road trip (you can still add anything)." }));
-          cardGrid(m, D.config.travelStyles, {
-            title: "label", selected: function (s) { return S.styles.indexOf(s.id) > -1; },
-            onclick: function (s) { var i = S.styles.indexOf(s.id); if (i > -1) S.styles.splice(i, 1); else S.styles.push(s.id); render(); }
+          m.appendChild(el("p", { class: "trtp-kicker", text: "When & how long" }));
+          m.appendChild(el("h1", { class: "trtp-h", text: "Your dates and pace" }));
+          m.appendChild(el("p", { class: "trtp-sub", text: "Tell us when you're arriving and how many days you have. An arrival date lets us line up tours and shows on the exact days they actually run, and time your drive." }));
+          var fld = el("div", { class: "trtp-field" });
+          fld.appendChild(el("label", { text: "Arrival date (optional, but recommended)" }));
+          fld.appendChild(el("input", { type: "date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
+          m.appendChild(fld);
+          m.appendChild(el("div", { class: "trtp-sub-h", text: "How many days do you have?" }));
+          var opts = [
+            { d: 1, label: "A day or less", note: "The Library + the South Unit loop" },
+            { d: 3, label: "A weekend (2–3 days)", note: "Medora, properly" },
+            { d: 6, label: "About a week (4–7 days)", note: "Add the Black Hills or River Road" },
+            { d: 12, label: "The big one (8+ days)", note: "Several national parks" }
+          ];
+          cardGrid(m, opts, { title: "label", selected: function (o) { return S.days === o.d; }, blurb: function (o) { return o.note; }, onclick: function (o) { S.days = o.d; render(); } });
+          m.appendChild(el("div", { class: "trtp-sub-h", text: "What's your pace?" }));
+          var seg = el("div", { class: "trtp-seg" });
+          [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) {
+            seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]]));
           });
+          m.appendChild(seg);
+          m.appendChild(el("div", { class: "trtp-note", text: S.pace === "relaxed" ? "Relaxed: about 6 hours of activity a day, with room to breathe." : S.pace === "packed" ? "Packed: up to 10 hours a day — see as much as possible." : "Balanced: about 8 hours of activity a day." }));
+          var sug = suggestedItinerary();
+          if (sug) m.appendChild(el("div", { class: "trtp-note", html: "A great backbone for your trip: <b>" + sug.title + "</b> — " + sug.blurb + " <a href='" + sug.url + "' target='_blank' rel='noopener'>See it ↗</a>" }));
         },
-        canAdvance: function () { return true; }, nextLabel: "Build my road trip →"
+        canAdvance: function () { return !!S.days; }, nextLabel: "Pick where you'll stay →"
       },
 
-      // 4 Road trip
-      {
-        render: function (m) {
-          m.appendChild(el("p", { class: "trtp-kicker", text: "The ultimate road trip" }));
-          m.appendChild(el("h1", { class: "trtp-h", text: "Add stops along the way" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "National parks, monuments, great Western towns and state parks within reach of Medora. Regional stops become their own day trips in your schedule." }));
-          var items = D.destinations.destinations.filter(function (d) { return matchesStyle(d.tags); }).sort(function (a, b) { return a.milesFromMedora - b.milesFromMedora; });
-          var tl = { national_park: "National Park", national_monument: "National Monument", state_park: "State Park", town: "Western Town", cultural: "History & Culture", scenic: "Scenic" };
-          cardGrid(m, items, {
-            wide: true, selected: function (d) { return isPicked("route", d.id); },
-            blurb: function (d) { return d.blurb; },
-            meta: function (d) { return tl[d.type] + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
-            onclick: function (d) { toggle("route", d.id); }
-          });
-        },
-        canAdvance: function () { return true; }
-      },
-
-      // 5 Lodging
+      // 7 Lodging
       {
         render: function (m) {
           m.appendChild(el("p", { class: "trtp-kicker", text: "Where you'll stay" }));
@@ -439,63 +492,23 @@
             });
           }
         },
-        canAdvance: function () { return !!S.tier; }, nextLabel: "Plan my Medora day →"
-      },
-
-      // 6 Medora day
-      {
-        render: function (m) {
-          m.appendChild(el("p", { class: "trtp-kicker", text: "Your day in Medora" }));
-          m.appendChild(el("h1", { class: "trtp-h", text: "Build your Medora day" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: "The Badlands that shaped Roosevelt and a town that still runs on Western hospitality. Click what you want to do, see, eat and watch — we'll slot each into your schedule at the right time." }));
-          var groups = [{ key: "attraction", label: "See & do" }, { key: "evening", label: "Evenings & entertainment" }, { key: "dining", label: "Where to eat" }, { key: "shopping", label: "Where to shop" }];
-          groups.forEach(function (g) {
-            var items = D.medora.attractions.filter(function (a) { return a.category === g.key; });
-            if (!items.length) return;
-            m.appendChild(el("div", { class: "trtp-sub-h", text: g.label }));
-            cardGrid(m, items, {
-              wide: g.key === "attraction" || g.key === "evening",
-              selected: function (a) { return isPicked("medora", a.id); },
-              blurb: function (a) { return a.blurb; },
-              meta: function (a) { return availMeta(a); },
-              onclick: function (a) { toggle("medora", a.id); }
-            });
-          });
-          var evs = D.events.events || [];
-          if (evs.length) {
-            m.appendChild(el("div", { class: "trtp-sub-h", text: "Happening while you're here" }));
-            var note = el("div", { class: "trtp-note" });
-            note.innerHTML = evs.map(function (e) { return "<div style='margin:2px 0'><b>" + e.title + "</b>" + (e.location ? " — " + e.location : "") + " <a href='" + e.url + "' target='_blank' rel='noopener'>details ↗</a></div>"; }).join("") + "<div style='margin-top:8px;font-size:12px;opacity:.7'>Auto-updated from medora.com, the ND Cowboy Hall of Fame, the National Park and the Medora Chamber.</div>";
-            m.appendChild(note);
-          }
-        },
-        canAdvance: function () { return true; }, nextLabel: "Choose your Library visit →"
-      },
-
-      // 7 Library
-      {
-        render: function (m) {
-          m.appendChild(el("p", { class: "trtp-kicker", text: "The main event" }));
-          m.appendChild(el("h1", { class: "trtp-h", text: "Your visit to the Library" }));
-          m.appendChild(el("p", { class: "trtp-sub", text: D.library.hoursNote + " Start with general admission, then add a specialty tour or two — each runs on set days and times, and we'll place them in your schedule accordingly." }));
-          m.appendChild(el("div", { class: "trtp-sub-h", text: "Admission" }));
-          cardGrid(m, [D.library.generalAdmission], {
-            wide: true, selected: function (o) { return isPicked("library", o.id); }, blurb: function (o) { return o.blurb; },
-            meta: function () { return "Self-guided · ~2.5h · Free timed entry"; }, onclick: function (o) { toggle("library", o.id); }
-          });
-          m.appendChild(el("div", { class: "trtp-sub-h", text: "Specialty tours" }));
-          cardGrid(m, D.library.tours, {
-            wide: true, selected: function (o) { return isPicked("library", o.id); }, blurb: function (o) { return o.blurb; },
-            meta: function (o) { return tourMeta(o); }, onclick: function (o) { toggle("library", o.id); }
-          });
-          m.appendChild(el("div", { class: "trtp-note", html: "Book ahead: <a href='" + D.library.ticketsUrl + "' target='_blank' rel='noopener'><b>General admission ↗</b></a> · <a href='" + D.library.toursUrl + "' target='_blank' rel='noopener'>all tours ↗</a>. Reserve the Medora Musical and Pitchfork Steak Fondue early in summer, too." }));
-        },
-        canAdvance: function () { return true; }, nextLabel: "See my day-by-day schedule →"
+        canAdvance: function () { return !!S.tier; }, nextLabel: "See my day-by-day schedule →"
       },
 
       // 8 Schedule
       { render: function (m) { renderSchedule(m); }, canAdvance: function () { return true; } }
     ];
+  }
+
+  // Suggest a fly-in airport from the guest's selected regional stops (falls back to origin's nearest).
+  function suggestAirport() {
+    var ids = S.picks.route;
+    var has = function (arr) { return arr.some(function (x) { return ids.indexOf(x) > -1; }); };
+    if (has(["yellowstone", "grand-teton", "cody", "beartooth"])) return { code: "BIL", why: "you added western parks like Yellowstone, the Tetons or Cody" };
+    if (has(["glacier"])) return { code: "BIL", why: "you're heading toward Glacier" };
+    if (has(["mount-rushmore", "devils-tower", "wind-cave", "custer-state-park", "badlands-np", "deadwood", "spearfish-canyon"])) return { code: "RAP", why: "you added Black Hills stops like Mount Rushmore, Devils Tower or Custer" };
+    if (S.origin && S.origin.nearestAirport) return { code: S.origin.nearestAirport, why: "it's the closest to your starting point" };
+    return { code: "DIK", why: "it's the closest airport to Medora" };
   }
 
   function availMeta(a) {
@@ -541,8 +554,13 @@
     var days = [];
     for (var i = 0; i < N; i++) { var dt = dateForDay(i); days.push({ index: i, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, regional: null, items: [], entries: [], notes: [] }); }
 
-    // Assign regional excursions to later days first, leaving day 0 for the Library/local core.
-    var regDayOrder = days.slice().sort(function (a, b) { return (a.index === 0 ? 1 : 0) - (b.index === 0 ? 1 : 0) || a.index - b.index; });
+    // Weave in getting-to-Medora travel on day 1 and the return on the last day.
+    attachTravel(days, N);
+
+    // Assign regional excursions to the MIDDLE days first, keeping the arrival day
+    // and departure day lighter (they already carry travel). Day 0 is last resort.
+    var mid = days.filter(function (d) { return d.index !== 0 && d.index !== N - 1; });
+    var regDayOrder = mid.concat(days.filter(function (d) { return N > 1 && d.index === N - 1; }), days.filter(function (d) { return d.index === 0; }));
     var overflow = [];
     regional.forEach(function (r) {
       var day = null;
@@ -556,9 +574,9 @@
     var localDays = days.filter(function (d) { return !d.regional; });
     if (!localDays.length) localDays = [days[0]];
 
-    // Assign local items to local days (season + weekday aware, budget-limited).
+    // Assign local items to local days (season + weekday + travel-time aware, budget-limited).
     var budget = PACE[S.pace] || 480;
-    localDays.forEach(function (d) { d.used = 0; });
+    localDays.forEach(function (d) { d.used = (d.travelConsumed || 0); });
     // anchored (fixed-time) first so they claim the right weekday
     local.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
     local.forEach(function (it) {
@@ -567,7 +585,12 @@
         var d = localDays[j];
         if (!seasonOk(it.avail, d.month)) continue;
         if (!dayOk(it.avail, d.wd)) continue;
-        if (it.avail.fixed && conflictsFixed(d, it)) continue;
+        if (it.avail.fixed) {
+          if (conflictsFixed(d, it)) continue;
+          var w = fixedWindowFor(it.avail, d.wd);
+          if (w && d.startMin && hmToMin(w.start) < d.startMin) continue;      // before you've arrived
+          if (w && d.endMin && hmToMin(w.end) > d.endMin) continue;            // after you've left for home
+        }
         if (d.used + it.duration > budget + 60) continue;
         if (!best || d.used < best.used) best = d;
       }
@@ -577,6 +600,40 @@
 
     days.forEach(function (d) { layoutDay(d); });
     return { days: days, overflow: overflow };
+  }
+
+  // Build arrival (day 0) and departure (last day) travel entries and reserve their time.
+  function attachTravel(days, N) {
+    var d0 = days[0], dL = days[N - 1];
+    if (S.arrival === "air" && S.airport) {
+      var ap = airport(S.airport);
+      d0.arrival = [
+        { start: 11 * 60, dur: 60, name: "Arrive at " + ap.name.replace(/ –.*/, "") + " (" + ap.code + ")", ds: "Land and pick up your " + (S.rental || "rental") + " car" },
+        { start: 12 * 60, dur: ap.driveToMedoraMin, drive: true, name: "Drive to Medora", ds: "~" + durLabel(ap.driveToMedoraMin) + " from " + ap.code, phone: null }
+      ];
+      d0.startMin = 12 * 60 + ap.driveToMedoraMin + 15;
+      d0.travelConsumed = d0.startMin - 9 * 60;
+    } else if (S.arrival === "car" && S.origin && S.origin.driveHours) {
+      var dm = Math.round(S.origin.driveHours * 60), shown = Math.min(dm, 600);
+      d0.arrival = [{ start: 8 * 60, dur: shown, drive: true, name: "Drive to Medora from " + S.origin.label, ds: "~" + S.origin.driveHours + " hours" + (S.origin.distanceMiles ? " (" + S.origin.distanceMiles + " mi)" : "") + (dm > shown ? " — likely split over more than one day" : "") }];
+      d0.startMin = 8 * 60 + shown + 15;
+      d0.travelConsumed = d0.startMin - 9 * 60;
+    }
+    if (S.arrival === "air") {
+      var apo = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport);
+      if (apo) {
+        dL.departure = [
+          { start: 0, dur: apo.driveToMedoraMin, drive: true, name: "Drive to " + apo.name.replace(/ –.*/, "") + " (" + apo.code + ")", ds: "~" + durLabel(apo.driveToMedoraMin) + " — leave plenty of time for your flight" },
+          { start: 0, dur: 0, name: "Depart " + apo.code, ds: "Return flight home" }
+        ];
+        dL.departReserve = apo.driveToMedoraMin + 120;
+        dL.endMin = 20 * 60 - dL.departReserve;
+      }
+    } else if (S.arrival === "car" && S.origin && S.origin.driveHours) {
+      dL.departure = [{ start: 0, dur: Math.min(Math.round(S.origin.driveHours * 60), 600), drive: true, name: "Drive home to " + S.origin.label, ds: "~" + S.origin.driveHours + " hours" }];
+      dL.departReserve = 30;
+    }
+    if (dL.departReserve) dL.travelConsumed = (dL.travelConsumed || 0) + dL.departReserve;
   }
   function conflictsFixed(day, it) {
     var w = fixedWindowFor(it.avail, day.wd); if (!w) return true;
@@ -590,43 +647,49 @@
   }
   function layoutDay(day) {
     var entries = [];
+    var cursor = day.startMin || 9 * 60;
+    // arrival travel (day 1)
+    (day.arrival || []).forEach(function (e) { entries.push(e); cursor = Math.max(cursor, e.start + e.dur + 15); });
+    var limit = (day.endMin || 22 * 60);
+
     if (day.regional) {
       var r = day.regional, driveH = Math.max(1, Math.round(r.miles / 60));
-      var start = 8 * 60;
+      var start = Math.max(cursor, 8 * 60);
       entries.push({ start: start, dur: driveH * 60, drive: true, name: "Drive to " + r.name.replace(/ \(.*\)/, ""), ds: "~" + driveH + "h each way from Medora" });
       var vs = start + driveH * 60;
       entries.push({ start: vs, dur: r.duration, name: r.name, ds: "Explore (~" + Math.round(r.duration / 60) + "h)", booking: r.booking, phone: r.phone });
-      entries.push({ start: vs + r.duration, dur: driveH * 60, drive: true, name: "Drive back to Medora", ds: "~" + driveH + "h" });
-      day.entries = entries; return;
-    }
-    // anchored items
-    var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
-    var flex = day.items.filter(function (i) { return !i.avail.fixed; });
-    // order flex: breakfast, big attractions, lunch, others, dinner
-    var order = { breakfast: 0, attraction: 1, destination: 1, lunch: 2, admission: 1, shopping: 3, dinner: 5 };
-    flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
-    var cursor = 9 * 60;
-    var ai = 0;
-    function placeFlexUntil(limit) {
-      while (flex.length && cursor + flex[0].duration <= limit) {
-        var it = flex.shift();
-        var open = it.avail.open ? hmToMin(it.avail.open) : cursor;
-        if (it.meal === "lunch" && cursor < 12 * 60) cursor = 12 * 60;
-        if (it.meal === "dinner" && cursor < 17 * 60) cursor = 17 * 60;
-        if (cursor < open) cursor = open;
-        if (cursor + it.duration > limit) { flex.unshift(it); break; }
-        entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone });
-        cursor += it.duration + 15;
+      cursor = vs + r.duration;
+      entries.push({ start: cursor, dur: driveH * 60, drive: true, name: "Drive back to Medora", ds: "~" + driveH + "h" });
+      cursor += driveH * 60 + 15;
+    } else {
+      var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
+      var flex = day.items.filter(function (i) { return !i.avail.fixed; });
+      var order = { breakfast: 0, attraction: 1, destination: 1, lunch: 2, admission: 1, shopping: 3, dinner: 5 };
+      flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
+      var placeFlexUntil = function (lim) {
+        while (flex.length && cursor + flex[0].duration <= lim) {
+          var it = flex.shift();
+          var open = it.avail.open ? hmToMin(it.avail.open) : cursor;
+          if (it.meal === "lunch" && cursor < 12 * 60) cursor = 12 * 60;
+          if (it.meal === "dinner" && cursor < 17 * 60) cursor = 17 * 60;
+          if (cursor < open) cursor = open;
+          if (cursor + it.duration > lim) { flex.unshift(it); break; }
+          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone });
+          cursor += it.duration + 15;
+        }
+      };
+      for (var ai = 0; ai < anchors.length; ai++) {
+        placeFlexUntil(anchors[ai].start);
+        var a = anchors[ai];
+        entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, anchor: true });
+        cursor = Math.max(cursor, a.end + 15);
       }
+      placeFlexUntil(limit);
+      flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
     }
-    for (; ai < anchors.length; ai++) {
-      placeFlexUntil(anchors[ai].start);
-      var a = anchors[ai];
-      entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, anchor: true });
-      cursor = Math.max(cursor, a.end + 15);
-    }
-    placeFlexUntil(22 * 60);
-    flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
+
+    // departure travel (last day) — appended after the day's activities
+    (day.departure || []).forEach(function (e) { e.start = cursor; entries.push(e); cursor += e.dur + 15; });
     day.entries = entries.sort(function (a, b) { return a.start - b.start; });
   }
   function descFor(it) {
@@ -656,6 +719,8 @@
       var head = el("div", { class: "trtp-day-head" });
       var title = "Day " + (day.index + 1);
       var sub = day.regional ? "Day trip" : "In & around Medora";
+      if (day.arrival) sub = "Arrival day" + (day.regional ? " · day trip" : "");
+      else if (day.departure) sub = "Departure day" + (day.regional ? " · day trip" : "");
       if (day.date) title += " · " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate();
       head.appendChild(el("span", { class: "dt", text: title }));
       head.appendChild(el("span", { class: "sd", text: sub }));
@@ -711,7 +776,8 @@
 
     sched.days.forEach(function (day) {
       var title = "Day " + (day.index + 1) + (day.date ? " — " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate() : "");
-      rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + (day.regional ? "Day trip" : "In &amp; around Medora") + "</span></h3><table>";
+      var psub = day.arrival ? "Arrival day" : day.departure ? "Departure day" : day.regional ? "Day trip" : "In &amp; around Medora";
+      rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + psub + "</span></h3><table>";
       if (!day.entries.length) rows += "<tr><td colspan=2 class='free'>Open day — explore at your own pace.</td></tr>";
       day.entries.forEach(function (e) {
         var book = "";

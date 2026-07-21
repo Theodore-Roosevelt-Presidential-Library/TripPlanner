@@ -62,15 +62,21 @@ TripPlanner/
 A clickable step header runs across the top — guests can jump back to any
 visited step to change answers, no Back-button hunting.
 
-1. **Where are you starting?** → drive time + a suggested backbone itinerary
-2. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
-3. **Getting here** → car, or fly in; supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
-4. **What are you here for?** → travel styles that surface the best road-trip stops
-5. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips)
-6. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
-7. **Your Medora day** → see/do, eat, shop, evenings + live events
-8. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
+The flow leads with what the guest wants to see, then handles logistics:
+
+1. **What do you want to see & do?** → interests that surface the best stops
+2. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips)
+3. **Your Medora day** → see/do, eat, shop, evenings + live events
+4. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
+5. **Where are you coming from?** → starting point, drive time
+6. **Getting here** → car, or fly in; suggests the best airport **based on the stops picked**, supports flying into one airport and **out of another**, with rental companies filtered to those serving **both**
+7. **Dates & pace** → arrival date (enables day-of-week availability) + days + relaxed/balanced/packed
+8. **Comfort level** → camping/RV → premium; the full Medora lodging list by tier + season
 9. **Day-by-day schedule** → a dated, hour-by-hour plan → Print / save
+
+The schedule includes **getting-to-Medora travel**: the drive from the origin
+(or flight arrival + airport-to-Medora drive) is built into day 1, and the
+return drive/flight into the last day, so the plan reflects real travel time.
 
 Selections collect in the right-hand panel the whole way through.
 
