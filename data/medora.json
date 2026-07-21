@@ -1,26 +1,434 @@
 {
   "note": "Medora day planning. category: attraction | dining | shopping | evening | library. duration in minutes. avail: season=[openMonth,closeMonth] inclusive (omit=year-round); open/close = daily window for flexible activities; fixed=[{days,start,end}] for time-anchored things (0=Sun..6=Sat); meal=lunch|dinner for dining. Events with dates live in events.json.",
   "attractions": [
-    { "id": "painted-canyon-medora", "name": "Painted Canyon Overlook", "category": "attraction", "duration": 60, "lat": 46.8930, "lng": -103.3760, "tags": ["scenic", "family"], "featured": true, "phone": "+1-701-623-4466", "url": "https://www.nps.gov/thro/planyourvisit/painted-canyon.htm", "blurb": "The first and best wide view of the Badlands, just off I-94 east of town.", "avail": { "open": "07:00", "close": "19:00" } },
-    { "id": "trnp-loop", "name": "TR National Park — South Unit Scenic Loop", "category": "attraction", "duration": 240, "lat": 46.9790, "lng": -103.5387, "tags": ["parks", "outdoors", "scenic"], "featured": true, "phone": "+1-701-623-4466", "booking": "https://www.nps.gov/thro/", "blurb": "The 36-mile loop drive: bison, wild horses, prairie dog towns and overlooks.", "avail": { "open": "06:00", "close": "20:00" } },
-    { "id": "maltese-cross", "name": "Maltese Cross Cabin", "category": "attraction", "duration": 45, "lat": 46.9146, "lng": -103.5236, "tags": ["culture", "family"], "featured": false, "phone": "+1-701-623-4466", "blurb": "TR's first Dakota cabin, behind the South Unit visitor center.", "avail": { "open": "09:00", "close": "17:00" } },
-    { "id": "cowboy-hall", "name": "North Dakota Cowboy Hall of Fame", "category": "attraction", "duration": 120, "lat": 46.9130, "lng": -103.5250, "tags": ["culture", "family"], "featured": true, "phone": "+1-701-623-2000", "booking": "https://northdakotacowboy.org/", "blurb": "Rodeo, ranching and Native American heritage of the Northern Plains.", "avail": { "season": [5,9], "open": "09:00", "close": "17:30" } },
-    { "id": "chateau", "name": "Chateau de Mores State Historic Site", "category": "attraction", "duration": 120, "lat": 46.9075, "lng": -103.5310, "tags": ["culture", "family"], "featured": false, "phone": "+1-701-623-4355", "booking": "https://www.history.nd.gov/historicsites/chateau/", "blurb": "The 26-room home of the Marquis de Mores, the town's founder.", "avail": { "season": [5,9], "open": "08:30", "close": "18:00" } },
-    { "id": "chimney-park", "name": "Chimney Park & Packing Plant Ruins", "category": "attraction", "duration": 45, "lat": 46.9110, "lng": -103.5340, "tags": ["culture"], "featured": false, "phone": "+1-701-623-4355", "blurb": "The lone brick chimney of the Marquis's beef-packing plant — a short walk from downtown.", "avail": { "open": "08:00", "close": "20:00" } },
-    { "id": "bully-pulpit", "name": "Bully Pulpit Golf Course", "category": "attraction", "duration": 240, "lat": 46.8790, "lng": -103.5210, "tags": ["outdoors"], "featured": false, "phone": "+1-701-623-4653", "booking": "https://www.medora.com/do/bully-pulpit-golf-course/", "blurb": "A championship course carved into the badlands — one of the most scenic rounds anywhere.", "avail": { "season": [5,10], "open": "07:00", "close": "19:00" } },
-    { "id": "maah-daah-hey", "name": "Maah Daah Hey Trail", "category": "attraction", "duration": 180, "lat": 46.8730, "lng": -103.5300, "tags": ["outdoors"], "featured": false, "phone": "+1-701-623-4466", "blurb": "The 144-mile singletrack across the badlands — hike or bike a section from the Medora trailhead.", "avail": { "open": "06:00", "close": "20:00" } },
-
-    { "id": "medora-musical", "name": "Medora Musical", "category": "evening", "duration": 135, "lat": 46.9250, "lng": -103.5180, "tags": ["culture", "family"], "featured": true, "phone": "+1-800-633-6721", "booking": "https://www.medora.com/do/medora-musical/", "blurb": "The seasonal outdoor musical in the Burning Hills Amphitheatre — Western variety under the stars. Book ahead in summer.", "avail": { "season": [6,9], "fixed": [ { "days": [0,1,2,3,4,5,6], "start": "19:30", "end": "21:45" } ] } },
-    { "id": "pitchfork-fondue", "name": "Pitchfork Steak Fondue", "category": "evening", "duration": 90, "lat": 46.9245, "lng": -103.5185, "tags": ["family", "dining"], "featured": true, "phone": "+1-800-633-6721", "booking": "https://www.medora.com/eat/pitchfork-steak-fondue/", "blurb": "Ribeyes speared on pitchforks and deep-fried, served on the bluff before the Musical. Book ahead in summer.", "avail": { "season": [6,9], "fixed": [ { "days": [0,1,2,3,4,5,6], "start": "17:00", "end": "18:30" } ] } },
-
-    { "id": "library-cafe", "name": "Library Café", "category": "dining", "duration": 60, "lat": 46.9146, "lng": -103.5240, "tags": ["family"], "featured": true, "meal": "lunch", "phone": "+1-701-892-6070", "blurb": "On-site at the Library — regional flavors and long views. Box lunches for the park.", "avail": { "open": "11:00", "close": "15:00" } },
-    { "id": "theodores", "name": "Theodore's Dining Room (Rough Riders Hotel)", "category": "dining", "duration": 75, "lat": 46.9138, "lng": -103.5245, "tags": ["family"], "featured": true, "meal": "dinner", "phone": "+1-701-623-4444", "booking": "https://medora.com/roughridershotel/", "blurb": "The Rough Riders Hotel dining room — Medora's sit-down dinner classic (formerly 'Teddy's').", "avail": { "open": "17:00", "close": "21:00" } },
-    { "id": "little-missouri-saloon", "name": "Little Missouri Saloon & Dining", "category": "dining", "duration": 75, "lat": 46.9135, "lng": -103.5248, "tags": ["family"], "featured": false, "meal": "dinner", "phone": "+1-701-623-4404", "booking": "https://www.medora.com/eat/little-missouri-saloon-dining/", "blurb": "The 'Little Mo' — a Medora institution for steaks and burgers.", "avail": { "season": [5,9], "open": "11:00", "close": "22:00" } },
-    { "id": "boots-bar", "name": "Boots Bar & Grill", "category": "dining", "duration": 60, "lat": 46.9132, "lng": -103.5252, "tags": ["family"], "featured": false, "meal": "lunch", "phone": "+1-701-401-5460", "blurb": "Casual downtown grill and patio.", "avail": { "season": [5,9], "open": "11:00", "close": "21:00" } },
-    { "id": "farmhouse-cafe", "name": "Farmhouse Café", "category": "dining", "duration": 45, "lat": 46.9128, "lng": -103.5246, "tags": ["family"], "featured": false, "meal": "breakfast", "phone": "+1-701-623-3105", "blurb": "Coffee, breakfast and baked goods to start the day.", "avail": { "open": "07:00", "close": "13:00" } },
-
-    { "id": "western-edge", "name": "Western Edge Books & Art", "category": "shopping", "duration": 45, "lat": 46.9133, "lng": -103.5250, "tags": ["culture"], "featured": false, "phone": "+1-701-623-4345", "blurb": "Regional books, TR titles, and local art.", "avail": { "season": [5,9], "open": "09:00", "close": "18:00" } },
-    { "id": "ferris-store", "name": "Joe Ferris General Store", "category": "shopping", "duration": 45, "lat": 46.9134, "lng": -103.5249, "tags": ["culture", "family"], "featured": false, "phone": "+1-701-623-4444", "blurb": "The historic downtown store TR knew — now gifts and Western goods.", "avail": { "season": [5,9], "open": "09:00", "close": "18:00" } },
-    { "id": "medora-shops", "name": "Downtown Medora Shops", "category": "shopping", "duration": 60, "lat": 46.9130, "lng": -103.5245, "tags": ["family"], "featured": false, "phone": "+1-800-633-6721", "blurb": "The main-street strip: fudge, leather, hats and souvenirs.", "avail": { "season": [5,9], "open": "09:00", "close": "20:00" } }
+    {
+      "id": "painted-canyon-medora",
+      "name": "Painted Canyon Overlook",
+      "category": "attraction",
+      "duration": 60,
+      "lat": 46.893,
+      "lng": -103.376,
+      "tags": [
+        "scenic",
+        "family"
+      ],
+      "featured": true,
+      "phone": "+1-701-623-4466",
+      "url": "https://www.nps.gov/thro/planyourvisit/painted-canyon.htm",
+      "blurb": "The first and best wide view of the Badlands, just off I-94 east of town.",
+      "avail": {
+        "open": "07:00",
+        "close": "19:00"
+      },
+      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+    },
+    {
+      "id": "trnp-loop",
+      "name": "TR National Park — South Unit Scenic Loop",
+      "category": "attraction",
+      "duration": 240,
+      "lat": 46.979,
+      "lng": -103.5387,
+      "tags": [
+        "parks",
+        "outdoors",
+        "scenic"
+      ],
+      "featured": true,
+      "phone": "+1-701-623-4466",
+      "booking": "https://www.nps.gov/thro/",
+      "blurb": "The 36-mile loop drive: bison, wild horses, prairie dog towns and overlooks.",
+      "avail": {
+        "open": "06:00",
+        "close": "20:00"
+      },
+      "image": "https://www.nps.gov/common/uploads/banner_image/mwr/homepage/2118F52C-1DD8-B71B-0B0713EA8F3E1AEA.jpg"
+    },
+    {
+      "id": "maltese-cross",
+      "name": "Maltese Cross Cabin",
+      "category": "attraction",
+      "duration": 45,
+      "lat": 46.9146,
+      "lng": -103.5236,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4466",
+      "blurb": "TR's first Dakota cabin, behind the South Unit visitor center.",
+      "avail": {
+        "open": "09:00",
+        "close": "17:00"
+      }
+    },
+    {
+      "id": "cowboy-hall",
+      "name": "North Dakota Cowboy Hall of Fame",
+      "category": "attraction",
+      "duration": 120,
+      "lat": 46.913,
+      "lng": -103.525,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": true,
+      "phone": "+1-701-623-2000",
+      "booking": "https://northdakotacowboy.org/",
+      "blurb": "Rodeo, ranching and Native American heritage of the Northern Plains.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "17:30"
+      },
+      "image": "https://northdakotacowboy.org/wp-content/uploads/2022/03/slide1.jpg"
+    },
+    {
+      "id": "chateau",
+      "name": "Chateau de Mores State Historic Site",
+      "category": "attraction",
+      "duration": 120,
+      "lat": 46.9075,
+      "lng": -103.531,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4355",
+      "booking": "https://www.history.nd.gov/historicsites/chateau/",
+      "blurb": "The 26-room home of the Marquis de Mores, the town's founder.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "08:30",
+        "close": "18:00"
+      },
+      "image": "https://www.history.nd.gov/historicsites/chateau/images/chateausplash2.jpg"
+    },
+    {
+      "id": "chimney-park",
+      "name": "Chimney Park & Packing Plant Ruins",
+      "category": "attraction",
+      "duration": 45,
+      "lat": 46.911,
+      "lng": -103.534,
+      "tags": [
+        "culture"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4355",
+      "blurb": "The lone brick chimney of the Marquis's beef-packing plant — a short walk from downtown.",
+      "avail": {
+        "open": "08:00",
+        "close": "20:00"
+      }
+    },
+    {
+      "id": "bully-pulpit",
+      "name": "Bully Pulpit Golf Course",
+      "category": "attraction",
+      "duration": 240,
+      "lat": 46.879,
+      "lng": -103.521,
+      "tags": [
+        "outdoors"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4653",
+      "booking": "https://www.medora.com/do/bully-pulpit-golf-course/",
+      "blurb": "A championship course carved into the badlands — one of the most scenic rounds anywhere.",
+      "avail": {
+        "season": [
+          5,
+          10
+        ],
+        "open": "07:00",
+        "close": "19:00"
+      },
+      "image": "https://medora.com/wp-content/uploads/2022/03/1500x1000-BP.jpg"
+    },
+    {
+      "id": "maah-daah-hey",
+      "name": "Maah Daah Hey Trail",
+      "category": "attraction",
+      "duration": 180,
+      "lat": 46.873,
+      "lng": -103.53,
+      "tags": [
+        "outdoors"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4466",
+      "blurb": "The 144-mile singletrack across the badlands — hike or bike a section from the Medora trailhead.",
+      "avail": {
+        "open": "06:00",
+        "close": "20:00"
+      },
+      "image": "https://www.parkrec.nd.gov/sites/www/files/documents/Destinations/Sully/RRSP_IMG_2962.JPEG"
+    },
+    {
+      "id": "medora-musical",
+      "name": "Medora Musical",
+      "category": "evening",
+      "duration": 135,
+      "lat": 46.925,
+      "lng": -103.518,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": true,
+      "phone": "+1-800-633-6721",
+      "booking": "https://www.medora.com/do/medora-musical/",
+      "blurb": "The seasonal outdoor musical in the Burning Hills Amphitheatre — Western variety under the stars. Book ahead in summer.",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "19:30",
+            "end": "21:45"
+          }
+        ]
+      },
+      "image": "https://medora.com/wp-content/uploads/2025/07/Medora-Musical-MM-2025-Feature-6.jpeg"
+    },
+    {
+      "id": "pitchfork-fondue",
+      "name": "Pitchfork Steak Fondue",
+      "category": "evening",
+      "duration": 90,
+      "lat": 46.9245,
+      "lng": -103.5185,
+      "tags": [
+        "family",
+        "dining"
+      ],
+      "featured": true,
+      "phone": "+1-800-633-6721",
+      "booking": "https://www.medora.com/eat/pitchfork-steak-fondue/",
+      "blurb": "Ribeyes speared on pitchforks and deep-fried, served on the bluff before the Musical. Book ahead in summer.",
+      "avail": {
+        "season": [
+          6,
+          9
+        ],
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "17:00",
+            "end": "18:30"
+          }
+        ]
+      },
+      "image": "https://medora.com/wp-content/uploads/2023/05/TRMF_Web_2Column_540x340_PitchforkSteakFondue.jpg"
+    },
+    {
+      "id": "library-cafe",
+      "name": "Library Café",
+      "category": "dining",
+      "duration": 60,
+      "lat": 46.9146,
+      "lng": -103.524,
+      "tags": [
+        "family"
+      ],
+      "featured": true,
+      "meal": "lunch",
+      "phone": "+1-701-892-6070",
+      "blurb": "On-site at the Library — regional flavors and long views. Box lunches for the park.",
+      "avail": {
+        "open": "11:00",
+        "close": "15:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/tr-library-butte.jpg.webp?itok=cz3aW1A5"
+    },
+    {
+      "id": "theodores",
+      "name": "Theodore's Dining Room (Rough Riders Hotel)",
+      "category": "dining",
+      "duration": 75,
+      "lat": 46.9138,
+      "lng": -103.5245,
+      "tags": [
+        "family"
+      ],
+      "featured": true,
+      "meal": "dinner",
+      "phone": "+1-701-623-4444",
+      "booking": "https://medora.com/roughridershotel/",
+      "blurb": "The Rough Riders Hotel dining room — Medora's sit-down dinner classic (formerly 'Teddy's').",
+      "avail": {
+        "open": "17:00",
+        "close": "21:00"
+      },
+      "image": "https://medora.com/wp-content/uploads/2024/03/Theodores-Dining-Room-Theos-Feature-6-1024x683.jpg"
+    },
+    {
+      "id": "little-missouri-saloon",
+      "name": "Little Missouri Saloon & Dining",
+      "category": "dining",
+      "duration": 75,
+      "lat": 46.9135,
+      "lng": -103.5248,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "meal": "dinner",
+      "phone": "+1-701-623-4404",
+      "booking": "https://www.medora.com/eat/little-missouri-saloon-dining/",
+      "blurb": "The 'Little Mo' — a Medora institution for steaks and burgers.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "11:00",
+        "close": "22:00"
+      },
+      "image": "https://images.squarespace-cdn.com/content/v1/67b4e88657ace41f421ba980/1741727078314-P5HED9QGIBZB39TJ739C/5I3A6543-edit.jpg"
+    },
+    {
+      "id": "boots-bar",
+      "name": "Boots Bar & Grill",
+      "category": "dining",
+      "duration": 60,
+      "lat": 46.9132,
+      "lng": -103.5252,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "meal": "lunch",
+      "phone": "+1-701-401-5460",
+      "blurb": "Casual downtown grill and patio.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "11:00",
+        "close": "21:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+    },
+    {
+      "id": "farmhouse-cafe",
+      "name": "Farmhouse Café",
+      "category": "dining",
+      "duration": 45,
+      "lat": 46.9128,
+      "lng": -103.5246,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "meal": "breakfast",
+      "phone": "+1-701-623-3105",
+      "blurb": "Coffee, breakfast and baked goods to start the day.",
+      "avail": {
+        "open": "07:00",
+        "close": "13:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+    },
+    {
+      "id": "western-edge",
+      "name": "Western Edge Books & Art",
+      "category": "shopping",
+      "duration": 45,
+      "lat": 46.9133,
+      "lng": -103.525,
+      "tags": [
+        "culture"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4345",
+      "blurb": "Regional books, TR titles, and local art.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+    },
+    {
+      "id": "ferris-store",
+      "name": "Joe Ferris General Store",
+      "category": "shopping",
+      "duration": 45,
+      "lat": 46.9134,
+      "lng": -103.5249,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "phone": "+1-701-623-4444",
+      "blurb": "The historic downtown store TR knew — now gifts and Western goods.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+    },
+    {
+      "id": "medora-shops",
+      "name": "Downtown Medora Shops",
+      "category": "shopping",
+      "duration": 60,
+      "lat": 46.913,
+      "lng": -103.5245,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "phone": "+1-800-633-6721",
+      "blurb": "The main-street strip: fudge, leather, hats and souvenirs.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "20:00"
+      },
+      "image": "https://www.trlibrary.com/sites/default/files/styles/full_hd/public/2026-07/day1-downtown-medora.jpg.webp?itok=bVju27n6"
+    }
   ]
 }

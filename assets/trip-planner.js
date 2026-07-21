@@ -93,6 +93,8 @@
     .trtp-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(9,42,77,.10);border-color:var(--tr-muted);}
     .trtp-card.sel{border-color:var(--tr-primary);box-shadow:0 0 0 2px var(--tr-primary) inset;}
     .trtp-card.dis{opacity:.5;}
+    .trtp-card.has-img{padding-top:0;overflow:hidden;}
+    .trtp-card .cimg{display:block;width:calc(100% + 32px);height:130px;object-fit:cover;margin:-15px -16px 11px;background:#e9e2d2;}
     .trtp-card .t{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);margin:0 0 3px;}
     .trtp-card .b{font-size:13px;color:#5c5f62;margin:0;}
     .trtp-card .meta{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary);margin-top:8px;font-weight:600;}
@@ -129,6 +131,7 @@
     .trtp-row{display:flex;gap:12px;padding:11px 16px;border-bottom:1px solid #f0ead9;}
     .trtp-row:last-child{border-bottom:none;}
     .trtp-row .tm{font-family:Oswald,sans-serif;font-weight:600;font-size:12.5px;color:var(--tr-primary);min-width:74px;white-space:nowrap;padding-top:1px;}
+    .trtp-row .rthumb{width:60px;height:46px;object-fit:cover;border-radius:4px;flex:0 0 auto;background:#e9e2d2;}
     .trtp-row .bd{flex:1;}
     .trtp-row .bd .nm{font-family:'Clearface',Georgia,serif;font-weight:600;color:var(--tr-secondary);font-size:15px;}
     .trtp-row .bd .ds{font-size:12.5px;color:#6c6f72;margin-top:1px;}
@@ -269,10 +272,17 @@
     items.forEach(function (it) {
       var sel = opts.selected ? opts.selected(it) : false;
       var dis = opts.disabled ? opts.disabled(it) : false;
+      var img = null;
+      if (it.image) {
+        img = el("img", { class: "cimg", src: it.image, alt: it[opts.title || "name"], loading: "lazy" });
+        // hide gracefully if the photo fails to load
+        img.addEventListener("error", function () { if (img.parentNode) img.parentNode.removeChild(img); });
+      }
       grid.appendChild(el("button", {
-        class: "trtp-card" + (sel ? " sel" : "") + (dis ? " dis" : ""), type: "button",
+        class: "trtp-card" + (img ? " has-img" : "") + (sel ? " sel" : "") + (dis ? " dis" : ""), type: "button",
         onclick: function () { opts.onclick(it); }
       }, [
+        img,
         el("span", { class: "check", html: "✓" }),
         el("div", { class: "t", text: it[opts.title || "name"] }),
         opts.blurb ? el("div", { class: "b", text: (typeof opts.blurb === "function" ? opts.blurb(it) : it[opts.blurb]) }) : null,
@@ -535,9 +545,9 @@
 
   // ---- SCHEDULER ----------------------------------------------------------
   // Normalize a pick into a schedulable object.
-  function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
-  function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
-  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, area: d.milesFromMedora > 15 ? "regional" : "medora", miles: d.milesFromMedora, kind: "destination" }; }
+  function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, image: o.image, area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
+  function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
+  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, area: d.milesFromMedora > 15 ? "regional" : "medora", miles: d.milesFromMedora, kind: "destination" }; }
 
   function seasonOk(av, month) { if (!av || !av.season || month == null) return true; return month >= av.season[0] && month <= av.season[1]; }
   function fixedWindowFor(av, wd) { if (!av || !av.fixed) return null; if (wd == null) return av.fixed[0]; for (var i = 0; i < av.fixed.length; i++) if (av.fixed[i].days.indexOf(wd) > -1) return av.fixed[i]; return null; }
@@ -657,7 +667,7 @@
       var start = Math.max(cursor, 8 * 60);
       entries.push({ start: start, dur: driveH * 60, drive: true, name: "Drive to " + r.name.replace(/ \(.*\)/, ""), ds: "~" + driveH + "h each way from Medora" });
       var vs = start + driveH * 60;
-      entries.push({ start: vs, dur: r.duration, name: r.name, ds: "Explore (~" + Math.round(r.duration / 60) + "h)", booking: r.booking, phone: r.phone });
+      entries.push({ start: vs, dur: r.duration, name: r.name, ds: "Explore (~" + Math.round(r.duration / 60) + "h)", booking: r.booking, phone: r.phone, image: r.image });
       cursor = vs + r.duration;
       entries.push({ start: cursor, dur: driveH * 60, drive: true, name: "Drive back to Medora", ds: "~" + driveH + "h" });
       cursor += driveH * 60 + 15;
@@ -674,14 +684,14 @@
           if (it.meal === "dinner" && cursor < 17 * 60) cursor = 17 * 60;
           if (cursor < open) cursor = open;
           if (cursor + it.duration > lim) { flex.unshift(it); break; }
-          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone });
+          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image });
           cursor += it.duration + 15;
         }
       };
       for (var ai = 0; ai < anchors.length; ai++) {
         placeFlexUntil(anchors[ai].start);
         var a = anchors[ai];
-        entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, anchor: true });
+        entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, anchor: true });
         cursor = Math.max(cursor, a.end + 15);
       }
       placeFlexUntil(limit);
@@ -729,6 +739,7 @@
       day.entries.forEach(function (e) {
         var row = el("div", { class: "trtp-row" + (e.drive ? " drive" : "") });
         row.appendChild(el("div", { class: "tm", text: minToLabel(e.start) }));
+        if (e.image) { var th = el("img", { class: "rthumb", src: e.image, alt: e.name, loading: "lazy" }); th.addEventListener("error", function () { if (th.parentNode) th.parentNode.removeChild(th); }); row.appendChild(th); }
         var bd = el("div", { class: "bd" });
         bd.appendChild(el("div", { class: "nm", text: e.name }));
         if (e.ds) bd.appendChild(el("div", { class: "ds", text: e.ds }));
@@ -778,12 +789,13 @@
       var title = "Day " + (day.index + 1) + (day.date ? " — " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate() : "");
       var psub = day.arrival ? "Arrival day" : day.departure ? "Departure day" : day.regional ? "Day trip" : "In &amp; around Medora";
       rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + psub + "</span></h3><table>";
-      if (!day.entries.length) rows += "<tr><td colspan=2 class='free'>Open day — explore at your own pace.</td></tr>";
+      if (!day.entries.length) rows += "<tr><td colspan=3 class='free'>Open day — explore at your own pace.</td></tr>";
       day.entries.forEach(function (e) {
         var book = "";
         if (e.booking) book += "<a href='" + e.booking + "'>" + esc(e.booking) + "</a>";
         if (e.phone) book += (book ? " · " : "") + esc(e.phone);
-        rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td><td><span class='nm'>" + esc(e.name) + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
+        var thumb = e.image ? "<td class='thc'><img class='thm' src='" + e.image + "' onerror='this.style.display=\"none\"'></td>" : "<td class='thc'></td>";
+        rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
       });
       day.notes.forEach(function (n) { rows += "<tr><td></td><td class='ds'>" + esc(n) + "</td></tr>"; });
       rows += "</table></div>";
@@ -811,7 +823,9 @@
       "table{width:100%;border-collapse:collapse;}" +
       ".day table{border:1px solid #e4ddcd;border-top:none;}" +
       ".day td{padding:7px 11px;border-bottom:1px solid #f0ead9;vertical-align:top;}" +
-      ".tm{font-family:Oswald,sans-serif;font-weight:600;font-size:12px;color:" + c.primary + ";white-space:nowrap;width:80px;}" +
+      ".tm{font-family:Oswald,sans-serif;font-weight:600;font-size:12px;color:" + c.primary + ";white-space:nowrap;width:80px;vertical-align:top;}" +
+      ".thc{width:76px;padding:7px 8px;}" +
+      ".thm{width:68px;height:50px;object-fit:cover;border-radius:3px;display:block;}" +
       ".nm{display:block;font-weight:bold;color:" + c.secondary + ";}" +
       ".ds{display:block;font-size:12px;color:#6c6f72;font-family:Arial,sans-serif;}" +
       ".bk{display:block;font-size:11.5px;font-family:Arial,sans-serif;margin-top:2px;}" +
