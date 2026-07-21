@@ -1,0 +1,11 @@
+{
+  "note": "Library visit + booking options. Links point at trlibrary.com. Special events / tours can be supplemented from events.json.",
+  "ticketsUrl": "https://www.trlibrary.com/visit",
+  "hoursNote": "Now open — check trlibrary.com/visit for current daily hours and seasonal changes.",
+  "options": [
+    { "id": "general-admission", "name": "General Admission", "dwell": 3, "blurb": "Self-guided visit to the galleries, grounds and the Boardwalk overlooking the Little Missouri.", "booking": "https://www.trlibrary.com/visit" },
+    { "id": "guided-tour", "name": "Guided Tour", "dwell": 2, "blurb": "A docent-led tour focused on conservation, citizenship and leadership.", "booking": "https://www.trlibrary.com/visit" },
+    { "id": "cafe", "name": "Library Café", "dwell": 1, "blurb": "Lunch on site with regional flavors, or a box lunch to take into the park.", "booking": "https://www.trlibrary.com/visit" },
+    { "id": "membership", "name": "Founding Membership", "dwell": 0, "blurb": "Become a founding member and support the Library.", "booking": "https://www.trlibrary.com/support" }
+  ]
+}

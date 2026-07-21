@@ -1,0 +1,31 @@
+{
+  "brand": {
+    "name": "Theodore Roosevelt Presidential Library",
+    "shortName": "TR Library",
+    "anchor": { "name": "Medora, North Dakota", "lat": 46.9139, "lng": -103.5236 },
+    "colors": {
+      "primary": "#E7805D",
+      "secondary": "#092A4D",
+      "muted": "#99ADC5",
+      "paper": "#F6F0E4",
+      "ink": "#25282A"
+    },
+    "ticketsUrl": "https://www.trlibrary.com/visit",
+    "itinerariesUrl": "https://www.trlibrary.com/visit/itineraries",
+    "directionsUrl": "https://www.trlibrary.com/visit/directions"
+  },
+  "comfortTiers": [
+    { "id": "camp", "label": "Camping / RV", "blurb": "Tents, campgrounds and RV hookups, under the stars.", "priceHint": "$" },
+    { "id": "value", "label": "Simple & comfortable", "blurb": "Clean, dependable motels and lodges.", "priceHint": "$$" },
+    { "id": "comfort", "label": "Full comfort", "blurb": "Well-appointed hotels with amenities.", "priceHint": "$$$" },
+    { "id": "premium", "label": "Premium / signature", "blurb": "The most distinctive stays in the region.", "priceHint": "$$$$" }
+  ],
+  "travelStyles": [
+    { "id": "parks", "label": "National Parks & Monuments", "icon": "mountain" },
+    { "id": "culture", "label": "History & Culture", "icon": "book" },
+    { "id": "towns", "label": "Great Western Towns", "icon": "town" },
+    { "id": "outdoors", "label": "State Parks & Outdoors", "icon": "tree" },
+    { "id": "family", "label": "Family & Kids", "icon": "family" },
+    { "id": "scenic", "label": "Scenic Drives", "icon": "road" }
+  ]
+}

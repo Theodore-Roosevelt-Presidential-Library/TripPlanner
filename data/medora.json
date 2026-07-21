@@ -1,0 +1,28 @@
+{
+  "note": "Everything for planning a day in Medora. category: attraction | dining | shopping | evening | library. Events with dates live separately in events.json (auto-refreshed).",
+  "attractions": [
+    { "id": "tr-library", "name": "Theodore Roosevelt Presidential Library", "category": "library", "dwell": 3, "tags": ["culture", "family"], "blurb": "The Library on the butte above Medora — conservation, citizenship and leadership told through the exhibits. Guided tours available.", "booking": "https://www.trlibrary.com/visit", "featured": true },
+    { "id": "painted-canyon-medora", "name": "Painted Canyon Overlook", "category": "attraction", "dwell": 1, "tags": ["scenic", "family"], "blurb": "The first and best wide view of the Badlands, just off I-94 east of town.", "featured": true },
+    { "id": "trnp-loop", "name": "TR National Park — South Unit Scenic Loop", "category": "attraction", "dwell": 4, "tags": ["parks", "outdoors", "scenic"], "blurb": "The 36-mile loop drive: bison, wild horses, prairie dog towns and overlooks.", "featured": true },
+    { "id": "maltese-cross", "name": "Maltese Cross Cabin", "category": "attraction", "dwell": 1, "tags": ["culture", "family"], "blurb": "TR's first Dakota cabin, now behind the South Unit visitor center.", "featured": false },
+    { "id": "cowboy-hall", "name": "North Dakota Cowboy Hall of Fame", "category": "attraction", "dwell": 2, "tags": ["culture", "family"], "blurb": "Rodeo, ranching and Native American heritage of the Northern Plains.", "booking": "https://northdakotacowboy.org/", "featured": true },
+    { "id": "chateau", "name": "Chateau de Mores State Historic Site", "category": "attraction", "dwell": 2, "tags": ["culture", "family"], "blurb": "The 26-room home of the Marquis de Mores, the town's founder.", "booking": "https://www.history.nd.gov/historicsites/chateau/", "featured": false },
+    { "id": "chimney-park", "name": "Chimney Park & Packing Plant Ruins", "category": "attraction", "dwell": 1, "tags": ["culture"], "blurb": "The lone brick chimney of the Marquis's beef-packing plant — a short walk from downtown.", "featured": false },
+    { "id": "bully-pulpit", "name": "Bully Pulpit Golf Course", "category": "attraction", "dwell": 4, "tags": ["outdoors"], "blurb": "A championship course carved into the badlands — one of the most scenic rounds in the country.", "booking": "https://www.medora.com/do/bully-pulpit-golf-course/", "featured": false },
+    { "id": "maah-daah-hey", "name": "Maah Daah Hey Trail", "category": "attraction", "dwell": 3, "tags": ["outdoors"], "blurb": "The 144-mile singletrack across the badlands — hike or bike a section from the Medora trailhead.", "featured": false },
+
+    { "id": "medora-musical", "name": "Medora Musical", "category": "evening", "dwell": 3, "tags": ["culture", "family"], "blurb": "The seasonal outdoor musical in the Burning Hills Amphitheatre — Western variety under the stars. Book ahead in summer.", "booking": "https://www.medora.com/do/medora-musical/", "featured": true },
+    { "id": "pitchfork-fondue", "name": "Pitchfork Steak Fondue", "category": "evening", "dwell": 2, "tags": ["family"], "blurb": "Ribeyes speared on pitchforks and deep-fried, served on the bluff before the Musical. Book ahead in summer.", "booking": "https://www.medora.com/eat/pitchfork-steak-fondue/", "featured": true },
+    { "id": "bully-pulpit-talks", "name": "Old Four Eyes / Bully Pulpit Talks", "category": "evening", "dwell": 1, "tags": ["culture"], "blurb": "TR himself (in character) holds forth on the town's stages during the season.", "featured": false },
+
+    { "id": "library-cafe", "name": "Library Café", "category": "dining", "dwell": 1, "tags": ["family"], "blurb": "On-site at the Library — regional flavors and long views. Box lunches for the park.", "featured": true },
+    { "id": "teddys", "name": "Teddy's Residential Dining", "category": "dining", "dwell": 1, "tags": ["family"], "blurb": "Downtown Medora sit-down dinner.", "featured": true },
+    { "id": "little-missouri-saloon", "name": "Little Missouri Saloon & Dining", "category": "dining", "dwell": 1, "tags": ["family"], "blurb": "The 'Little Mo' — a Medora institution for steaks and burgers.", "booking": "https://www.medora.com/eat/little-missouri-saloon-dining/", "featured": false },
+    { "id": "boots-bar", "name": "Boots Bar & Grill", "category": "dining", "dwell": 1, "tags": ["family"], "blurb": "Casual downtown grill and patio.", "featured": false },
+    { "id": "farmers-fork", "name": "Farmers' Fork", "category": "dining", "dwell": 1, "tags": ["family"], "blurb": "Coffee, breakfast and baked goods to start the day.", "featured": false },
+
+    { "id": "western-edge", "name": "Western Edge Books & Art", "category": "shopping", "dwell": 1, "tags": ["culture"], "blurb": "Regional books, TR titles, and local art.", "featured": false },
+    { "id": "ferris-store", "name": "Joe Ferris General Store", "category": "shopping", "dwell": 1, "tags": ["culture", "family"], "blurb": "The historic downtown store TR knew — now gifts and Western goods.", "featured": false },
+    { "id": "medora-shops", "name": "Downtown Medora Shops", "category": "shopping", "dwell": 1, "tags": ["family"], "blurb": "The main-street strip: fudge, leather, hats and souvenirs.", "featured": false }
+  ]
+}

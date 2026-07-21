@@ -1,0 +1,20 @@
+{
+  "note": "Common trip origins. distanceMiles/driveHours are approximate driving figures to Medora, ND. suggestedItineraries reference ids in itineraries.json.",
+  "origins": [
+    { "id": "bismarck", "label": "Bismarck, ND", "lat": 46.8083, "lng": -100.7837, "distanceMiles": 135, "driveHours": 2.0, "nearestAirport": "BIS", "arrival": "car", "suggestedItineraries": ["4-days-north-dakota", "weekend-drives", "river-road"] },
+    { "id": "fargo", "label": "Fargo, ND", "lat": 46.8772, "lng": -96.7898, "distanceMiles": 300, "driveHours": 4.5, "nearestAirport": "FAR", "arrival": "car", "suggestedItineraries": ["weekend-drives", "4-days-north-dakota"] },
+    { "id": "minneapolis", "label": "Minneapolis / St. Paul, MN", "lat": 44.9778, "lng": -93.2650, "distanceMiles": 570, "driveHours": 8.0, "nearestAirport": "FAR", "arrival": "car", "suggestedItineraries": ["weekend-drives", "chicago-badlands"] },
+    { "id": "chicago", "label": "Chicago, IL", "lat": 41.8781, "lng": -87.6298, "distanceMiles": 900, "driveHours": 13.5, "nearestAirport": "BIS", "arrival": "either", "suggestedItineraries": ["chicago-badlands", "7-day-bismarck-rapid-city"] },
+    { "id": "denver", "label": "Denver, CO", "lat": 39.7392, "lng": -104.9903, "distanceMiles": 700, "driveHours": 10.5, "nearestAirport": "RAP", "arrival": "either", "suggestedItineraries": ["10-day-denver-salt-lake-city", "13-day-denver-wyoming", "black-hills-loop"] },
+    { "id": "rapidcity", "label": "Rapid City, SD", "lat": 44.0805, "lng": -103.2310, "distanceMiles": 240, "driveHours": 4.0, "nearestAirport": "RAP", "arrival": "car", "suggestedItineraries": ["7-day-bismarck-rapid-city", "black-hills-loop", "sturgis-medora"] },
+    { "id": "billings", "label": "Billings, MT", "lat": 45.7833, "lng": -108.5007, "distanceMiles": 215, "driveHours": 3.5, "nearestAirport": "BIL", "arrival": "car", "suggestedItineraries": ["7-day-billings-bismarck"] },
+    { "id": "seattle", "label": "Seattle, WA", "lat": 47.6062, "lng": -122.3321, "distanceMiles": 1300, "driveHours": 20.0, "nearestAirport": "BIL", "arrival": "either", "suggestedItineraries": ["seattle-badlands"] },
+    { "id": "saltlake", "label": "Salt Lake City, UT", "lat": 40.7608, "lng": -111.8910, "distanceMiles": 900, "driveHours": 13.0, "nearestAirport": "BIL", "arrival": "either", "suggestedItineraries": ["10-day-denver-salt-lake-city"] },
+    { "id": "jackson", "label": "Jackson Hole, WY", "lat": 43.4799, "lng": -110.7624, "distanceMiles": 700, "driveHours": 10.5, "nearestAirport": "BIL", "arrival": "either", "suggestedItineraries": ["13-day-denver-wyoming"] },
+    { "id": "kansascity", "label": "Kansas City, MO", "lat": 39.0997, "lng": -94.5786, "distanceMiles": 850, "driveHours": 12.5, "nearestAirport": "RAP", "arrival": "either", "suggestedItineraries": ["north-on-29"] },
+    { "id": "omaha", "label": "Omaha, NE", "lat": 41.2565, "lng": -95.9345, "distanceMiles": 650, "driveHours": 9.5, "nearestAirport": "RAP", "arrival": "car", "suggestedItineraries": ["north-on-29"] },
+    { "id": "winnipeg", "label": "Winnipeg, MB", "lat": 49.8951, "lng": -97.1384, "distanceMiles": 500, "driveHours": 8.0, "nearestAirport": "MOT", "arrival": "car", "suggestedItineraries": ["weekend-drives"] },
+    { "id": "sturgis", "label": "Sturgis, SD", "lat": 44.4097, "lng": -103.5091, "distanceMiles": 224, "driveHours": 3.75, "nearestAirport": "RAP", "arrival": "car", "suggestedItineraries": ["sturgis-medora"] },
+    { "id": "elsewhere", "label": "Somewhere else / flying in", "lat": null, "lng": null, "distanceMiles": null, "driveHours": null, "nearestAirport": "DIK", "arrival": "air", "suggestedItineraries": ["3-days-medora", "one-day"] }
+  ]
+}

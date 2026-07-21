@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trip Planner — Theodore Roosevelt Presidential Library</title>
+  <meta name="description" content="Plan your visit to the Theodore Roosevelt Presidential Library and Medora — an interactive trip planner." />
+  <style>
+    body{margin:0;background:#efe7d6;font-family:'Helvetica Neue',Arial,sans-serif;color:#25282a;}
+    .page{max-width:1080px;margin:0 auto;padding:32px 20px 60px;}
+    .masthead{text-align:center;margin:10px 0 26px;}
+    .masthead .kick{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#E7805D;font-size:13px;font-weight:600;}
+    .masthead h1{font-family:Georgia,serif;color:#092A4D;font-size:34px;margin:6px 0 4px;}
+    .masthead p{color:#5c5f62;max-width:60ch;margin:0 auto;}
+    .embed-note{max-width:1080px;margin:40px auto 0;padding:18px 22px;background:#fff;border:1px dashed #cbb98f;border-radius:6px;color:#5c5f62;font-size:14px;}
+    .embed-note code{background:#f3ecda;padding:2px 6px;border-radius:3px;font-size:13px;}
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="masthead">
+      <div class="kick">Theodore Roosevelt Presidential Library</div>
+      <h1>Plan Your Visit</h1>
+      <p>The best road-trip country in America starts here. Answer a few questions, click what appeals, and build a trip you can print and book.</p>
+    </div>
+
+    <!-- ===== The embed: one div + one script ===== -->
+    <div id="tr-trip-planner"></div>
+    <script src="./assets/trip-planner.js" data-container="tr-trip-planner"></script>
+    <!-- =========================================== -->
+
+    <div class="embed-note">
+      <strong>To embed this on trlibrary.com (Drupal):</strong> paste the two lines below into a Full-HTML block or Custom-HTML field.
+      <br /><br />
+      <code>&lt;div id="tr-trip-planner"&gt;&lt;/div&gt;</code><br />
+      <code>&lt;script src="https://trip.labs.trlibrary.com/assets/trip-planner.js" data-container="tr-trip-planner"&gt;&lt;/script&gt;</code>
+    </div>
+  </div>
+</body>
+</html>

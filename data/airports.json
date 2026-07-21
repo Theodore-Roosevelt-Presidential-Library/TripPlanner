@@ -1,0 +1,84 @@
+{
+  "airports": [
+    {
+      "code": "DIK",
+      "name": "Dickinson – Theodore Roosevelt Regional Airport",
+      "city": "Dickinson, ND",
+      "lat": 46.7975, "lng": -102.8019,
+      "driveToMedoraMin": 40,
+      "driveToMedoraMiles": 42,
+      "note": "Closest airport to Medora. Limited daily flights (Denver connections). Best for a direct-to-the-Badlands arrival.",
+      "rentalCars": ["Enterprise", "Hertz", "National"]
+    },
+    {
+      "code": "BIS",
+      "name": "Bismarck Airport",
+      "city": "Bismarck, ND",
+      "lat": 46.7727, "lng": -100.7460,
+      "driveToMedoraMin": 90,
+      "driveToMedoraMiles": 135,
+      "note": "More daily flights and connections than Dickinson. A scenic 1.5-hour drive west on I-94 (pass the Enchanted Highway).",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget", "National", "Alamo"]
+    },
+    {
+      "code": "ISN",
+      "name": "Williston Basin International Airport",
+      "city": "Williston, ND",
+      "lat": 48.2600, "lng": -103.7500,
+      "driveToMedoraMin": 120,
+      "driveToMedoraMiles": 130,
+      "note": "Northern approach. Pairs well with a North Unit / River Road trip.",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget"]
+    },
+    {
+      "code": "RAP",
+      "name": "Rapid City Regional Airport",
+      "city": "Rapid City, SD",
+      "lat": 44.0453, "lng": -103.0574,
+      "driveToMedoraMin": 240,
+      "driveToMedoraMiles": 240,
+      "note": "Gateway to the Black Hills. Ideal if you want Mount Rushmore, Custer State Park and Devils Tower on the way up US-85 (the Theodore Roosevelt Expressway).",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget", "National", "Alamo", "Dollar", "Thrifty"]
+    },
+    {
+      "code": "BIL",
+      "name": "Billings Logan International Airport",
+      "city": "Billings, MT",
+      "lat": 45.8077, "lng": -108.5428,
+      "driveToMedoraMin": 210,
+      "driveToMedoraMiles": 215,
+      "note": "Western gateway. The natural start for a Yellowstone + Beartooth Highway route ending in the Badlands.",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget", "National", "Alamo", "Dollar", "Thrifty"]
+    },
+    {
+      "code": "MOT",
+      "name": "Minot International Airport",
+      "city": "Minot, ND",
+      "lat": 48.2594, "lng": -101.2803,
+      "driveToMedoraMin": 210,
+      "driveToMedoraMiles": 205,
+      "note": "North-central ND. Pairs with Scandinavian Heritage Park and a River Road approach.",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget"]
+    },
+    {
+      "code": "FAR",
+      "name": "Hector International Airport",
+      "city": "Fargo, ND",
+      "lat": 46.9207, "lng": -96.8158,
+      "driveToMedoraMin": 300,
+      "driveToMedoraMiles": 300,
+      "note": "Largest airport in North Dakota with the most connections. A full day's drive west across the state — a good road-trip in itself.",
+      "rentalCars": ["Enterprise", "Hertz", "Avis", "Budget", "National", "Alamo", "Dollar", "Thrifty"]
+    }
+  ],
+  "rentalCarLinks": {
+    "Enterprise": "https://www.enterprise.com",
+    "Hertz": "https://www.hertz.com",
+    "National": "https://www.nationalcar.com",
+    "Avis": "https://www.avis.com",
+    "Budget": "https://www.budget.com",
+    "Alamo": "https://www.alamo.com",
+    "Dollar": "https://www.dollar.com",
+    "Thrifty": "https://www.thrifty.com"
+  }
+}

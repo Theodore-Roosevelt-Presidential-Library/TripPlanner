@@ -1,0 +1,15 @@
+{
+  "note": "Lodging and camping by area and comfort tier. tier matches config.json comfortTiers: camp | value | comfort | premium.",
+  "lodging": [
+    { "id": "rough-riders", "name": "Rough Riders Hotel", "area": "Medora", "tier": "premium", "tags": ["historic"], "blurb": "The restored 1885 hotel on Medora's main street — the town's signature stay.", "booking": "https://www.medora.com/stay/rough-riders-hotel/" },
+    { "id": "americinn-medora", "name": "AmericInn by Wyndham Medora", "area": "Medora", "tier": "comfort", "tags": ["pool"], "blurb": "Full-comfort hotel with indoor pool at the edge of town.", "booking": "https://www.medora.com/stay/" },
+    { "id": "badlands-motel", "name": "Badlands Motel", "area": "Medora", "tier": "value", "tags": [], "blurb": "Clean, simple and walkable to downtown — a Medora classic.", "booking": "https://www.medora.com/stay/badlands-motel/" },
+    { "id": "elkhorn-quarters", "name": "Elkhorn Quarters", "area": "Medora", "tier": "value", "tags": ["suites"], "blurb": "Simple suites steps from the main street.", "booking": "https://www.medora.com/stay/" },
+    { "id": "medora-campground", "name": "Medora Campground", "area": "Medora", "tier": "camp", "tags": ["rv", "tent", "hookups"], "blurb": "In-town campground with RV hookups and tent sites, walkable to everything.", "booking": "https://www.medora.com/stay/medora-campground/" },
+    { "id": "cottonwood", "name": "Cottonwood Campground (TRNP South Unit)", "area": "National Park", "tier": "camp", "tags": ["tent", "rv", "nps"], "blurb": "The National Park Service campground inside the South Unit, along the Little Missouri.", "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm" },
+    { "id": "juniper", "name": "Juniper Campground (TRNP North Unit)", "area": "National Park", "tier": "camp", "tags": ["tent", "rv", "nps"], "blurb": "Quiet NPS campground in the North Unit, 70 miles north.", "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm" },
+    { "id": "sully-creek-camp", "name": "Sully Creek State Park Campground", "area": "Medora", "tier": "camp", "tags": ["tent", "rv", "horse", "equestrian"], "blurb": "Riverside sites and the Maah Daah Hey trailhead, 3 miles south of town — good for horses.", "booking": "https://www.parkrec.nd.gov/sully-creek-state-park" },
+    { "id": "red-trail", "name": "Red Trail Campground", "area": "Medora", "tier": "camp", "tags": ["rv", "tent", "hookups"], "blurb": "Full-hookup RV and tent camping a block off Medora's main street.", "booking": "https://redtrailcampground.com/" },
+    { "id": "dickinson-hotels", "name": "Dickinson chain hotels", "area": "Dickinson", "tier": "comfort", "tags": ["chain"], "blurb": "A cluster of national-brand hotels 40 minutes east — the fallback when Medora is full in peak summer.", "booking": "https://www.visitdickinson.com/" }
+  ]
+}
