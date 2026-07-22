@@ -219,6 +219,16 @@ These were added incrementally from user feedback. Preserve them:
   "Switch to Packed", "Edit dates", and per-overflow **Remove** buttons that
   recalculate in real time.
 - **Weather/packing** keyed to the selected months (or the exact trip dates when set).
+- **Far stops are season-filtered** in `buildSchedule` (out-of-season → overflow with
+  "closed on your dates (seasonal)") so a seasonal en-route stop can't be built into a
+  winter leg. (Near stops are season-checked via `canPlace`.)
+- **Nothing is scheduled at an impossible time.** Leg-day visits respect the stop's
+  open/close and never spill past ~22:00 — if a long drive-in means you'd arrive after
+  hours, the visit becomes a "settle in, explore in the morning" note instead of a
+  midnight row. A fixed-time anchor whose start has already passed because you're still
+  arriving (long drive-in) is skipped to a note, never overlapped onto the drive.
+- **Every activity `entry` carries its `id`** (leg/flex/anchor) — used for de-dup,
+  traceability, and the stress harness's id-based invariant checks.
 
 ---
 
@@ -274,15 +284,35 @@ There is no test runner committed. Verification is ad-hoc but rigorous:
   total outage and asserts events are preserved + a warn status is emitted.
 - **Realistic inputs matter.** A far origin + few picks legitimately collapses to a
   short plan; don't mistake that for a bug (see §9).
+- **Invariant stress harness.** A throwaway jsdom harness (kept in scratch, not
+  committed) generates thousands of seeded-random scenarios and asserts invariants that
+  must hold for *every* itinerary: nothing scheduled outside its open hours/season, no
+  two entries overlap, **conservation of picks** (every pick is scheduled, in overflow
+  with a reason, or a note — never silently dropped), one meal/slot & one evening show
+  per day, Pitchfork only with the Musical, drive times positive 15-min multiples, no
+  NaN/exceptions, dates in order, booking sanity. Map entries→items by `entry.id`.
+  Reproduce any failure via its seed. This found four real bug classes at once
+  (season-blind legs, impossible anchor overlaps on long-drive days, past-midnight leg
+  visits, out-of-season far stops) that the targeted tests had missed — rerun it after
+  any scheduler change.
 
 ---
 
 ## 9. Known limitations & gotchas
 
-- **Far car-origin collapse.** A long drive from a far origin (e.g. Fargo) with few
-  picks can still collapse into a single day with drive-there-and-back. The
-  `medoraDays` big-day-trip fix helps, but a full fix (spreading arrival/departure
-  travel across days) is still open. Flagged to the user; not yet done.
+- **Far car-origin collapse (the one open systematic issue).** A car origin whose
+  one-way drive exceeds a single day (Chicago, Seattle, etc.) still crams the whole
+  drive onto day 0 (and the return onto the last day). Visits and anchors are now
+  clamped (no impossible-time rows), but the **drive rows themselves can cross
+  midnight**, and few real activities fit. The stress harness (§8) flags these as
+  `start-after-midnight` (~3% of random scenarios, ~all far-car-origin ones). The real
+  fix is **splitting a >~10h drive into multiple calendar days with an en-route
+  overnight** — a contained `buildSchedule` change, not yet done. Also: haversine×1.15
+  over-estimates long east–west US drives (e.g. Chicago→Medora reads ~18h vs ~13h),
+  which makes the collapse look worse; per-corridor real mileages would help.
+- **Season rollover edge.** The far-stop season filter uses the trip's *start* month;
+  a trip that begins in-season but a far stop's leg lands a day or two into the next,
+  out-of-season month is not caught (≈1 in 3000 fuzz scenarios). Negligible; noted.
 - **Meal assignment vs layout.** `canPlace` assigns meals to days by budget, but
   doesn't know a day's morning is consumed by a drive — so a breakfast can land as
   an "Also consider" note even when another day had a free morning. Correct-but-not
@@ -353,5 +383,10 @@ verified before moving on):
     Canyon, Lewis & Clark/Fort Mandan); big-day-trip `medoraDays` fix.
 15. **Hardened data pipeline**: weekly cadence, MEC/Saffire parsers, Playwright,
     retries, validation, issue-on-failure, and the freshness/link-rot watchdog.
+16. **Documentation**: this CLAUDE.md builder's guide + README pointer.
+17. **Invariant stress test** (thousands of seeded scenarios): found & fixed four
+    scheduler bug classes — season-blind legs, anchor/drive overlaps, past-midnight leg
+    visits, out-of-season far stops; added `id` to entries. Remaining: far car-origin
+    long-drive collapse (see §9).
 
 For the fine-grained record, see the git log and `README.md`.

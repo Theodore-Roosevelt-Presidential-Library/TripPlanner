@@ -961,6 +961,16 @@
     var local = lib.concat(med, nearLocal);
     var overflow = [];
 
+    // Drop far stops that are out of season for the trip — a seasonal en-route
+    // stop (e.g. Pompeys Pillar, open May–Sep) must not be built into a winter
+    // leg. (Near stops are season-checked later via canPlace.)
+    var tripMonth = S.startDate ? (new Date(S.startDate).getMonth() + 1) : null;
+    far = far.filter(function (f) {
+      if (seasonOk(f.avail, tripMonth)) return true;
+      overflow.push({ item: f, reason: "closed on your dates (seasonal)" });
+      return false;
+    });
+
     // classify far stops into inbound vs outbound relative to the entry/exit airports
     var entry = entryPoint(), exit = exitPoint(), MEDORA = D.config.brand.anchor;
     far.forEach(function (f) {
@@ -1153,8 +1163,18 @@
 
     if (day.kind === "leg") {
       var s = day.stop;
-      entries.push({ start: Math.max(cursor, 9 * 60), dur: s.duration, name: s.name + (day.contd ? " (continued)" : ""), ds: day.contd ? "A second day to explore" : "Explore (~" + Math.round(s.duration / 60) + "h)", booking: s.booking, phone: s.phone, image: s.image, addr: s.address, lat: s.lat, lng: s.lng, gps: s.gps });
-      cursor = Math.max(cursor, 9 * 60) + s.duration + 15;
+      var sOpen = s.avail && s.avail.open ? hmToMin(s.avail.open) : 9 * 60;
+      var sClose = s.avail && s.avail.close ? hmToMin(s.avail.close) : 21 * 60;
+      var sStart = Math.max(cursor, sOpen, 9 * 60);
+      // Only schedule the visit if it fits within the stop's hours and the day.
+      // If a long drive-in means you arrive too late, don't invent a midnight
+      // visit — note it and see it in the morning (the gateway overnight covers it).
+      if (sStart + s.duration <= Math.min(sClose, limit)) {
+        entries.push({ id: s.id, start: sStart, dur: s.duration, name: s.name + (day.contd ? " (continued)" : ""), ds: day.contd ? "A second day to explore" : "Explore (~" + Math.round(s.duration / 60) + "h)", booking: s.booking, phone: s.phone, image: s.image, addr: s.address, lat: s.lat, lng: s.lng, gps: s.gps });
+        cursor = sStart + s.duration + 15;
+      } else {
+        day.notes.push("Arrive and settle in" + (day.baseCity ? " near " + day.baseCity : "") + " — explore " + s.name.replace(/ \(.*\)/, "") + " in the morning (you'd reach it after hours today).");
+      }
       if (day.baseCity) day.notes.push("Overnight in " + day.baseCity);
     } else if (day.kind === "medora") {
       if (day.baseCity && day.baseCity !== "Medora") { var bd = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd, drive: true, name: "Drive into Medora from " + day.baseCity, ds: "~" + durLabel(bd) }); cursor += bd + 10; }
@@ -1182,7 +1202,7 @@
           // the segment cap — otherwise hold it back (a later segment, or a note)
           var tooLate = mealCeil[it.meal] && start > mealCeil[it.meal];
           if (!tooLate && start + it.duration <= Math.min(lim, close)) {
-            entries.push({ start: start, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
+            entries.push({ id: it.id, start: start, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
             cursor = start + it.duration + 15;
           } else {
             keep.push(it);   // doesn't fit this segment/window — try a later segment or note it
@@ -1191,9 +1211,12 @@
         flex = keep;
       };
       for (var ai = 0; ai < anchors.length; ai++) {
-        placeFlexUntil(anchors[ai].start);
         var a = anchors[ai];
-        entries.push({ start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, addr: a.it.address, lat: a.it.lat, lng: a.it.lng, gps: a.it.gps, anchor: true });
+        // If its reserved time has already passed because you're still arriving
+        // (a long drive-in on this day), don't overlap it onto the drive — note it.
+        if (a.start < cursor) { day.notes.push(a.it.name + " runs at " + minToLabel(a.start) + ", but you're still arriving then — book it on a full Medora day."); continue; }
+        placeFlexUntil(a.start);
+        entries.push({ id: a.it.id, start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, addr: a.it.address, lat: a.it.lat, lng: a.it.lng, gps: a.it.gps, anchor: true });
         cursor = Math.max(cursor, a.end + 15);
       }
       placeFlexUntil(day._exit ? 17 * 60 : limit);
