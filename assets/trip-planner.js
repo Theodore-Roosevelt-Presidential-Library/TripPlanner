@@ -90,17 +90,29 @@
   function injectCSS(c) {
     if (document.getElementById("trtp-style")) return;
     var css = `
+    /* Brand fonts, served from the Library's own site (trlibrary.com) so the planner
+       matches the trlibrary.com style guide: Clearface (serif), Dharma Gothic E
+       (condensed display) and Ginter/Inter (UI sans). Loads natively when embedded on
+       trlibrary.com; degrades gracefully to the fallbacks below elsewhere. Oswald is
+       kept only as a condensed fallback for Dharma Gothic E. */
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+    @font-face{font-family:'Clearface';font-weight:400;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-regular.woff2') format('woff2');}
+    @font-face{font-family:'Clearface';font-weight:500;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-bold.woff2') format('woff2');}
+    @font-face{font-family:'Clearface';font-weight:600 700;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-heavy.woff2') format('woff2');}
+    @font-face{font-family:'Clearface';font-weight:800 900;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-black.woff2') format('woff2');}
+    @font-face{font-family:'Dharma Gothic E';font-weight:600 700;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/dharma_type-dharmagothice-bold.woff2') format('woff2');}
+    @font-face{font-family:'Dharma Gothic E';font-weight:800;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/dharma_type-dharmagothice-exbold.woff2') format('woff2');}
+    @font-face{font-family:'Ginter';font-weight:100 900;font-style:normal;font-display:swap;src:url('https://www.trlibrary.com/themes/contrib/gin/dist/media/font/inter.woff2') format('woff2');}
     #${CONTAINER_ID}{--tr-primary:${c.primary};--tr-secondary:${c.secondary};--tr-muted:${c.muted};--tr-paper:${c.paper};--tr-ink:${c.ink};--tr-primary-text:#B04E2F;
       color:var(--tr-ink);background:var(--tr-paper);border-radius:6px;overflow:hidden;
-      font-family:Frutiger,'Helvetica Neue',Arial,sans-serif;line-height:1.5;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.04);}
+      font-family:'Ginter','Inter','Helvetica Neue',Arial,sans-serif;line-height:1.5;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.04);}
     #${CONTAINER_ID} *{box-sizing:border-box;}
     /* Visible keyboard focus (WCAG 2.4.7) */
     #${CONTAINER_ID} :focus-visible{outline:3px solid var(--tr-secondary);outline-offset:2px;border-radius:3px;}
     #${CONTAINER_ID} .trtp-card:focus-visible{outline-offset:-1px;}
     @media (prefers-reduced-motion: reduce){#${CONTAINER_ID} *{transition:none !important;animation:none !important;}}
     .trtp-steps{display:flex;flex-wrap:wrap;gap:2px;background:var(--tr-secondary);padding:10px 14px;}
-    .trtp-step{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;
+    .trtp-step{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;
       color:#9fb3cc;background:transparent;border:none;padding:6px 9px;border-radius:3px;cursor:pointer;white-space:nowrap;}
     .trtp-step:hover{color:#fff;}
     .trtp-step .n{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border-radius:50%;background:#2a486b;margin-right:5px;font-size:10px;}
@@ -114,9 +126,9 @@
     .trtp-main{padding:26px 30px 34px;}
     .trtp-side{background:var(--tr-secondary);color:#fff;padding:22px 22px;}
     @media(max-width:820px){.trtp-side{order:2;}}
-    .trtp-kicker{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--tr-primary-text);font-weight:600;margin:0 0 6px;}
+    .trtp-kicker{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--tr-primary-text);font-weight:600;margin:0 0 6px;}
     .trtp-h{font-family:'Clearface',Georgia,serif;font-weight:600;color:var(--tr-secondary);font-size:29px;line-height:1.08;margin:0 0 8px;}
-    .trtp-h.display{font-family:Oswald,'Dharma Gothic E',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-weight:700;font-size:36px;}
+    .trtp-h.display{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.02em;font-weight:700;font-size:38px;}
     .trtp-sub{font-size:15px;color:#4a4d50;margin:0 0 20px;max-width:58ch;}
     .trtp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:13px;margin:6px 0 4px;}
     .trtp-grid.wide{grid-template-columns:repeat(auto-fill,minmax(255px,1fr));}
@@ -132,26 +144,26 @@
     .trtp-card .cimg{display:block;width:calc(100% + 30px)!important;max-width:none!important;height:140px;object-fit:cover;margin:-14px -15px 12px -15px;background:#e9e2d2;border-bottom:1px solid #e4ddcd;}
     .trtp-card .t{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);margin:0 0 3px;}
     .trtp-card .b{font-size:13px;color:#5c5f62;margin:0;}
-    .trtp-card .meta{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary-text);margin-top:8px;font-weight:600;}
+    .trtp-card .meta{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary-text);margin-top:8px;font-weight:600;}
     .trtp-card .check{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--tr-primary);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;}
     .trtp-card.sel .check{display:flex;}
     .trtp-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap;}
-    .trtp-btn{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;border:none;border-radius:3px;padding:12px 22px;cursor:pointer;transition:filter .12s,transform .12s;}
+    .trtp-btn{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;border:none;border-radius:3px;padding:12px 22px;cursor:pointer;transition:filter .12s,transform .12s;}
     .trtp-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
     .trtp-btn.primary{background:var(--tr-primary);color:#25282a;}
     .trtp-btn.ghost{background:transparent;color:var(--tr-secondary);border:1px solid var(--tr-muted);}
     .trtp-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-    .trtp-side h3{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--tr-primary);margin:0 0 4px;font-weight:600;}
+    .trtp-side h3{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--tr-primary);margin:0 0 4px;font-weight:600;}
     .trtp-side .trip-name{font-family:'Clearface',Georgia,serif;font-size:21px;font-weight:600;margin:0 0 14px;color:#fff;}
     .trtp-side .empty{color:#9fb3cc;font-size:13.5px;font-style:italic;}
     .trtp-sec{margin-bottom:15px;}
-    .trtp-sec .lbl{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;color:#9fb3cc;margin:0 0 6px;}
+    .trtp-sec .lbl{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;color:#9fb3cc;margin:0 0 6px;}
     .trtp-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:13.5px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.14);}
     .trtp-item .x{background:none;border:none;color:#9fb3cc;cursor:pointer;font-size:15px;line-height:1;padding:0 2px;}
     .trtp-item .x:hover{color:#fff;}
     .trtp-side .fact{font-size:13px;color:#cdd8e6;margin:2px 0;}
     .trtp-side .fact b{color:#fff;font-weight:600;}
-    .trtp-cta{display:block;text-align:center;background:var(--tr-primary);color:#25282a !important;text-decoration:none;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;padding:12px;border-radius:3px;margin-top:16px;}
+    .trtp-cta{display:block;text-align:center;background:var(--tr-primary);color:#25282a !important;text-decoration:none;font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;padding:12px;border-radius:3px;margin-top:16px;}
     .trtp-note{background:#fff;border-left:3px solid var(--tr-primary);padding:10px 14px;font-size:13.5px;color:#5c5f62;border-radius:0 4px 4px 0;margin:14px 0;}
     .trtp-warn{background:#fff4ef;border-left:3px solid var(--tr-primary);padding:10px 14px;font-size:13px;color:#8a4a2f;border-radius:0 4px 4px 0;margin:12px 0;}
     .trtp-overcap{background:#fff4ef;border:1px solid var(--tr-primary);border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:13px 16px;font-size:13.5px;color:#8a4a2f;margin:0 0 16px;}
@@ -169,10 +181,10 @@
     .trtp-loading{padding:60px 30px;text-align:center;color:var(--tr-secondary);font-family:'Clearface',Georgia,serif;font-size:20px;}
     .trtp-sub-h{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:var(--tr-secondary);margin:22px 0 8px;}
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
-    .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
+    .trtp-field label{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
     .trtp-dinearound{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
-    .trtp-dinearound h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 4px;font-weight:600;}
+    .trtp-dinearound h4{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 4px;font-weight:600;}
     .trtp-dinearound .da-sub{font-size:13px;color:#5c5f62;margin:0 0 11px;}
     .trtp-dinearound .da-chips{display:flex;flex-wrap:wrap;gap:8px;}
     .da-chip{font:inherit;font-size:13px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:7px 13px;cursor:pointer;color:var(--tr-secondary);transition:all .12s;display:inline-flex;align-items:center;gap:2px;}
@@ -183,12 +195,12 @@
     .consider-chip{font:inherit;font-size:12.5px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:6px 12px;cursor:pointer;color:var(--tr-secondary);display:inline-flex;align-items:center;gap:2px;}
     .consider-chip:hover{border-color:var(--tr-primary);background:#fff;}
     .consider-chip .cx{color:var(--tr-primary-text);font-weight:700;}
-    .da-chip .cat{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:#9a8a6a;margin-left:5px;}
+    .da-chip .cat{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:#9a8a6a;margin-left:5px;}
     .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
-    .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 12px;font-weight:600;}
+    .trtp-weather h4{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 12px;font-weight:600;}
     .trtp-weather .wmonths{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
     .trtp-weather .wmo{flex:1;min-width:120px;background:var(--tr-paper);border:1px solid #e4ddcd;border-radius:5px;padding:9px 11px;}
-    .trtp-weather .wm{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--tr-secondary);font-weight:600;}
+    .trtp-weather .wm{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--tr-secondary);font-weight:600;}
     .trtp-weather .wt{font-family:'Clearface',Georgia,serif;font-size:18px;color:var(--tr-primary);font-weight:600;margin:1px 0;}
     .trtp-weather .wc{font-size:11.5px;color:#6c6f72;line-height:1.35;}
     .trtp-weather .wcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -201,43 +213,45 @@
       #${CONTAINER_ID} .trtp-chip{padding:10px 14px;}
       #${CONTAINER_ID} .trtp-side{padding:20px 16px;}
     }
-    .trtp-weather .wlbl{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px;color:var(--tr-secondary);font-weight:600;margin-bottom:4px;}
+    .trtp-weather .wlbl{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px;color:var(--tr-secondary);font-weight:600;margin-bottom:4px;}
     .trtp-weather .wlist{margin:0;padding-left:17px;}
     .trtp-weather .wlist li{font-size:13px;color:#4a4d50;margin:3px 0;line-height:1.4;}
     .trtp-weather .wnote{font-size:12px;color:#8a8d90;margin-top:10px;font-style:italic;}
+    .trtp-tz{background:#eef3f8;border:1px solid #d5e0ec;border-left:4px solid var(--tr-secondary);border-radius:6px;padding:11px 15px;margin:16px 0;font-size:13.5px;line-height:1.5;color:#3a4a5c;}
+    .trtp-tz .tzk{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:600;color:var(--tr-secondary);margin-right:4px;}
     .trtp-rec{background:#092a4d;color:#fff;border-radius:6px;padding:15px 18px;margin:4px 0 16px;}
     .trtp-rec .rt{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:#fff;}
     .trtp-rec .rr{font-size:13.5px;color:#cdd8e6;margin-top:3px;}
     .trtp-booking{background:#fff;border:1px solid #e4ddcd;border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:14px 18px;margin:0 0 18px;}
-    .trtp-booking h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 10px;font-weight:600;}
+    .trtp-booking h4{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 10px;font-weight:600;}
     .trtp-book-row{padding:8px 0;border-bottom:1px dashed #e4ddcd;}
     .trtp-book-row:last-child{border-bottom:none;}
     .trtp-book-row .bcity{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);}
-    .trtp-book-row .bdet{font-family:Oswald,sans-serif;letter-spacing:.04em;font-size:12.5px;color:var(--tr-primary);margin-top:1px;}
+    .trtp-book-row .bdet{font-family:'Dharma Gothic E',Oswald,sans-serif;letter-spacing:.04em;font-size:12.5px;color:var(--tr-primary);margin-top:1px;}
     .trtp-book-row .bwhy{font-size:12.5px;color:#6c6f72;margin-top:2px;}
     .trtp-day{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:0;margin:0 0 14px;overflow:hidden;}
     .trtp-day-head{background:var(--tr-secondary);color:#fff;padding:11px 16px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;}
-    .trtp-day-head .dt{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:14px;}
+    .trtp-day-head .dt{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:14px;}
     .trtp-day-head .sd{font-size:12px;color:#9fb3cc;}
     .trtp-row{display:flex;gap:12px;padding:11px 16px;border-bottom:1px solid #f0ead9;}
     .trtp-row:last-child{border-bottom:none;}
-    .trtp-row .tm{font-family:Oswald,sans-serif;font-weight:600;font-size:12.5px;color:var(--tr-primary);min-width:74px;white-space:nowrap;padding-top:1px;}
+    .trtp-row .tm{font-family:'Dharma Gothic E',Oswald,sans-serif;font-weight:600;font-size:12.5px;color:var(--tr-primary);min-width:74px;white-space:nowrap;padding-top:1px;}
     .trtp-row .rthumb{width:60px;height:46px;object-fit:cover;border-radius:4px;flex:0 0 auto;background:#e9e2d2;}
     .trtp-row .bd{flex:1;}
     .trtp-row .bd .nm{font-family:'Clearface',Georgia,serif;font-weight:600;color:var(--tr-secondary);font-size:15px;}
-    .trtp-row .bd .nm .rdur{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:600;color:#fff;background:var(--tr-primary);border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:1px;}
+    .trtp-row .bd .nm .rdur{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:600;color:#fff;background:var(--tr-primary);border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:1px;}
     .trtp-row .bd .ds{font-size:12.5px;color:#6c6f72;margin-top:1px;}
     .trtp-row .bd .raddr{font-size:11.5px;color:#8a8d90;margin-top:2px;}
     .trtp-row .bd .bk{font-size:12px;margin-top:3px;}
     .trtp-row .bd .bk a{color:var(--tr-primary-text);text-decoration:underline;font-weight:600;}
     .trtp-row.drive{background:#faf6ee;}
-    .trtp-row.drive .nm{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;color:#8a7a5f;}
+    .trtp-row.drive .nm{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;color:#8a7a5f;}
     .trtp-seg{display:inline-flex;border:1px solid #d8cfb9;border-radius:4px;overflow:hidden;margin:2px 0 6px;}
-    .trtp-seg button{font:inherit;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12px;font-weight:600;padding:8px 14px;border:none;background:#fff;color:var(--tr-secondary);cursor:pointer;border-right:1px solid #e4ddcd;}
+    .trtp-seg button{font:inherit;font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12px;font-weight:600;padding:8px 14px;border:none;background:#fff;color:var(--tr-secondary);cursor:pointer;border-right:1px solid #e4ddcd;}
     .trtp-seg button:last-child{border-right:none;}
     .trtp-seg button.on{background:var(--tr-primary);color:#25282a;}
     .trtp-months{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px;}
-    .trtp-chip{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:13px;font-weight:600;
+    .trtp-chip{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:13px;font-weight:600;
       padding:9px 16px;border:1px solid #d8cfb9;border-radius:20px;background:#fff;color:var(--tr-secondary);cursor:pointer;transition:all .12s;}
     .trtp-chip:hover{border-color:var(--tr-muted);transform:translateY(-1px);}
     .trtp-chip.on{background:var(--tr-primary);border-color:var(--tr-primary);color:#25282a;}
@@ -957,7 +971,7 @@
   // Normalize a pick into a schedulable object.
   function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, image: o.image, address: o.address || "Theodore Roosevelt Presidential Library, Medora, ND 58645", area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
   function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, address: a.address, lat: a.lat, lng: a.lng, gps: a.gps, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
-  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, address: d.address, miles: d.milesFromMedora, lat: d.lat, lng: d.lng, gps: d.gps, overnight: d.overnight || null, visitDays: d.visitDays || 1, kind: "destination" }; }
+  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, address: d.address, miles: d.milesFromMedora, lat: d.lat, lng: d.lng, gps: d.gps, overnight: d.overnight || null, visitDays: d.visitDays || 1, tz: d.tz || null, kind: "destination" }; }
   // Google Maps link for GPS routing. Trailheads (gps flag) route to exact coordinates;
   // businesses/parks use their address (e.g. the right park entrance); else coords, else name.
   function mapsUrl(e) {
@@ -995,13 +1009,13 @@
   // realToMedora = curated real drive minutes from this origin to Medora (origins.json
   // driveHours), used instead of the haversine estimate for the origin↔Medora leg.
   function entryPoint() {
-    if (S.arrival === "air" && S.airport) { var a = airport(S.airport); return { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true }; }
-    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
+    if (S.arrival === "air" && S.airport) { var a = airport(S.airport); return { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true, tz: a.tz || null }; }
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, tz: S.origin.tz || null, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
     return null;
   }
   function exitPoint() {
-    if (S.arrival === "air") { var a = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport); return a ? { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true } : null; }
-    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
+    if (S.arrival === "air") { var a = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport); return a ? { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true, tz: a.tz || null } : null; }
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, tz: S.origin.tz || null, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
     return null;
   }
   function baseDriveMin(city) { var b = null; D.lodging.lodging.forEach(function (l) { if (l.nearbyBase && (l.name === city || l.area === city)) b = l; }); return b ? b.driveMin : 30; }
@@ -1294,6 +1308,38 @@
     // (Drive segments, transit days, arrival buffer and exit are all set during the
     // segment-based plan walk above.)
     days.forEach(function (d) { layoutDay(d); });
+
+    // --- Time zones. Medora is on MOUNTAIN time, and the Mountain/Central line runs
+    // just east of town — so guests routinely cross it driving in (Dickinson, Bismarck,
+    // Williston, Fargo are all Central; Rapid City, Billings, Denver are Mountain). We
+    // walk the ordered days by each node's tz and drop a clocks-forward/back note on the
+    // day the line is crossed, plus a trip-level summary. (iCal stays floating-local, so
+    // exported times are already correct across the line — see buildICS.) ---
+    var TZO = { PT: -8, MT: -7, CT: -6 }, TZN = { PT: "Pacific Time", MT: "Mountain Time", CT: "Central Time" };
+    function crossNote(from, to, future) {
+      if (!from || !to || from === to || !(from in TZO) || !(to in TZO)) return null;
+      var diff = TZO[to] - TZO[from], back = diff < 0, h = Math.abs(diff);
+      var hrs = h > 1 ? h + " hours" : "an hour";
+      // Westbound = clocks back = gain time; eastbound = clocks forward = lose time.
+      return "⏰ Time zone: crossing from " + TZN[from] + " into " + TZN[to] + ", you " + (back ? "gain" : "lose") + " " + hrs + " — set your clocks " + (back ? "back" : "forward") + " " + hrs + ".";
+    }
+    var curTz = entry ? entry.tz : (S.origin && S.origin.tz) || null;
+    var crossings = [];
+    days.forEach(function (d) {
+      var nodeTz = d.kind === "medora" ? "MT" : (d.kind === "leg" && d.stop ? d.stop.tz : null);
+      if (!nodeTz) return;                       // transit day — mid-drive, skip
+      if (curTz && nodeTz !== curTz) { var n = crossNote(curTz, nodeTz); if (n) { d.notes.push(n); crossings.push({ from: curTz, to: nodeTz, day: d.index }); } }
+      curTz = nodeTz;
+    });
+    var exTz = (typeof effExit !== "undefined" && effExit && effExit.tz) || (exit && exit.tz) || null;
+    if (exTz && curTz && exTz !== curTz) { var en = crossNote(curTz, exTz, true); if (en) { var ld = days[days.length - 1]; if (ld) { ld.notes.push(en.replace(/\.$/, "") + " on your way to " + (effExit && effExit.label ? effExit.label : "the airport") + "."); crossings.push({ from: curTz, to: exTz, day: ld.index }); } } }
+    // Trip-level summary + the North Unit quirk (its own time zone).
+    var tzSummary = "Medora runs on <b>Mountain Time</b> (MT) — and the Mountain/Central line sits just east of town.";
+    var entryTz = entry ? entry.tz : (S.origin && S.origin.tz) || null;
+    if (entryTz && entryTz !== "MT" && (entryTz in TZO)) { var d0 = TZO.MT - TZO[entryTz], ah = Math.abs(d0), ahrs = ah > 1 ? ah + " hours" : "an hour"; tzSummary += " Coming from " + TZN[entryTz] + ", you'll " + (d0 < 0 ? "gain" : "lose") + " " + ahrs + " crossing in (set your clocks " + (d0 < 0 ? "back" : "forward") + " " + ahrs + ")."; }
+    var hasNorth = days.some(function (d) { return (d.items || []).some(function (x) { return x.id === "trnp-north" || x.id === "north-unit-scenic-drive"; }) || (d.stop && d.stop.id === "trnp-north"); });
+    if (hasNorth) tzSummary += " Heads-up: the National Park's <b>North Unit is in the Central zone</b> — an hour ahead of Medora — so mind the clock on that day trip.";
+
     var booking = buildBooking(days);
     var reqDays = Math.max(requiredDays, N);   // transit days can push the actual plan past the estimate
     var capacity = {
@@ -1303,7 +1349,7 @@
       over: !!(S.days && reqDays > S.days),
       spare: !!(S.days && N < S.days)
     };
-    return { days: days, overflow: overflow, booking: booking, medoraDays: medoraDayObjs.length, medoraBase: medoraBase, capacity: capacity, exitNote: exitNote };
+    return { days: days, overflow: overflow, booking: booking, medoraDays: medoraDayObjs.length, medoraBase: medoraBase, capacity: capacity, exitNote: exitNote, tz: { summary: tzSummary, medora: "MT", crossings: crossings } };
   }
 
   // Group consecutive same-city days into lodging bookings (the Medora block is contiguous).
@@ -1520,6 +1566,13 @@
       m.appendChild(ebox);
     }
 
+    // Time-zone heads-up (Medora is Mountain; the MT/CT line is just east of town).
+    if (sched.tz && sched.tz.summary) {
+      var tzbox = el("div", { class: "trtp-tz" });
+      tzbox.innerHTML = "<span class='tzk'>🕑 Time zones</span> " + sched.tz.summary;
+      m.appendChild(tzbox);
+    }
+
     // Over-capacity guidance: picks need more days than the guest set. We show
     // one-click fixes right here — bump to the days you need, switch pace — and
     // list what got trimmed with a Remove button that recalculates in real time.
@@ -1715,6 +1768,7 @@
     if (S.arrival === "air" && S.airport) { var a = airport(S.airport); facts.push("Fly into " + esc(a.name) + " (" + a.code + ")" + (S.diffReturn && S.airportOut ? "; fly out of " + esc(airport(S.airportOut).name) + " (" + S.airportOut + ")" : "")); if (S.rental) facts.push("Rental car: " + esc(S.rental) + (S.diffReturn ? " (one-way)" : "")); }
     else if (S.arrival === "car") facts.push("Driving your own vehicle");
     if (S.tier) facts.push("Comfort level: " + esc(byId(D.config.comfortTiers, S.tier).label) + " · Pace: " + esc(S.pace));
+    if (sched.tz && sched.tz.summary) facts.push("Time zones: " + sched.tz.summary.replace(/<[^>]+>/g, ""));
 
     // Where to book: contiguous nights per town
     var bookingHtml = sched.booking.length ? "<h2>Where to book</h2><table class='book'>" + sched.booking.map(function (b) {
@@ -1768,22 +1822,25 @@
     var html = "<!DOCTYPE html><html><head><meta charset='utf-8'><title>Your Roosevelt Country Trip</title>" +
       "<style>" +
       "@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap');" +
-      "body{font-family:Georgia,serif;color:#25282a;max-width:760px;margin:24px auto;padding:0 22px;line-height:1.5;}" +
-      "h1{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.02em;color:" + c.secondary + ";font-size:30px;margin:0 0 4px;}" +
+      "@font-face{font-family:'Clearface';font-weight:400;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-regular.woff2') format('woff2');}" +
+      "@font-face{font-family:'Clearface';font-weight:600 700;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-heavy.woff2') format('woff2');}" +
+      "@font-face{font-family:'Dharma Gothic E';font-weight:600 700;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/dharma_type-dharmagothice-bold.woff2') format('woff2');}" +
+      "body{font-family:'Clearface',Georgia,serif;color:#25282a;max-width:760px;margin:24px auto;padding:0 22px;line-height:1.5;}" +
+      "h1{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.02em;color:" + c.secondary + ";font-size:30px;margin:0 0 4px;}" +
       ".facts{font-size:13.5px;color:#4a4d50;margin:0 0 18px;padding:0 0 14px;border-bottom:2px solid " + c.primary + ";}" +
       ".facts div{margin:2px 0;}" +
-      "h2{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:16px;color:" + c.primary + ";margin:22px 0 6px;}" +
+      "h2{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:16px;color:" + c.primary + ";margin:22px 0 6px;}" +
       ".day{margin:0 0 12px;break-inside:avoid;}" +
-      ".day h3{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.04em;font-size:15px;background:" + c.secondary + ";color:#fff;padding:7px 11px;margin:0;border-radius:4px 4px 0 0;}" +
+      ".day h3{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.04em;font-size:15px;background:" + c.secondary + ";color:#fff;padding:7px 11px;margin:0;border-radius:4px 4px 0 0;}" +
       ".day h3 .sub{float:right;font-size:11px;color:#9fb3cc;font-weight:400;}" +
       "table{width:100%;border-collapse:collapse;}" +
       ".day table{border:1px solid #e4ddcd;border-top:none;}" +
       ".day td{padding:7px 11px;border-bottom:1px solid #f0ead9;vertical-align:top;}" +
-      ".tm{font-family:Oswald,sans-serif;font-weight:600;font-size:12px;color:" + c.primary + ";white-space:nowrap;width:80px;vertical-align:top;}" +
+      ".tm{font-family:'Dharma Gothic E',Oswald,sans-serif;font-weight:600;font-size:12px;color:" + c.primary + ";white-space:nowrap;width:80px;vertical-align:top;}" +
       ".thc{width:76px;padding:7px 8px;}" +
       ".thm{width:68px;height:50px;object-fit:cover;border-radius:3px;display:block;}" +
       ".nm{display:block;font-weight:bold;color:" + c.secondary + ";}" +
-      ".rdur{font-family:Oswald,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:" + c.primary + ";border-radius:9px;padding:1px 7px;margin-left:6px;}" +
+      ".rdur{font-family:'Dharma Gothic E',Oswald,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:" + c.primary + ";border-radius:9px;padding:1px 7px;margin-left:6px;}" +
       ".ds{display:block;font-size:12px;color:#6c6f72;font-family:Arial,sans-serif;}" +
       ".bk{display:block;font-size:11.5px;font-family:Arial,sans-serif;margin-top:2px;}" +
       ".bk a{color:#B04E2F;text-decoration:underline;}" +
@@ -1792,7 +1849,7 @@
       ".warn{background:#fff4ef;border-left:3px solid " + c.primary + ";padding:8px 12px;font-size:13px;margin:16px 0;}" +
       ".disc{background:#fbf7ef;border:1px dashed #c9b79a;border-radius:6px;padding:9px 13px;font-size:12px;line-height:1.5;color:#5f5137;margin:0 0 16px;font-family:Arial,sans-serif;}" +
       ".foot{margin-top:22px;font-size:12px;color:#8a8d90;font-family:Arial,sans-serif;border-top:1px solid #e4ddcd;padding-top:10px;}" +
-      ".pbtn{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:" + c.primary + ";color:#25282a;border:none;padding:11px 20px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;}" +
+      ".pbtn{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:" + c.primary + ";color:#25282a;border:none;padding:11px 20px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;}" +
       "@media print{.noprint{display:none;}body{margin:0;}}" +
       "</style></head><body>" +
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +

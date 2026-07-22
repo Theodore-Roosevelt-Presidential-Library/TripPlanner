@@ -30,7 +30,13 @@ itinerary** they can print, export to calendar, or share by URL.
   the planner "knows" is curated JSON in `data/`. Editing the planner = editing
   JSON or the one JS file.
 - **Aesthetic:** trlibrary.com scrapbook style — terracotta `#E7805D`, navy
-  `#092A4D`, Clearface serif. Colors come from `data/config.json`.
+  `#092A4D`. Colors come from `data/config.json`. **Brand fonts** are the real
+  trlibrary.com faces, loaded via `@font-face` from the Library's own server
+  (`www.trlibrary.com/themes/custom/trpl/css/*.woff2`, which sends
+  `Access-Control-Allow-Origin: *`, so they load cross-origin on the standalone demo
+  too): **Clearface** (serif — titles/body), **Dharma Gothic E** (condensed uppercase —
+  display/labels, Oswald kept only as a fallback), **Ginter/Inter** (UI sans). Don't
+  redistribute the licensed woff2 into this repo — reference them from trlibrary.com.
 
 ---
 
@@ -307,6 +313,17 @@ These were added incrementally from user feedback. Preserve them:
   Jewel Cave stay year-round** — their tours run all winter, so don't "helpfully" add a
   caves=summer season. Shops close ~19:00 (not 18:00). When touching any of these, verify
   against the source — don't trust a seed value.
+- **Time zones are surfaced.** Medora is on **Mountain Time**, and the Mountain/Central
+  line runs just east of town, so guests cross it driving in (Dickinson/Bismarck/
+  Williston/Fargo = Central; Rapid City/Billings/Denver = Mountain). Every location
+  carries a `tz` (`MT|CT|PT`) — `origins.json`, `airports.json`, `destinations.json`;
+  Medora itself is the `"MT"` constant in `buildSchedule`. The scheduler walks the
+  ordered days by node tz and drops a "⏰ …set your clocks back/forward N hour(s)" note
+  on the day the line is crossed (inbound and outbound), plus a trip-level `sched.tz.summary`
+  rendered as a `.trtp-tz` callout on the schedule step and in the print facts. Special
+  case: **TRNP's North Unit is in the Central zone** (NPS-documented) while the South Unit
+  is Mountain — flagged when the North Unit is in the plan. iCal stays **floating-local**
+  (no TZID) so exported wall-clock times read correctly across the line.
 - **Weather/packing** keyed to the selected months (or the exact trip dates when set).
 - **Far stops are season-filtered** in `buildSchedule` (out-of-season → overflow with
   "closed on your dates (seasonal)") so a seasonal en-route stop can't be built into a
@@ -553,5 +570,14 @@ verified before moving on):
     falls in-block) overflows with a clear "Library closed that day" reason. Confirmed
     against the **live event calendar** (0 activities on Mon Oct 5 2026). Harness: new
     `library-on-closed-day` invariant, 0 across 4,000 dated scenarios.
+25. **Time zones + brand fonts.** (a) **Time zones** — added a `tz` field to every
+    location and a crossing detector in `buildSchedule`: Medora is Mountain, the MT/CT
+    line is just east of town, so guests get clocks-forward/back notes on the crossing
+    day + a `sched.tz.summary` callout (`.trtp-tz`) and print line; the North Unit's
+    Central-zone quirk is called out. (b) **Fonts** — the embed now loads the real
+    trlibrary.com brand faces (Clearface / Dharma Gothic E / Ginter-Inter) via `@font-face`
+    from the Library's own server (confirmed `ACAO:*`, so cross-origin works), replacing
+    the Oswald/Frutiger stand-ins; print + host page aligned. 3,000-scenario smoke: all
+    build with a tz summary, 0 exceptions.
 
 For the fine-grained record, see the git log and `README.md`.

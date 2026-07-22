@@ -32,11 +32,16 @@
     gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
   </script>
   <style>
-    body{margin:0;background:#efe7d6;font-family:'Helvetica Neue',Arial,sans-serif;color:#25282a;}
+    /* Brand fonts from trlibrary.com — match the Library style guide. */
+    @font-face{font-family:'Clearface';font-weight:400;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-regular.woff2') format('woff2');}
+    @font-face{font-family:'Clearface';font-weight:600 700;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/clearfacestd-heavy.woff2') format('woff2');}
+    @font-face{font-family:'Dharma Gothic E';font-weight:600 700;font-display:swap;src:url('https://www.trlibrary.com/themes/custom/trpl/css/dharma_type-dharmagothice-bold.woff2') format('woff2');}
+    @font-face{font-family:'Ginter';font-weight:100 900;font-display:swap;src:url('https://www.trlibrary.com/themes/contrib/gin/dist/media/font/inter.woff2') format('woff2');}
+    body{margin:0;background:#efe7d6;font-family:'Ginter','Inter','Helvetica Neue',Arial,sans-serif;color:#25282a;}
     .page{max-width:1080px;margin:0 auto;padding:32px 20px 60px;}
     .masthead{text-align:center;margin:10px 0 26px;}
-    .masthead .kick{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#E7805D;font-size:13px;font-weight:600;}
-    .masthead h1{font-family:Georgia,serif;color:#092A4D;font-size:34px;margin:6px 0 4px;}
+    .masthead .kick{font-family:'Dharma Gothic E','Oswald',sans-serif;text-transform:uppercase;letter-spacing:.2em;color:#E7805D;font-size:15px;font-weight:700;}
+    .masthead h1{font-family:'Clearface',Georgia,serif;color:#092A4D;font-size:36px;margin:6px 0 4px;font-weight:700;}
     .masthead p{color:#5c5f62;max-width:60ch;margin:0 auto;}
     .embed-note{max-width:1080px;margin:40px auto 0;padding:18px 22px;background:#fff;border:1px dashed #cbb98f;border-radius:6px;color:#5c5f62;font-size:14px;}
     .embed-note code{background:#f3ecda;padding:2px 6px;border-radius:3px;font-size:13px;}
