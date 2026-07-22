@@ -97,7 +97,10 @@
       transition:transform .12s,box-shadow .12s,border-color .12s;position:relative;font:inherit;color:inherit;}
     .trtp-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(9,42,77,.10);border-color:var(--tr-muted);}
     .trtp-card.sel{border-color:var(--tr-primary);box-shadow:0 0 0 2px var(--tr-primary) inset;}
-    .trtp-card.dis{opacity:.5;}
+    .trtp-card.dis{opacity:.45;cursor:not-allowed;filter:grayscale(.6);}
+    .trtp-card.dis:hover{transform:none;box-shadow:none;border-color:#e4ddcd;}
+    .trtp-rec2{background:#092a4d;color:#fff;border-radius:6px;padding:12px 16px;margin:4px 0 14px;font-size:14px;}
+    .trtp-rec2 b{color:var(--tr-primary);}
     .trtp-card.has-img{padding-top:0;overflow:hidden;}
     .trtp-card .cimg{display:block;width:calc(100% + 30px)!important;max-width:none!important;height:140px;object-fit:cover;margin:-14px -15px 12px -15px;background:#e9e2d2;border-bottom:1px solid #e4ddcd;}
     .trtp-card .t{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);margin:0 0 3px;}
@@ -173,6 +176,7 @@
     .trtp-row .rthumb{width:60px;height:46px;object-fit:cover;border-radius:4px;flex:0 0 auto;background:#e9e2d2;}
     .trtp-row .bd{flex:1;}
     .trtp-row .bd .nm{font-family:'Clearface',Georgia,serif;font-weight:600;color:var(--tr-secondary);font-size:15px;}
+    .trtp-row .bd .nm .rdur{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10.5px;font-weight:600;color:#fff;background:var(--tr-primary);border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:1px;}
     .trtp-row .bd .ds{font-size:12.5px;color:#6c6f72;margin-top:1px;}
     .trtp-row .bd .bk{font-size:12px;margin-top:3px;}
     .trtp-row .bd .bk a{color:var(--tr-primary);text-decoration:none;font-weight:600;}
@@ -235,6 +239,15 @@
     }
     if (S.months.length) return S.months.slice().sort(function (a, b) { return a - b; });
     return [];
+  }
+  // Suggest a concrete arrival date (first Saturday of the guest's month, this or next year).
+  function recommendDate() {
+    var now = new Date(), year = now.getFullYear();
+    var mo = S.months.length ? S.months.slice().sort(function (a, b) { return a - b; })[0] : 7;
+    if (mo < now.getMonth() + 1 || (mo === now.getMonth() + 1 && now.getDate() > 20)) year++;
+    var d = new Date(year, mo - 1, 1);
+    while (d.getDay() !== 6) d.setDate(d.getDate() + 1);
+    return { date: d, iso: d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()), label: DOW[d.getDay()] + ", " + MON[d.getMonth()] + " " + d.getDate() };
   }
   function tripDateRangeLabel() {
     if (!S.startDate) return null;
@@ -606,19 +619,27 @@
             }
 
             if (S.airport && (!S.diffReturn || S.airportOut)) {
-              var opts = rentalOptions();
-              m.appendChild(el("div", { class: "trtp-sub-h", text: S.diffReturn ? "Rental cars serving both " + S.airport + " and " + S.airportOut : "Rental cars at " + S.airport }));
-              if (!opts.length) {
-                m.appendChild(el("div", { class: "trtp-warn", text: "No single rental company serves both of those airports. For a one-way rental, pick the same airport for return, or choose two airports that share a company." }));
-              } else {
-                cardGrid(m, opts.map(function (n) { return { id: n, name: n }; }), {
-                  selected: function (r) { return S.rental === r.id; },
-                  blurb: function () { return S.diffReturn ? "One-way rental (pick-up + drop-off)" : "Available at " + airport(S.airport).city; },
-                  onclick: function (r) { S.rental = r.id; render(); }
-                });
-                if (S.diffReturn) m.appendChild(el("div", { class: "trtp-note", text: "One-way rentals usually carry a drop-off fee — confirm when you book." }));
-              }
-              m.appendChild(el("div", { class: "trtp-note", html: "Heads up: rideshare is limited in Medora, so a rental car is the way to explore the Badlands. <a href='" + D.config.brand.directionsUrl + "' target='_blank' rel='noopener'>Full directions ↗</a>" }));
+              var valid = rentalOptions();                          // serve the required airport(s)
+              var union = airport(S.airport).rentalCars.slice();     // every company at the fly-in airport
+              if (S.diffReturn && S.airportOut) airport(S.airportOut).rentalCars.forEach(function (r) { if (union.indexOf(r) < 0) union.push(r); });
+              union.sort(function (a, b) { var av = valid.indexOf(a) > -1 ? 0 : 1, bv = valid.indexOf(b) > -1 ? 0 : 1; return av - bv || a.localeCompare(b); });
+              m.appendChild(el("div", { class: "trtp-sub-h", text: S.diffReturn ? "Rental cars (one-way, " + S.airport + " → " + S.airportOut + ")" : "Rental cars at " + S.airport }));
+              // Explain WHY, because people don't realize not every company is at every airport
+              if (S.diffReturn) m.appendChild(el("div", { class: "trtp-note", html: "You're flying into <b>" + S.airport + "</b> and out of <b>" + S.airportOut + "</b>, so you need a company that has a counter at <b>both</b> for a one-way rental. Companies at only one airport are greyed out — renting one of those would strand your car at the wrong airport. (One-way rentals usually carry a drop-off fee.)" }));
+              if (!valid.length) m.appendChild(el("div", { class: "trtp-warn", text: "No single company serves both " + S.airport + " and " + S.airportOut + ". Pick the same airport for return, or choose two airports that share a company." }));
+              // Flag if the current pick is no longer valid
+              if (S.rental && valid.indexOf(S.rental) < 0) m.appendChild(el("div", { class: "trtp-warn", html: "<b>" + S.rental + " won't work for this airport pair</b> — it's not at " + (airport(S.airport).rentalCars.indexOf(S.rental) < 0 ? S.airport : S.airportOut) + ". Pick a company below that serves both." }));
+              cardGrid(m, union.map(function (n) { return { id: n, name: n }; }), {
+                selected: function (r) { return S.rental === r.id; },
+                disabled: function (r) { return valid.indexOf(r.id) < 0; },
+                blurb: function (r) {
+                  if (valid.indexOf(r.id) > -1) return S.diffReturn ? "At both " + S.airport + " and " + S.airportOut + " — good for a one-way" : "Available at " + airport(S.airport).city;
+                  var at = airport(S.airport).rentalCars.indexOf(r.id) > -1 ? S.airport : S.airportOut;
+                  return "Only at " + at + " — can't do a one-way, would strand your car";
+                },
+                onclick: function (r) { if (valid.indexOf(r.id) < 0) return; S.rental = r.id; render(); }
+              });
+              m.appendChild(el("div", { class: "trtp-warn", html: "There is <b>no rideshare</b> (Uber/Lyft) and no taxi in Medora — a rental car is essential to explore the Badlands. <a href='" + D.config.brand.directionsUrl + "' target='_blank' rel='noopener'>Full directions ↗</a>" }));
             }
           }
         },
@@ -635,6 +656,15 @@
           fld.appendChild(el("label", { text: "Arrival date (optional, but recommended)" }));
           fld.appendChild(el("input", { type: "date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
           m.appendChild(fld);
+          // Smart estimate of how many days the current picks need — shown right above the day picker
+          if (hasAnyPick()) {
+            var rd = buildSchedule().capacity.requiredDays, txt, cls = "trtp-rec2";
+            if (!S.days) txt = "Based on what you've picked so far, plan for about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> at a " + S.pace + " pace.";
+            else if (S.days < rd) { cls = "trtp-warn"; txt = "Heads up: your picks would take about <b>" + rd + " days</b> — more than the " + S.days + " you've set. Add days, drop a stop, or switch to a Packed pace (we'll trim to fit otherwise)."; }
+            else if (S.days > rd) txt = "Your picks fill about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> — you've set " + S.days + ", so you have room to add more stops.";
+            else txt = "Nicely matched — your picks fit your " + S.days + " day" + (S.days > 1 ? "s" : "") + " at a " + S.pace + " pace.";
+            m.appendChild(el("div", { class: cls, html: txt }));
+          }
           m.appendChild(el("div", { class: "trtp-sub-h", text: "How many days do you have?" }));
           var opts = [
             { d: 1, label: "A day or less", note: "The Library + the South Unit loop" },
@@ -650,15 +680,6 @@
           });
           m.appendChild(seg);
           m.appendChild(el("div", { class: "trtp-note", text: S.pace === "relaxed" ? "Relaxed: about 6 hours of activity a day, with room to breathe." : S.pace === "packed" ? "Packed: up to 10 hours a day — see as much as possible." : "Balanced: about 8 hours of activity a day." }));
-          // Smart estimate of how many days the current picks actually need
-          if (hasAnyPick()) {
-            var rd = buildSchedule().capacity.requiredDays, txt, cls = "trtp-note";
-            if (!S.days) txt = "Based on what you've picked so far, plan for about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> at a " + S.pace + " pace.";
-            else if (S.days < rd) { cls = "trtp-warn"; txt = "Heads up: your picks would take about <b>" + rd + " days</b> — more than the " + S.days + " you've set. Add days, drop a stop, or switch to a Packed pace (we'll trim to fit otherwise)."; }
-            else if (S.days > rd) txt = "Your picks fill about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> — you've set " + S.days + ", so you have room to add more stops.";
-            else txt = "Nicely matched — your picks fit your " + S.days + " day" + (S.days > 1 ? "s" : "") + " at a " + S.pace + " pace.";
-            m.appendChild(el("div", { class: cls, html: txt }));
-          }
           var sug = suggestedItinerary();
           if (sug) m.appendChild(el("div", { class: "trtp-note", html: "A great backbone for your trip: <b>" + sug.title + "</b> — " + sug.blurb + " <a href='" + sug.url + "' target='_blank' rel='noopener'>See it ↗</a>" }));
         },
@@ -898,20 +919,49 @@
 
     // Assign local items across the Medora block (season + weekday + budget aware)
     var commute = medoraBase !== "Medora" ? 2 * baseDriveMin(medoraBase) : 0;
-    medoraDayObjs.forEach(function (d) { d.used = commute; });
-    local.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
-    local.forEach(function (it) {
+    medoraDayObjs.forEach(function (d) { d.used = commute; d._evening = false; });
+    // Can this day take this item? (season, weekday, time conflicts, one evening show/night, budget)
+    function canPlace(d, it) {
+      if (!seasonOk(it.avail, d.month)) return false;
+      if (!dayOk(it.avail, d.wd)) return false;
+      if (it.avail.fixed && conflictsFixed(d, it)) return false;
+      if (it.category === "evening" && d._evening) return false;      // only one evening show per night
+      if (d.used + it.duration > budget + 90) return false;
+      return true;
+    }
+    function place(d, it) { d.items.push(it); d.used += it.duration; if (it.category === "evening") d._evening = true; }
+
+    // 1) Co-locate all Library items (admission + specialty tours) on ONE day, so a
+    //    guest doing multiple tours does them the same day. Pick the day that can
+    //    host the most of them, then fill the rest onto other days / overflow.
+    var libItems = local.filter(function (it) { return it.area === "library"; });
+    var others = local.filter(function (it) { return it.area !== "library"; });
+    libItems.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
+    if (libItems.length) {
+      var libDay = medoraDayObjs.slice().sort(function (a, b) {
+        var sa = libItems.filter(function (it) { return seasonOk(it.avail, a.month) && dayOk(it.avail, a.wd); }).length;
+        var sb = libItems.filter(function (it) { return seasonOk(it.avail, b.month) && dayOk(it.avail, b.wd); }).length;
+        return sb - sa || a.index - b.index;
+      })[0];
+      libItems.forEach(function (it) {
+        if (libDay && canPlace(libDay, it)) { place(libDay, it); return; }
+        var alt = null;
+        for (var j = 0; j < medoraDayObjs.length; j++) { if (canPlace(medoraDayObjs[j], it)) { alt = medoraDayObjs[j]; break; } }
+        if (alt) place(alt, it); else overflow.push({ item: it, reason: reasonUnfit(it, medoraDayObjs) });
+      });
+    }
+
+    // 2) Everything else — least-full day that can take it
+    others.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
+    others.forEach(function (it) {
       var best = null;
-      for (var j = 0; j < medoraDayObjs.length; j++) {
-        var d = medoraDayObjs[j];
-        if (!seasonOk(it.avail, d.month)) continue;
-        if (!dayOk(it.avail, d.wd)) continue;
-        if (it.avail.fixed && conflictsFixed(d, it)) continue;
-        if (d.used + it.duration > budget + 90) continue;
-        if (!best || d.used < best.used) best = d;
+      for (var j = 0; j < medoraDayObjs.length; j++) { var d = medoraDayObjs[j]; if (!canPlace(d, it)) continue; if (!best || d.used < best.used) best = d; }
+      if (best) place(best, it);
+      else {
+        var reason = reasonUnfit(it, medoraDayObjs);
+        if (it.category === "evening" && medoraDayObjs.every(function (d) { return d._evening; })) reason = "only one evening show fits per night — add a night or drop one (they'd overlap)";
+        overflow.push({ item: it, reason: reason });
       }
-      if (best) { best.items.push(it); best.used += it.duration; }
-      else overflow.push({ item: it, reason: reasonUnfit(it, medoraDayObjs) });
     });
 
     // Routing pass: chain drive segments entry → legs → Medora → legs → exit
@@ -1047,6 +1097,17 @@
 
     if (!hasAnyPick()) m.appendChild(el("div", { class: "trtp-note", text: "You haven't added anything yet. Jump back to Road trip, Medora or Library and click what appeals — it'll lay out here by day and time." }));
 
+    // Strong nudge to set a date — availability is only real once we know the weekday
+    if (!S.startDate && hasAnyPick()) {
+      var recD = recommendDate();
+      var db = el("div", { class: "trtp-overcap" });
+      db.innerHTML = "<b>Set an arrival date for real availability.</b> Tours and shows run on specific days and times — the Badlands Landscape Tour skips Sundays, the Musical is summer-only — so without a date this schedule is approximate. ";
+      var btn = el("button", { class: "trtp-btn primary", style: "margin-top:9px;padding:8px 15px;font-size:12px", onclick: function () { S.startDate = recD.iso; goto(6); } }, ["Use " + recD.label + " →"]);
+      db.appendChild(btn);
+      db.appendChild(el("span", { style: "font-size:12px;opacity:.8;margin-left:8px", text: "(you can change it on the Dates step)" }));
+      m.appendChild(db);
+    }
+
     // Over-capacity guidance: picks need more days than the guest set
     var cap = sched.capacity;
     if (cap.over) {
@@ -1096,7 +1157,9 @@
         row.appendChild(el("div", { class: "tm", text: minToLabel(e.start) }));
         if (e.image) { var th = el("img", { class: "rthumb", src: imgURL(e.image), alt: e.name, loading: "lazy" }); th.addEventListener("error", function () { if (th.parentNode) th.parentNode.removeChild(th); }); row.appendChild(th); }
         var bd = el("div", { class: "bd" });
-        bd.appendChild(el("div", { class: "nm", text: e.name }));
+        var nm = el("div", { class: "nm" }, [e.name]);
+        if (!e.drive && e.dur > 0) nm.appendChild(el("span", { class: "rdur", text: "~" + durLabel(e.dur) }));
+        bd.appendChild(nm);
         if (e.ds) bd.appendChild(el("div", { class: "ds", text: e.ds }));
         var mu = (!e.drive) ? mapsUrl(e) : null;
         if (e.booking || e.phone || mu) {
@@ -1185,7 +1248,8 @@
         if (e.booking) book += (book ? " · " : "") + "<a href='" + e.booking + "'>book/info</a>";
         if (e.phone) book += (book ? " · " : "") + esc(e.phone);
         var thumb = e.image ? "<td class='thc'><img class='thm' src='" + imgURL(e.image) + "' onerror='this.style.display=\"none\"'></td>" : "<td class='thc'></td>";
-        rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
+        var durTag = (!e.drive && e.dur > 0) ? " <span class='rdur'>~" + durLabel(e.dur) + "</span>" : "";
+        rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + durTag + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
       });
       day.notes.forEach(function (n) { rows += "<tr><td></td><td class='ds'>" + esc(n) + "</td></tr>"; });
       rows += "</table></div>";
@@ -1229,6 +1293,7 @@
       ".thc{width:76px;padding:7px 8px;}" +
       ".thm{width:68px;height:50px;object-fit:cover;border-radius:3px;display:block;}" +
       ".nm{display:block;font-weight:bold;color:" + c.secondary + ";}" +
+      ".rdur{font-family:Oswald,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:" + c.primary + ";border-radius:9px;padding:1px 7px;margin-left:6px;}" +
       ".ds{display:block;font-size:12px;color:#6c6f72;font-family:Arial,sans-serif;}" +
       ".bk{display:block;font-size:11.5px;font-family:Arial,sans-serif;margin-top:2px;}" +
       ".bk a{color:" + c.primary + ";}" +

@@ -224,7 +224,7 @@
     {
       "id": "pitchfork-fondue",
       "name": "Pitchfork Steak Fondue",
-      "category": "evening",
+      "category": "dining",
       "duration": 90,
       "lat": 46.9245,
       "lng": -103.5185,
@@ -258,7 +258,8 @@
         ]
       },
       "image": "assets/img/714558c6a3.jpg",
-      "address": "Tjaden Terrace, 3422 Chateau Rd, Medora, ND 58645"
+      "address": "Tjaden Terrace, 3422 Chateau Rd, Medora, ND 58645",
+      "meal": "dinner"
     },
     {
       "id": "library-cafe",

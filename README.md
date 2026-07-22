@@ -103,6 +103,30 @@ base reveals **real hotels in that town** (with search links). Gateway cities
 and drive-in bases live in `data/destinations.json` (`overnight`, `visitDays`)
 and `data/lodging.json` (`nearbyBase`, `hotels`).
 
+### Timing & scheduling guardrails
+
+The scheduler won't build an impossible day. It never double-books overlapping
+times, allows **only one evening show per night** (you can't do the Medora
+Musical and the Teddy Roosevelt Show at once — the Pitchfork Fondue is treated
+as the pre-show dinner, so it still pairs with the Musical), and flags the
+overflow with a clear reason. **Library specialty tours + admission are grouped
+onto a single day** so a guest doing several tours does them together. Each stop
+shows **how long to spend there** (a `~1h 30m` pill) in both the schedule and
+the printout.
+
+If no arrival date is set, the schedule shows a prominent flag explaining that
+tour/show availability is only exact with a date, and offers a **recommended
+date** (the first Saturday of the chosen month) to apply in one click.
+
+### Rental cars
+
+Not every company has a counter at every airport, and people don't realize a
+one-way (fly into one airport, out of another) needs a company at **both**. The
+rental step now shows every relevant company but **greys out the ones that would
+strand your car**, explains why, and **flags your current pick** if it stops
+being valid. And there's genuinely **no rideshare or taxi in Medora** — the
+copy says so plainly; a rental car is essential.
+
 ### Directions & addresses
 
 Every scheduled stop carries an **address** and a **Directions** link (Google
