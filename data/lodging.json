@@ -252,6 +252,40 @@
       "image": "assets/img/54f767f263.jpg"
     },
     {
+      "id": "americinn",
+      "name": "AmericInn Hotel & Conference Center",
+      "area": "Medora",
+      "tier": "comfort",
+      "priceHint": "$$$",
+      "tags": [
+        "year-round",
+        "pool"
+      ],
+      "blurb": "An 80-room hotel with an indoor pool and conference center, just off I-94 — open all year.",
+      "booking": "https://www.wyndhamhotels.com/americinn/medora-north-dakota/americinn-lodge-and-suites-medora/overview",
+      "phone": "+1-701-623-4800",
+      "image": "assets/img/2f014ecebf.jpg",
+      "address": "75 E River Rd S, Medora, ND 58645"
+    },
+    {
+      "id": "amble-inn",
+      "name": "Amble Inn",
+      "area": "Medora",
+      "tier": "value",
+      "priceHint": "$$",
+      "season": [
+        5,
+        9
+      ],
+      "tags": [
+        "cabin"
+      ],
+      "blurb": "A small cabin-style inn within walking distance of Chateau de Mores and the Cowboy Hall of Fame.",
+      "booking": "https://discovermedora.com/experience-medora/amble-inn/",
+      "phone": null,
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
       "id": "belfield-base",
       "name": "Belfield, ND",
       "area": "Belfield",

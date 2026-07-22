@@ -47,7 +47,12 @@ itinerary** they can print, export to calendar, or share by URL.
    To add one: set `image` to a remote URL, run `python3 scripts/cache-images.py`
    (downloads, resizes ≤900px, q82, repoints the field). Wikimedia rate-limits
    (HTTP 429) — retry with pauses. Verify the cached file actually shows the right
-   subject (`Read` the image).
+   subject (`Read` the image). **Preferred licensed image source: the Medora Area CVB
+   media library** (`discovermedora.com/media-library`) — "free to use for promotional
+   purposes that support the city of Medora; credit Medora Area CVB when possible." It's
+   scenic/streetscape-level (great for a shared **3rd Ave** downtown-shop backdrop, town,
+   trail-riding), **not** per-storefront. Record any non-obvious image's source in
+   `assets/img/PROVENANCE.md` (FB-provided and CVB images are logged there).
 4. **Verify with the jsdom harness after any logic/data change.** See §8. The app
    exposes `window.__TRTP` for headless testing. Historically, most "bugs" turned
    out to be bad test inputs — build realistic scenarios (air arrival, a nearby
@@ -75,14 +80,14 @@ CNAME                          trip.labs.trlibrary.com
 .gitignore                     ignores CI-generated status/report files + node_modules
 assets/
   trip-planner.js              THE ENTIRE EMBED — ~1560 lines: state, steps, scheduler, render, CSS, print, iCal, permalink
-  img/<md5>.jpg                130 locally-cached, resized photos
+  img/<md5>.jpg                133 locally-cached, resized photos
 data/                          all curated content (edit these)
   config.json                  brand colors, comfort tiers, travel styles
   origins.json                 15 starting cities: coords, drive times, suggested routes
   airports.json               7 regional airports: coords, driveToMedoraMin/Miles, rental companies
   destinations.json            43 road-trip stops (parks, monuments, battlefields, towns, state parks, Dickinson day-trips)
-  lodging.json                 18 lodging: Medora properties (tiered) + nearbyBase towns with hotels
-  medora.json                  80 Medora items: see/do, recreation, tours, evening shows, dining, shopping, events
+  lodging.json                 20 lodging: Medora properties (tiered) + nearbyBase towns with hotels
+  medora.json                  89 Medora items: see/do, recreation, tours, evening shows, dining, shopping, events
   library.json                 Library general admission + 5 specialty tours (real days/times/prices)
   itineraries.json             curated trips from trlibrary.com/visit/itineraries
   weather.json                 monthly hi/lo/precip + per-season pack/prepare
@@ -500,5 +505,20 @@ verified before moving on):
     closures** (Yellowstone/Grand Teton/Glacier/Fort Lincoln now carry a `season`). ~45
     curated corrections applied programmatically; 4,000-scenario harness still clean (the
     lone flag is the pre-existing §9 season-rollover edge, now on Grand Teton). See §6.
+23. **Medora CVB (discovermedora.com) integration.** (a) **Images** — the CVB **media
+    library** is a licensed source ("free for promotional use, credit Medora Area CVB");
+    pulled the **3rd Ave streetscape** to replace the generic placeholder shared by 9 shops
+    and the **Little Missouri Saloon** exterior; two FB-provided dining photos (Bread+Butter,
+    Farmhouse Cafe) cached earlier the same day. All logged in `assets/img/PROVENANCE.md`.
+    (b) **Gap scan** — added **9 Medora items** (Billings County Courthouse Museum [Sat/Sun],
+    Escape Medora, Dakota Cyclery, De Mores Memorial Park, West River Wagon Rides, Badlands
+    Shooting Gallery, The White House, Lilly & Zella's, Bully Pulpit Pro Shop → 89 total) and
+    **2 lodging** (AmericInn, Amble Inn → 20 total). (c) **Events source** — evaluated
+    discovermedora.com/events as a 6th refresh source and **declined**: the `events` CPT
+    isn't in the WP REST API and pages expose only a *publish* date, not the event date
+    (would inject wrong dates); its big events already come through medora.com. 4,000-
+    scenario harness after additions: only the pre-existing season-rollover edge. Some new
+    items (Shooting Gallery, The White House) have approximate hours — flagged for the
+    watchdog era, verify before launch.
 
 For the fine-grained record, see the git log and `README.md`.

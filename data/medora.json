@@ -335,7 +335,7 @@
         "open": "11:00",
         "close": "22:00"
       },
-      "image": "assets/img/9a81464162.jpg",
+      "image": "assets/img/27c2bf1d00.jpg",
       "address": "Little Missouri Saloon & Dining, 440 3rd St, Medora, ND 58645"
     },
     {
@@ -381,7 +381,7 @@
         "open": "07:00",
         "close": "13:00"
       },
-      "image": "assets/img/13337ae5a4.jpg",
+      "image": "assets/img/982ecaa449.jpg",
       "address": "Farmhouse Café, 314 Pacific Ave, Medora, ND 58645"
     },
     {
@@ -405,7 +405,7 @@
         "open": "09:00",
         "close": "19:00"
       },
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Western Edge Books & Art, Medora, ND 58645"
     },
     {
@@ -1758,7 +1758,7 @@
       "meal": "lunch",
       "phone": "+1-701-623-1311",
       "booking": "https://discovermedora.com/experience-medora/bread-butter/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2089b93e4d.jpg",
       "address": "Bread + Butter, Medora, ND 58645"
     },
     {
@@ -1773,7 +1773,7 @@
       "blurb": "A sweet downtown break of 24 ice cream flavors plus espresso drinks, smoothies, kettle corn and Tropical Sno.",
       "avail": {
         "open": "07:00",
-        "close": "20:00",
+        "close": "20:30",
         "season": [
           5,
           9
@@ -1830,7 +1830,7 @@
       },
       "phone": "+1-701-710-0234",
       "booking": "https://discovermedora.com/experience-medora/jq-clothing-co/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "JQ Clothing Co., Medora, ND 58645"
     },
     {
@@ -1854,7 +1854,7 @@
       },
       "phone": "+1-701-623-0155",
       "booking": "https://discovermedora.com/experience-medora/bar-diamond-bar-boutique-gallery/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Bar Diamond Bar Boutique & Gallery, Medora, ND 58645"
     },
     {
@@ -1878,7 +1878,7 @@
       },
       "phone": "+1-701-623-4773",
       "booking": "https://discovermedora.com/experience-medora/chasing-horses/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Chasing Horses, Medora, ND 58645"
     },
     {
@@ -1902,7 +1902,7 @@
       },
       "phone": "+1-701-623-2219",
       "booking": "https://discovermedora.com/experience-medora/the-home-merchant/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "The Home Merchant, Medora, ND 58645"
     },
     {
@@ -1926,7 +1926,7 @@
       },
       "phone": "+1-701-623-5057",
       "booking": "https://discovermedora.com/experience-medora/black-hills-gold-gift-outlet/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Black Hills Gold & Gift Outlet, Medora, ND 58645"
     },
     {
@@ -1950,7 +1950,7 @@
       },
       "phone": "+1-701-623-4339",
       "booking": "https://discovermedora.com/experience-medora/todds-old-time-photo-parlor-gift-shop/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Todd's Old Time Photo Parlor, Medora, ND 58645"
     },
     {
@@ -2022,7 +2022,7 @@
       },
       "phone": "+1-701-623-5050",
       "booking": "https://discovermedora.com/experience-medora/sacajawea-trading-post/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Sacajawea Trading Post, Medora, ND 58645"
     },
     {
@@ -2046,8 +2046,243 @@
       },
       "phone": "+1-701-623-4488",
       "booking": "https://discovermedora.com/experience-medora/hitching-post/",
-      "image": "assets/img/4c78cb0fe0.jpg",
+      "image": "assets/img/2f014ecebf.jpg",
       "address": "Hitching Post, Medora, ND 58645"
+    },
+    {
+      "id": "billings-county-courthouse-museum",
+      "name": "Billings County Courthouse Museum",
+      "category": "attraction",
+      "duration": 45,
+      "lat": 46.914964,
+      "lng": -103.522757,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "phone": "+1-701-623-4829",
+      "booking": "https://discovermedora.com/experience-medora/billings-county-courthouse-museum",
+      "blurb": "Restored pioneer-era courtroom and jail with military firearms and ranching artifacts.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "fixed": [
+          {
+            "days": [
+              0,
+              6
+            ],
+            "start": "09:00",
+            "end": "17:00"
+          }
+        ]
+      },
+      "address": "475 4th St, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "escape-medora",
+      "name": "Escape Medora",
+      "category": "recreation",
+      "duration": 60,
+      "lat": 46.9126,
+      "lng": -103.5238,
+      "tags": [
+        "family"
+      ],
+      "phone": "+1-833-623-2675",
+      "booking": "https://discovermedora.com/experience-medora/escape-medora-escape-room",
+      "blurb": "Two themed escape rooms, each designed to last up to an hour for groups of up to six.",
+      "avail": {
+        "open": "10:00",
+        "close": "21:00"
+      },
+      "address": "362 Pacific Ave, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "dakota-cyclery",
+      "name": "Dakota Cyclery Mountain Bike Adventures",
+      "category": "recreation",
+      "duration": 30,
+      "lat": 46.9137,
+      "lng": -103.5245,
+      "tags": [
+        "outdoors"
+      ],
+      "phone": "+1-701-623-4808",
+      "booking": "https://discovermedora.com/experience-medora/dakota-cyclery",
+      "blurb": "Full-service downtown bike shop and Maah Daah Hey Trail experts — rentals, shuttles, maps, and trail conditions.",
+      "avail": {
+        "season": [
+          5,
+          10
+        ],
+        "open": "08:30",
+        "close": "17:30"
+      },
+      "address": "365 Main St, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "de-mores-memorial-park",
+      "name": "De Mores Memorial Park",
+      "category": "attraction",
+      "duration": 20,
+      "lat": 46.9139,
+      "lng": -103.5246,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "phone": "+1-701-623-4355",
+      "booking": "https://discovermedora.com/experience-medora/de-mores-memorial-park",
+      "blurb": "Downtown city park with a bronze statue of the Marquis de Mores, donated by his sons in 1926.",
+      "avail": {
+        "open": "08:00",
+        "close": "20:00"
+      },
+      "address": "Main St, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "west-river-wagon-rides",
+      "name": "West River Wagon Rides",
+      "category": "tour",
+      "duration": 30,
+      "lat": 46.9146,
+      "lng": -103.5262,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "phone": "+1-701-426-2015",
+      "booking": "https://discovermedora.com/experience-medora/west-river-wagon-rides",
+      "blurb": "A 30-minute horse-drawn wagon journey through the historic streets of Medora.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "10:00",
+        "close": "18:00"
+      },
+      "address": "491 6th St, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "badlands-shooting-gallery",
+      "name": "Badlands Shooting Gallery",
+      "category": "recreation",
+      "duration": 20,
+      "lat": 46.913,
+      "lng": -103.523,
+      "tags": [
+        "family"
+      ],
+      "booking": "https://discovermedora.com/experience-medora/badlands-shooting-gallery",
+      "blurb": "Old-time saloon-style shooting gallery where families take aim in a Wild West setting.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "10:00",
+        "close": "19:00"
+      },
+      "address": "Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "the-white-house",
+      "name": "The White House",
+      "category": "shopping",
+      "duration": 15,
+      "lat": 46.9137,
+      "lng": -103.5236,
+      "tags": [
+        "family"
+      ],
+      "booking": "https://discovermedora.com/experience-medora/the-white-house",
+      "blurb": "Family gift and souvenir shop in downtown Medora, also offering sweets and wine.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "10:00",
+        "close": "19:00"
+      },
+      "address": "Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "lilly-zellas",
+      "name": "Lilly & Zella’s",
+      "category": "shopping",
+      "duration": 20,
+      "lat": 46.9138,
+      "lng": -103.524,
+      "tags": [
+        "family"
+      ],
+      "phone": "+1-701-623-4444",
+      "booking": "https://discovermedora.com/experience-medora/lilly-zellas",
+      "blurb": "Unique gifts, clothing, and made-in-the-USA items, paired with the Rough Riders Gift shop.",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "address": "330 3rd St, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
+    },
+    {
+      "id": "bully-pulpit-pro-shop",
+      "name": "Bully Pulpit Pro Shop",
+      "category": "shopping",
+      "duration": 15,
+      "lat": 46.884,
+      "lng": -103.47,
+      "tags": [
+        "outdoors"
+      ],
+      "phone": "+1-701-623-4653",
+      "booking": "https://discovermedora.com/experience-medora/bully-pulpit-pro-shop",
+      "blurb": "Pro shop at Bully Pulpit Golf Course with apparel, gear, club rentals, and lessons.",
+      "avail": {
+        "season": [
+          4,
+          10
+        ],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      "address": "3731 Bible Camp Rd, Medora, ND 58645",
+      "featured": false,
+      "area": "medora",
+      "image": "assets/img/2f014ecebf.jpg"
     }
   ]
 }

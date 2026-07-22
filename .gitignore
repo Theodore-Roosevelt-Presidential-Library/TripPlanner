@@ -2,3 +2,4 @@
 data/refresh-status.json
 data/freshness-report.md
 node_modules/
+.DS_Store
