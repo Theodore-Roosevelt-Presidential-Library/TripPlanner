@@ -984,6 +984,28 @@
     var baseLodge = null; S.picks.lodging.forEach(function (id) { var l = byId(D.lodging.lodging, id); if (l && l.nearbyBase) baseLodge = l; });
     var medoraBase = baseLodge ? baseLodge.name : "Medora";
 
+    // --- Multi-day drive split. A drive straight to/from Medora that's longer
+    //     than a single day (a far car origin: Chicago, Seattle, …) is spread
+    //     across dedicated "transit" driving days with en-route overnights, so no
+    //     drive row crosses midnight and the Medora days stay clean. Only when
+    //     that side has no en-route legs (legs already carry their own overnights).
+    var DAY_DRIVE = 600;   // max ~10h of driving on a transit day
+    var originLabel = S.origin ? S.origin.label : "home";
+    // Measured origin → first stop (and last stop → home). A far car origin is the
+    // trigger; measured to the actual first/last node (which may be a far leg in a
+    // different direction than Medora, not just Medora itself). Transit days drive
+    // toward the region, then that first stop arrives with no drive-in (firstArrival).
+    var inFirst = inbound.length ? inbound[0] : { lat: MEDORA.lat, lng: MEDORA.lng };
+    var outLast = outbound.length ? outbound[outbound.length - 1] : { lat: MEDORA.lat, lng: MEDORA.lng };
+    var inDriveMin = entry ? driveMin(haversine(entry.lat, entry.lng, inFirst.lat, inFirst.lng)) : 0;
+    var outDriveMin = exit ? driveMin(haversine(outLast.lat, outLast.lng, exit.lat, exit.lng)) : 0;
+    var inSplit = inDriveMin > DAY_DRIVE ? Math.ceil(inDriveMin / DAY_DRIVE) : 1;
+    var outSplit = outDriveMin > DAY_DRIVE ? Math.ceil(outDriveMin / DAY_DRIVE) : 1;
+    var inTransit = inSplit >= 2 ? inSplit : 0;    // dedicated inbound driving days
+    var outTransit = outSplit >= 2 ? outSplit : 0; // dedicated outbound driving days
+    var inSeg = inTransit ? Math.round(inDriveMin / inTransit / 15) * 15 : 0;
+    var outSeg = outTransit ? Math.round(outDriveMin / outTransit / 15) * 15 : 0;
+
     // Medora nights from the local activity load at the chosen pace (min 1).
     // Near day-trips that eat most of a day (their visit + round-trip drive)
     // really want a day of their own — otherwise they get crammed onto a
@@ -1000,29 +1022,33 @@
     //     trim the farthest stops first, then shrink the Medora block (min 1),
     //     and report what we cut so the schedule step can guide them. ---
     function legDayCount() { return inbound.reduce(function (s, f) { return s + f.visitDays; }, 0) + outbound.reduce(function (s, f) { return s + f.visitDays; }, 0); }
+    var transitDayCount = inTransit + outTransit;   // mandatory driving days (can't be trimmed)
     var medoraNeeded = medoraDays;
-    var requiredDays = legDayCount() + medoraDays;
+    var requiredDays = legDayCount() + medoraDays + transitDayCount;
     var trimmedFar = [];
     if (S.days && requiredDays > S.days) {
-      while (legDayCount() + Math.max(1, medoraDays) > S.days && (inbound.length || outbound.length)) {
+      while (legDayCount() + Math.max(1, medoraDays) + transitDayCount > S.days && (inbound.length || outbound.length)) {
         var pool = inbound.concat(outbound).sort(function (a, b) { return b.miles - a.miles; });
         var victim = pool[0];
         trimmedFar.push(victim);
         var io = inbound.indexOf(victim); if (io > -1) inbound.splice(io, 1); else outbound.splice(outbound.indexOf(victim), 1);
       }
       var legs = legDayCount();
-      if (legs + medoraDays > S.days) medoraDays = Math.max(1, S.days - legs);
+      if (legs + medoraDays + transitDayCount > S.days) medoraDays = Math.max(1, S.days - legs - transitDayCount);
     }
     trimmedFar.forEach(function (f) { overflow.push({ item: f, reason: "would add " + f.visitDays + " day" + (f.visitDays > 1 ? "s" : "") + " beyond your " + S.days + "-day window — add days or drop another stop" }); });
 
-    // Build the ordered plan: inbound legs → contiguous Medora block → outbound legs
+    // Build the ordered plan: inbound transit → inbound legs → Medora block →
+    // outbound legs → outbound transit
     var plan = [];
+    for (var ti = 0; ti < inTransit; ti++) plan.push({ kind: "transit", dir: "in", seg: inSeg, idx: ti, count: inTransit, baseCity: "En route" });
     inbound.forEach(function (f) { for (var k = 0; k < f.visitDays; k++) plan.push({ kind: "leg", dir: "in", stop: f, baseCity: f.overnight ? f.overnight.city : null, contd: k > 0, lastOfStop: k === f.visitDays - 1 }); });
     for (var i = 0; i < medoraDays; i++) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: i === 0, lastMedora: i === medoraDays - 1 });
     outbound.forEach(function (f) { for (var k = 0; k < f.visitDays; k++) plan.push({ kind: "leg", dir: "out", stop: f, baseCity: f.overnight ? f.overnight.city : null, contd: k > 0, lastOfStop: k === f.visitDays - 1 }); });
+    for (var to = 0; to < outTransit; to++) plan.push({ kind: "transit", dir: "out", seg: outSeg, idx: to, count: outTransit, baseCity: to < outTransit - 1 ? "En route" : null });
     if (!plan.length) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: true, lastMedora: true });
 
-    var days = plan.map(function (p, idx) { var dt = dateForDay(idx); return { index: idx, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, kind: p.kind, dir: p.dir, stop: p.stop, baseCity: p.baseCity, firstMedora: p.firstMedora, lastMedora: p.lastMedora, contd: p.contd, lastOfStop: p.lastOfStop, items: [], entries: [], notes: [] }; });
+    var days = plan.map(function (p, idx) { var dt = dateForDay(idx); return { index: idx, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, kind: p.kind, dir: p.dir, stop: p.stop, baseCity: p.baseCity, firstMedora: p.firstMedora, lastMedora: p.lastMedora, contd: p.contd, lastOfStop: p.lastOfStop, seg: p.seg, idx: p.idx, count: p.count, items: [], entries: [], notes: [] }; });
     var N = days.length;
     var medoraDayObjs = days.filter(function (d) { return d.kind === "medora"; });
 
@@ -1082,20 +1108,29 @@
       }
     });
 
-    // Routing pass: chain drive segments entry → legs → Medora → legs → exit
+    // Routing pass: chain drive segments entry → legs → Medora → legs → exit.
+    // If dedicated inbound transit days drove us into the region, the first inbound
+    // stop/Medora arrives with no drive-in (firstArrival), so no single giant row.
     var prev = entry;
+    var firstArrival = inTransit > 0;
     days.forEach(function (d) {
+      if (d.kind === "transit") return;
       if (d.kind === "leg") {
-        if (!d.contd && prev) { d._driveInMi = haversine(prev.lat, prev.lng, d.stop.lat, d.stop.lng); d._driveFrom = prev.label; }
-        if (!d.contd) prev = { lat: d.stop.lat, lng: d.stop.lng, label: d.baseCity || d.stop.name };
+        if (!d.contd) {
+          if (firstArrival && d.dir === "in") { firstArrival = false; }
+          else if (prev) { d._driveInMi = haversine(prev.lat, prev.lng, d.stop.lat, d.stop.lng); d._driveFrom = prev.label; }
+          prev = { lat: d.stop.lat, lng: d.stop.lng, label: d.baseCity || d.stop.name };
+        }
       } else if (d.kind === "medora" && d.firstMedora) {
-        if (prev) { d._driveInMi = haversine(prev.lat, prev.lng, MEDORA.lat, MEDORA.lng); d._driveFrom = prev.label; }
+        if (firstArrival) { firstArrival = false; }
+        else if (prev) { d._driveInMi = haversine(prev.lat, prev.lng, MEDORA.lat, MEDORA.lng); d._driveFrom = prev.label; }
         prev = { lat: MEDORA.lat, lng: MEDORA.lng, label: "Medora" };
       }
     });
-    if (entry && entry.air) days[0]._arriveAir = entry;
+    if (entry && entry.air && !inTransit) days[0]._arriveAir = entry;
     var exitNote = null;
-    if (exit && prev) {
+    // Dedicated outbound transit days carry the drive home; skip the single-day exit.
+    if (exit && prev && !outTransit) {
       var last = days[N - 1], depAirport = exit;
       // If the trip ends in Medora with no outbound stops, a long drive to a far
       // fly-out airport makes no sense — route to the nearest airport and flag it.
@@ -1161,6 +1196,19 @@
       cursor = sd + dm + 15;
     }
 
+    // Dedicated transit driving day (a long far-origin drive spread over days).
+    if (day.kind === "transit") {
+      var seg = day.seg, into = day.dir === "in";
+      var home = S.origin ? S.origin.label : "home";
+      var arriveHome = !into && day.idx === day.count - 1;
+      var nm = arriveHome ? "Drive home to " + home : (into ? "Drive toward Medora" : "Drive toward " + home);
+      var tds = "~" + durLabel(seg) + (arriveHome ? " — arrive home" : " · overnight en route") + (into && day.idx === 0 && S.origin ? " (leaving " + home + ")" : "");
+      entries.push({ start: 9 * 60, dur: seg, drive: true, name: nm, ds: tds });
+      if (!arriveHome) day.notes.push("Overnight en route");
+      day.entries = entries.sort(function (a, b) { return a.start - b.start; });
+      return;
+    }
+
     if (day.kind === "leg") {
       var s = day.stop;
       var sOpen = s.avail && s.avail.open ? hmToMin(s.avail.open) : 9 * 60;
@@ -1219,7 +1267,11 @@
         entries.push({ id: a.it.id, start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, addr: a.it.address, lat: a.it.lat, lng: a.it.lng, gps: a.it.gps, anchor: true });
         cursor = Math.max(cursor, a.end + 15);
       }
-      placeFlexUntil(day._exit ? 17 * 60 : limit);
+      // Leave enough of the day for a same-day drive home so it can't cross midnight
+      // (air exits keep a 5pm cutoff for the airport buffer).
+      var exitBound = limit;
+      if (day._exit) exitBound = day._exit.air ? 17 * 60 : Math.max(11 * 60, Math.min(17 * 60, 22 * 60 - driveMin(day._exit.driveMi)));
+      placeFlexUntil(exitBound);
       if (day.baseCity && day.baseCity !== "Medora" && !day._exit) { var bd2 = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd2, drive: true, name: "Return to " + day.baseCity, ds: "~" + durLabel(bd2) }); cursor += bd2 + 10; }
       flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
     }
@@ -1340,7 +1392,7 @@
       var card = el("div", { class: "trtp-day" });
       var head = el("div", { class: "trtp-day-head" });
       var title = "Day " + (day.index + 1);
-      var sub = day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + day.baseCity : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + day.baseCity : "In & around Medora");
+      var sub = day.kind === "transit" ? "On the road" : day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + day.baseCity : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + day.baseCity : "In & around Medora");
       if (day.date) title += " · " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate();
       head.appendChild(el("span", { class: "dt", text: title }));
       head.appendChild(el("span", { class: "sd", text: sub }));
@@ -1493,7 +1545,7 @@
 
     sched.days.forEach(function (day) {
       var title = "Day " + (day.index + 1) + (day.date ? " — " + DOWLONG[day.date.getDay()] + ", " + MON[day.date.getMonth()] + " " + day.date.getDate() : "");
-      var psub = day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + esc(day.baseCity) : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + esc(day.baseCity) : "In &amp; around Medora");
+      var psub = day.kind === "transit" ? "On the road" : day.kind === "leg" ? ("En route" + (day.baseCity ? " · overnight " + esc(day.baseCity) : "")) : (day.baseCity && day.baseCity !== "Medora" ? "Medora day · stay " + esc(day.baseCity) : "In &amp; around Medora");
       rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + psub + "</span></h3><table>";
       if (!day.entries.length) rows += "<tr><td colspan=3 class='free'>Open day — explore at your own pace.</td></tr>";
       day.entries.forEach(function (e) {

@@ -229,6 +229,14 @@ These were added incrementally from user feedback. Preserve them:
   arriving (long drive-in) is skipped to a note, never overlapped onto the drive.
 - **Every activity `entry` carries its `id`** (leg/flex/anchor) — used for de-dup,
   traceability, and the stress harness's id-based invariant checks.
+- **Multi-day drive split.** A car origin whose drive to the first stop/Medora is
+  longer than a day is spread over dedicated **`transit` days** (`kind:"transit"`,
+  each driving ≤ `DAY_DRIVE`=600 min, "overnight en route"), so no drive row crosses
+  midnight and the Medora days stay clean (no drive-in on arrival). Triggered by
+  `driveMin(entry→firstNode) > DAY_DRIVE`; `firstArrival` in the routing pass skips
+  the first stop's drive-in when transit covered it. Transit days count toward
+  `requiredDays` and can't be trimmed. On a same-day car return, the exit-day activity
+  cutoff is pulled earlier so the drive home can't cross midnight.
 
 ---
 
@@ -300,16 +308,17 @@ There is no test runner committed. Verification is ad-hoc but rigorous:
 
 ## 9. Known limitations & gotchas
 
-- **Far car-origin collapse (the one open systematic issue).** A car origin whose
-  one-way drive exceeds a single day (Chicago, Seattle, etc.) still crams the whole
-  drive onto day 0 (and the return onto the last day). Visits and anchors are now
-  clamped (no impossible-time rows), but the **drive rows themselves can cross
-  midnight**, and few real activities fit. The stress harness (§8) flags these as
-  `start-after-midnight` (~3% of random scenarios, ~all far-car-origin ones). The real
-  fix is **splitting a >~10h drive into multiple calendar days with an en-route
-  overnight** — a contained `buildSchedule` change, not yet done. Also: haversine×1.15
-  over-estimates long east–west US drives (e.g. Chicago→Medora reads ~18h vs ~13h),
-  which makes the collapse look worse; per-corridor real mileages would help.
+- **Far car-origin drives are now split** into en-route transit days (see §6), so the
+  common case (drive straight from a far city to Medora — Chicago, Seattle) no longer
+  crosses midnight. **Residual (~3% of fuzz):** exotic combos of a far origin *plus
+  multiple far-flung national parks in different directions* (e.g. Winnipeg + Yellowstone
+  + Grand Teton) can still stack a long leg→Medora drive and the drive home on one
+  Medora day, or leave a long inter-leg drive unsplit — an over-long drive row (no
+  broken visible time, just unrealistic). The full fix is a **general per-segment
+  transit split** (split *any* segment > `DAY_DRIVE`, not just the origin connection)
+  plus never cramming arrival+departure on a single Medora day. Rare in real
+  Medora-trip use; deferred. Also: haversine×1.15 over-estimates long east–west US
+  drives (Chicago→Medora reads ~18h vs ~13h); per-corridor real mileages would help.
 - **Season rollover edge.** The far-stop season filter uses the trip's *start* month;
   a trip that begins in-season but a far stop's leg lands a day or two into the next,
   out-of-season month is not caught (≈1 in 3000 fuzz scenarios). Negligible; noted.
@@ -386,7 +395,9 @@ verified before moving on):
 16. **Documentation**: this CLAUDE.md builder's guide + README pointer.
 17. **Invariant stress test** (thousands of seeded scenarios): found & fixed four
     scheduler bug classes — season-blind legs, anchor/drive overlaps, past-midnight leg
-    visits, out-of-season far stops; added `id` to entries. Remaining: far car-origin
-    long-drive collapse (see §9).
+    visits, out-of-season far stops; added `id` to entries.
+18. **Multi-day drive split**: far car origins now spread the drive over dedicated
+    transit days (no midnight rows for the common straight-to-Medora case). Residual:
+    exotic far-origin + multi-far-park combos (see §9), deferred.
 
 For the fine-grained record, see the git log and `README.md`.

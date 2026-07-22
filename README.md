@@ -218,6 +218,9 @@ month range.
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the
 return drive/flight into the last day, so the plan reflects real travel time.
+When a car drive is **longer than a single day** (a far city like Chicago or
+Seattle), it's spread across dedicated **driving days with en-route overnights**
+rather than crammed into one impossible day.
 Flight arrivals build in **90 minutes to deplane, collect luggage and pick up
 the rental car** before the drive begins, and the return drive reminds the
 guest to arrive ~2 hours early for the flight.
