@@ -103,6 +103,21 @@ base reveals **real hotels in that town** (with search links). Gateway cities
 and drive-in bases live in `data/destinations.json` (`overnight`, `visitDays`)
 and `data/lodging.json` (`nearbyBase`, `hotels`).
 
+### Directions & addresses
+
+Every scheduled stop carries an **address** and a **Directions** link (Google
+Maps) in both the on-screen schedule and the printout, so guests can route by
+GPS. Big multi-entrance parks point at the **right entrance** — e.g. Yellowstone
+resolves to its **East Entrance** (the one you reach from Cody), not the park
+centroid. Addresses live in each item's `address` field; where one isn't set,
+the link falls back to the item's coordinates.
+
+### How many days you'll need
+
+The Dates step estimates the days your current picks actually require (the same
+routing math the schedule uses) and compares it to what you've set — telling you
+to add days if you're over, or that you have room to add more if you're under.
+
 ### Fitting the day budget
 
 The schedule respects the number of days the guest set. If the picks need more

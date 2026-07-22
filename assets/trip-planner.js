@@ -642,6 +642,15 @@
           });
           m.appendChild(seg);
           m.appendChild(el("div", { class: "trtp-note", text: S.pace === "relaxed" ? "Relaxed: about 6 hours of activity a day, with room to breathe." : S.pace === "packed" ? "Packed: up to 10 hours a day — see as much as possible." : "Balanced: about 8 hours of activity a day." }));
+          // Smart estimate of how many days the current picks actually need
+          if (hasAnyPick()) {
+            var rd = buildSchedule().capacity.requiredDays, txt, cls = "trtp-note";
+            if (!S.days) txt = "Based on what you've picked so far, plan for about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> at a " + S.pace + " pace.";
+            else if (S.days < rd) { cls = "trtp-warn"; txt = "Heads up: your picks would take about <b>" + rd + " days</b> — more than the " + S.days + " you've set. Add days, drop a stop, or switch to a Packed pace (we'll trim to fit otherwise)."; }
+            else if (S.days > rd) txt = "Your picks fill about <b>" + rd + " day" + (rd > 1 ? "s" : "") + "</b> — you've set " + S.days + ", so you have room to add more stops.";
+            else txt = "Nicely matched — your picks fit your " + S.days + " day" + (S.days > 1 ? "s" : "") + " at a " + S.pace + " pace.";
+            m.appendChild(el("div", { class: cls, html: txt }));
+          }
           var sug = suggestedItinerary();
           if (sug) m.appendChild(el("div", { class: "trtp-note", html: "A great backbone for your trip: <b>" + sug.title + "</b> — " + sug.blurb + " <a href='" + sug.url + "' target='_blank' rel='noopener'>See it ↗</a>" }));
         },
@@ -669,7 +678,8 @@
               onclick: function (l) { toggleLodging(l.id); }
             });
             // Nearby drive-in bases — pick one INSTEAD of a Medora stay (mutually exclusive)
-            var bases = D.lodging.lodging.filter(function (l) { return l.nearbyBase; });
+            // Ordered by hotel quality (Dickinson/Glendive lead), then proximity.
+            var bases = D.lodging.lodging.filter(function (l) { return l.nearbyBase; }).sort(function (a, b) { return (b.quality || 0) - (a.quality || 0) || a.driveMin - b.driveMin; });
             var summer = S.months.some(function (mo) { return mo >= 6 && mo <= 8; });
             m.appendChild(el("div", { class: "trtp-sub-h", text: "Or stay nearby and drive in" }));
             m.appendChild(el("div", { class: summer ? "trtp-warn" : "trtp-note", html: (summer ? "<b>Heads up:</b> " : "") + "Medora books up fast and gets pricey in summer. These towns are a short drive on I-94 and often have more rooms for less — pick one to base your Medora days there <b>instead of</b> a Medora hotel." }));
@@ -679,11 +689,16 @@
               meta: function (l) { return l.driveMin + " min / " + l.driveMiles + " mi to Medora" + (l.priceHint ? " · " + l.priceHint : ""); },
               onclick: function (l) { toggleLodging(l.id); }
             });
-            // Real hotels in the chosen base town
+            // Real hotels in the chosen base town — matched to the comfort level
             if (baseChosen && baseChosen.hotels) {
-              m.appendChild(el("div", { class: "trtp-sub-h", text: "Hotels in " + baseChosen.name }));
+              var tierRank = { value: 1, comfort: 2, premium: 3 };
+              var want = tierRank[S.tier] || 2;
+              var matched = baseChosen.hotels.filter(function (h) { return (tierRank[h.tier] || 2) === want; });
+              var picks = matched.length ? matched : baseChosen.hotels.slice().sort(function (a, b) { return Math.abs((tierRank[a.tier] || 2) - want) - Math.abs((tierRank[b.tier] || 2) - want); }).slice(0, 3);
+              var tierLabel = byId(D.config.comfortTiers, S.tier) ? byId(D.config.comfortTiers, S.tier).label.toLowerCase() : "your comfort level";
+              m.appendChild(el("div", { class: "trtp-sub-h", text: "Hotels in " + baseChosen.name + (matched.length ? " (" + tierLabel + ")" : "") }));
               var hl = el("div", { class: "trtp-note" });
-              hl.innerHTML = baseChosen.hotels.map(function (h) { return "<div style='margin:3px 0'>• <a href='" + h.search + "' target='_blank' rel='noopener'>" + h.name + " ↗</a></div>"; }).join("") + (baseChosen.bookingSearch ? "<div style='margin-top:6px'><a href='" + baseChosen.bookingSearch + "' target='_blank' rel='noopener'>See all " + baseChosen.name + " hotels ↗</a></div>" : "");
+              hl.innerHTML = picks.map(function (h) { return "<div style='margin:3px 0'>• <a href='" + h.search + "' target='_blank' rel='noopener'>" + h.name + " ↗</a></div>"; }).join("") + (matched.length ? "" : "<div style='font-size:12px;opacity:.75;margin-top:4px'>No exact match at your comfort level here — closest options shown.</div>") + (baseChosen.bookingSearch ? "<div style='margin-top:6px'><a href='" + baseChosen.bookingSearch + "' target='_blank' rel='noopener'>See all " + baseChosen.name + " hotels ↗</a></div>" : "");
               m.appendChild(hl);
               if (baseChosen.id === "dickinson-base") m.appendChild(el("div", { class: "trtp-note", html: "Basing in Dickinson? It's a destination in its own right — dinosaur museums, the Ukrainian Cultural Institute, Patterson Lake, breweries and a full events calendar. Add Dickinson stops on the Road-trip step, and see <a href='https://www.visitdickinson.com' target='_blank' rel='noopener'>things to do ↗</a> and the <a href='https://www.visitdickinson.com/events' target='_blank' rel='noopener'>events calendar ↗</a>." }));
             }
@@ -769,9 +784,14 @@
 
   // ---- SCHEDULER ----------------------------------------------------------
   // Normalize a pick into a schedulable object.
-  function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, image: o.image, area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
-  function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
-  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, miles: d.milesFromMedora, lat: d.lat, lng: d.lng, overnight: d.overnight || null, visitDays: d.visitDays || 1, kind: "destination" }; }
+  function normLib(o) { return { id: o.id, name: o.name, duration: o.duration || 0, avail: o.avail || {}, phone: o.phone, booking: o.booking, image: o.image, address: o.address || "Theodore Roosevelt Presidential Library, Medora, ND 58645", area: "library", where: "Theodore Roosevelt Presidential Library", price: o.price, priceLabel: o.priceLabel, kind: o.kind }; }
+  function normMed(a) { return { id: a.id, name: a.name, duration: a.duration || 60, avail: a.avail || {}, phone: a.phone, booking: a.booking || a.url, image: a.image, address: a.address, lat: a.lat, lng: a.lng, area: "medora", where: "Medora", category: a.category, meal: a.meal, kind: a.category }; }
+  function normDest(d) { return { id: d.id, name: d.name, duration: d.duration || 180, avail: d.avail || {}, phone: d.phone, booking: d.booking || d.url, image: d.image, address: d.address, miles: d.milesFromMedora, lat: d.lat, lng: d.lng, overnight: d.overnight || null, visitDays: d.visitDays || 1, kind: "destination" }; }
+  // Google Maps link for GPS routing — prefers a specific address (e.g. the right park entrance).
+  function mapsUrl(e) {
+    var q = e.addr ? e.addr : (e.lat != null && e.lng != null ? e.lat + "," + e.lng : (e.name ? e.name + ", ND" : null));
+    return q ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q) : null;
+  }
 
   // ---- routing helpers ----------------------------------------------------
   var NEAR_MI = 110;          // stops within this range are day-trips from Medora; beyond it, en-route legs
@@ -815,7 +835,7 @@
     var near = dest.filter(function (d) { return d.miles <= NEAR_MI; });
     var far = dest.filter(function (d) { return d.miles > NEAR_MI; });
     // near stops fold into the Medora block as day trips (visit + round-trip drive)
-    var nearLocal = near.map(function (n) { var rt = driveHrs(n.miles) * 2 * 60; return { id: n.id, name: n.name, duration: n.duration + rt, avail: n.avail, phone: n.phone, booking: n.booking, image: n.image, kind: "daytrip", miles: n.miles }; });
+    var nearLocal = near.map(function (n) { var rt = driveHrs(n.miles) * 2 * 60; return { id: n.id, name: n.name, duration: n.duration + rt, avail: n.avail, phone: n.phone, booking: n.booking, image: n.image, address: n.address, lat: n.lat, lng: n.lng, kind: "daytrip", miles: n.miles }; });
     var local = lib.concat(med, nearLocal);
     var overflow = [];
 
@@ -953,7 +973,7 @@
 
     if (day.kind === "leg") {
       var s = day.stop;
-      entries.push({ start: Math.max(cursor, 9 * 60), dur: s.duration, name: s.name + (day.contd ? " (continued)" : ""), ds: day.contd ? "A second day to explore" : "Explore (~" + Math.round(s.duration / 60) + "h)", booking: s.booking, phone: s.phone, image: s.image });
+      entries.push({ start: Math.max(cursor, 9 * 60), dur: s.duration, name: s.name + (day.contd ? " (continued)" : ""), ds: day.contd ? "A second day to explore" : "Explore (~" + Math.round(s.duration / 60) + "h)", booking: s.booking, phone: s.phone, image: s.image, addr: s.address, lat: s.lat, lng: s.lng });
       cursor = Math.max(cursor, 9 * 60) + s.duration + 15;
       if (day.baseCity) day.notes.push("Overnight in " + day.baseCity);
     } else if (day.kind === "medora") {
@@ -970,7 +990,7 @@
           if (it.meal === "dinner" && cursor < 17 * 60) cursor = 17 * 60;
           if (cursor < open) cursor = open;
           if (cursor + it.duration > lim) { flex.unshift(it); break; }
-          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image });
+          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng });
           cursor += it.duration + 15;
         }
       };
@@ -1070,11 +1090,12 @@
         var bd = el("div", { class: "bd" });
         bd.appendChild(el("div", { class: "nm", text: e.name }));
         if (e.ds) bd.appendChild(el("div", { class: "ds", text: e.ds }));
-        if (e.booking || e.phone) {
+        var mu = (!e.drive) ? mapsUrl(e) : null;
+        if (e.booking || e.phone || mu) {
           var bk = el("div", { class: "bk" });
           if (e.booking) bk.appendChild(el("a", { href: e.booking, target: "_blank", rel: "noopener" }, ["Book / info ↗"]));
-          if (e.booking && e.phone) bk.appendChild(document.createTextNode("  ·  "));
-          if (e.phone) bk.appendChild(el("span", { text: e.phone }));
+          if (mu) { if (bk.childNodes.length) bk.appendChild(document.createTextNode("  ·  ")); bk.appendChild(el("a", { href: mu, target: "_blank", rel: "noopener" }, ["Directions ↗"])); }
+          if (e.phone) { if (bk.childNodes.length) bk.appendChild(document.createTextNode("  ·  ")); bk.appendChild(el("span", { text: e.phone })); }
           bd.appendChild(bk);
         }
         row.appendChild(bd);
@@ -1125,8 +1146,11 @@
       rows += "<div class='day'><h3>" + esc(title) + " <span class='sub'>" + psub + "</span></h3><table>";
       if (!day.entries.length) rows += "<tr><td colspan=3 class='free'>Open day — explore at your own pace.</td></tr>";
       day.entries.forEach(function (e) {
+        var mu = (!e.drive) ? mapsUrl(e) : null;
         var book = "";
-        if (e.booking) book += "<a href='" + e.booking + "'>" + esc(e.booking) + "</a>";
+        if (e.addr) book += esc(e.addr);
+        if (mu) book += (book ? " · " : "") + "<a href='" + mu + "'>Directions</a>";
+        if (e.booking) book += (book ? " · " : "") + "<a href='" + e.booking + "'>book/info</a>";
         if (e.phone) book += (book ? " · " : "") + esc(e.phone);
         var thumb = e.image ? "<td class='thc'><img class='thm' src='" + imgURL(e.image) + "' onerror='this.style.display=\"none\"'></td>" : "<td class='thc'></td>";
         rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";

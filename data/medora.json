@@ -20,7 +20,8 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "assets/img/9e860227e0.jpg"
+      "image": "assets/img/9e860227e0.jpg",
+      "address": "Painted Canyon Visitor Center, I-94 Exit 32, Medora, ND 58645"
     },
     {
       "id": "trnp-loop",
@@ -42,7 +43,8 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/b8c2658b13.jpg"
+      "image": "assets/img/b8c2658b13.jpg",
+      "address": "TR National Park South Unit, 201 E River Rd N, Medora, ND 58645"
     },
     {
       "id": "maltese-cross",
@@ -62,7 +64,8 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "image": "assets/img/905cf8920c.jpg"
+      "image": "assets/img/905cf8920c.jpg",
+      "address": "Maltese Cross Cabin, 201 E River Rd N, Medora, ND 58645"
     },
     {
       "id": "cowboy-hall",
@@ -87,7 +90,8 @@
         "open": "09:00",
         "close": "17:30"
       },
-      "image": "assets/img/e3c65418b4.jpg"
+      "image": "assets/img/e3c65418b4.jpg",
+      "address": "North Dakota Cowboy Hall of Fame, 250 Main St, Medora, ND 58645"
     },
     {
       "id": "chateau",
@@ -112,7 +116,8 @@
         "open": "08:30",
         "close": "18:00"
       },
-      "image": "assets/img/1fb0374047.jpg"
+      "image": "assets/img/1fb0374047.jpg",
+      "address": "Chateau de Mores, 3426 Chateau Rd, Medora, ND 58645"
     },
     {
       "id": "chimney-park",
@@ -155,7 +160,8 @@
         "open": "07:00",
         "close": "19:00"
       },
-      "image": "assets/img/498c11a3d4.jpg"
+      "image": "assets/img/498c11a3d4.jpg",
+      "address": "Bully Pulpit Golf Course, 3400 Bible Camp Rd, Medora, ND 58645"
     },
     {
       "id": "maah-daah-hey",
@@ -212,7 +218,8 @@
           }
         ]
       },
-      "image": "assets/img/c302646ce8.jpg"
+      "image": "assets/img/c302646ce8.jpg",
+      "address": "Burning Hills Amphitheatre, 3422 Chateau Rd, Medora, ND 58645"
     },
     {
       "id": "pitchfork-fondue",
@@ -250,11 +257,12 @@
           }
         ]
       },
-      "image": "assets/img/714558c6a3.jpg"
+      "image": "assets/img/714558c6a3.jpg",
+      "address": "Tjaden Terrace, 3422 Chateau Rd, Medora, ND 58645"
     },
     {
       "id": "library-cafe",
-      "name": "Library Café",
+      "name": "Salt + Scoria",
       "category": "dining",
       "duration": 60,
       "lat": 46.9146,
@@ -265,12 +273,14 @@
       "featured": true,
       "meal": "lunch",
       "phone": "+1-701-892-6070",
-      "blurb": "On-site at the Library — regional flavors and long views. Box lunches for the park.",
+      "blurb": "The restaurant inside the Library — wood-fired, native and seasonal Badlands cooking, with long views over the Little Missouri.",
       "avail": {
         "open": "11:00",
         "close": "15:00"
       },
-      "image": "assets/img/3e6c78e8f0.jpg"
+      "image": "assets/img/ccc093b76f.jpg",
+      "booking": "https://www.saltandscoria.com",
+      "address": "Theodore Roosevelt Presidential Library, Medora, ND 58645"
     },
     {
       "id": "theodores",
@@ -291,7 +301,8 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "image": "assets/img/08c1b471d6.jpg"
+      "image": "assets/img/08c1b471d6.jpg",
+      "address": "Rough Riders Hotel, 301 3rd Ave, Medora, ND 58645"
     },
     {
       "id": "little-missouri-saloon",

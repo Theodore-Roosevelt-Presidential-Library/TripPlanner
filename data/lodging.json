@@ -14,7 +14,8 @@
       "blurb": "Luxury meets Western charm in the restored 1885 hotel on Medora's main street — the town's signature stay.",
       "booking": "https://medora.com/roughridershotel/",
       "phone": "+1-701-623-4444",
-      "image": "assets/img/81fa94663c.jpg"
+      "image": "assets/img/81fa94663c.jpg",
+      "address": "301 3rd Ave, Medora, ND 58645"
     },
     {
       "id": "ferris-inn",
@@ -32,7 +33,8 @@
       "blurb": "Medora's most historic stay — where Teddy Roosevelt lodged while visiting town, each room honoring a piece of the story.",
       "booking": "https://medora.com/listing/ferris-inn/",
       "phone": "+1-701-623-4444",
-      "image": "assets/img/2646b1f71f.jpg"
+      "image": "assets/img/2646b1f71f.jpg",
+      "address": "251 Main St, Medora, ND 58645"
     },
     {
       "id": "hotel-1883",
@@ -47,7 +49,8 @@
       "blurb": "New in 2026 — steps from the National Park, the Medora Musical, and the Presidential Library.",
       "booking": "https://medora.com/listing/hotel-1883/",
       "phone": "+1-800-633-6721",
-      "image": "assets/img/d702329abd.jpg"
+      "image": "assets/img/d702329abd.jpg",
+      "address": "465 Pacific Ave, Medora, ND 58645"
     },
     {
       "id": "hyde-house",
@@ -63,7 +66,8 @@
       "blurb": "Nestled into downtown Medora, seconds from the Old West action by day and a quiet home by night.",
       "booking": "https://medora.com/hydehouse/",
       "phone": "+1-701-623-4444",
-      "image": "assets/img/adebc89b10.jpg"
+      "image": "assets/img/adebc89b10.jpg",
+      "address": "455 Broadway, Medora, ND 58645"
     },
     {
       "id": "wooly-boys",
@@ -94,7 +98,8 @@
       "blurb": "Drive right up to your door. Western charm, walkable to downtown, with pet-friendly rooms available.",
       "booking": "https://medora.com/listing/badlands-motel/",
       "phone": "+1-701-623-4444",
-      "image": "assets/img/63b561d981.jpg"
+      "image": "assets/img/63b561d981.jpg",
+      "address": "501 Pacific Ave, Medora, ND 58645"
     },
     {
       "id": "elkhorn-quarters",
@@ -132,7 +137,8 @@
       "blurb": "The newly expanded campground within walking distance of town, under large cottonwoods.",
       "booking": "https://medora.com/medoracampground/",
       "phone": "+1-800-633-6721",
-      "image": "assets/img/ee340b28ef.jpg"
+      "image": "assets/img/ee340b28ef.jpg",
+      "address": "333 E River Rd S, Medora, ND 58645"
     },
     {
       "id": "conestoga-wagons",
@@ -189,7 +195,8 @@
       "blurb": "Full-hookup RV and tent camping a block off Medora's main street.",
       "booking": "https://redtrailcampground.com/",
       "phone": "+1-701-623-4317",
-      "image": "assets/img/9af8d22527.jpg"
+      "image": "assets/img/9af8d22527.jpg",
+      "address": "250 E River Rd S, Medora, ND 58645"
     },
     {
       "id": "sully-creek-camp",
@@ -209,7 +216,8 @@
       "blurb": "Riverside sites and the Maah Daah Hey trailhead, 3 miles south of town — good for horses.",
       "booking": "https://www.parkrec.nd.gov/sully-creek-state-park",
       "phone": "+1-701-623-2024",
-      "image": "assets/img/c232cd2513.jpg"
+      "image": "assets/img/c232cd2513.jpg",
+      "address": "Sully Creek State Park, Medora, ND 58645"
     },
     {
       "id": "cottonwood",
@@ -259,13 +267,16 @@
       "hotels": [
         {
           "name": "Trapper's Inn Motel",
+          "tier": "value",
           "search": "https://www.google.com/search?q=Trappers%20Inn%20Motel%20Belfield%20ND"
         },
         {
           "name": "Parkway Motel",
+          "tier": "value",
           "search": "https://www.google.com/search?q=Parkway%20Motel%20Belfield%20ND"
         }
-      ]
+      ],
+      "quality": 2
     },
     {
       "id": "dickinson-base",
@@ -283,17 +294,31 @@
       "hotels": [
         {
           "name": "Roosevelt Grand Dakota Hotel (BW Signature)",
+          "tier": "premium",
           "search": "https://www.google.com/search?q=Roosevelt%20Grand%20Dakota%20Hotel%20Dickinson%20ND"
         },
         {
           "name": "Astoria Hotel & Event Center",
+          "tier": "comfort",
           "search": "https://www.google.com/search?q=Astoria%20Hotel%20Event%20Center%20Dickinson%20ND"
         },
         {
           "name": "Hampton Inn & Suites Dickinson",
+          "tier": "comfort",
           "search": "https://www.google.com/search?q=Hampton%20Inn%20Suites%20Dickinson%20ND"
+        },
+        {
+          "name": "Comfort Inn & Suites Dickinson",
+          "tier": "comfort",
+          "search": "https://www.google.com/search?q=Comfort%20Inn%20Suites%20Dickinson%20ND"
+        },
+        {
+          "name": "Budget motels (Motel 6, Rodeway Inn)",
+          "tier": "value",
+          "search": "https://www.google.com/search?q=cheap%20motels%20Dickinson%20ND"
         }
-      ]
+      ],
+      "quality": 4
     },
     {
       "id": "beach-base",
@@ -311,9 +336,16 @@
       "hotels": [
         {
           "name": "Buckboard Inn",
+          "tier": "value",
           "search": "https://www.google.com/search?q=Buckboard%20Inn%20Beach%20ND"
+        },
+        {
+          "name": "Westgate Motel",
+          "tier": "value",
+          "search": "https://www.google.com/search?q=Westgate%20Motel%20Beach%20ND"
         }
-      ]
+      ],
+      "quality": 1
     },
     {
       "id": "glendive-base",
@@ -331,21 +363,31 @@
       "hotels": [
         {
           "name": "Astoria Hotel & Suites",
+          "tier": "comfort",
           "search": "https://www.google.com/search?q=Astoria%20Hotel%20Suites%20Glendive%20MT"
         },
         {
           "name": "La Quinta by Wyndham Glendive",
+          "tier": "comfort",
           "search": "https://www.google.com/search?q=La%20Quinta%20Glendive%20MT"
         },
         {
           "name": "Baymont by Wyndham Glendive",
+          "tier": "comfort",
           "search": "https://www.google.com/search?q=Baymont%20Glendive%20MT"
         },
         {
           "name": "Yellowstone River Inn",
+          "tier": "value",
           "search": "https://www.google.com/search?q=Yellowstone%20River%20Inn%20Glendive%20MT"
+        },
+        {
+          "name": "Days Inn Glendive",
+          "tier": "value",
+          "search": "https://www.google.com/search?q=Days%20Inn%20Glendive%20MT"
         }
-      ]
+      ],
+      "quality": 3
     }
   ]
 }
