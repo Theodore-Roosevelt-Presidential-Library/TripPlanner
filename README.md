@@ -192,6 +192,24 @@ After editing, commit to `main` — Pages redeploys automatically (usually < 1 m
 
 ---
 
+## Dine around & shop local
+
+The Medora catalog includes the independent restaurants and shops from the
+Chamber / VisitMedora directory — Medora Uncork'd (wine bar), Hidden Springs
+Java, L'Amour Bistro (in the old Cowboy Cafe space), Bread + Butter, Hatlee +
+Brae, plus shops like Medora Boot & Western Wear, JQ Clothing, Bar Diamond Bar
+Gallery, Chasing Horses, Chateau Nuts and Rushmore Mountain Taffy. The generic
+"Downtown Medora Shops" catch-all was removed in favor of the real businesses.
+
+The finished schedule has a **"Dine around & shop local"** panel: unpicked,
+in-season restaurants and shops as one-tap chips that add straight into the plan
+— nudging guests to try a different spot each meal and browse the shops.
+
+Image note: a few small independents publish photos only on Facebook (not
+fetchable server-side), so they share a real Medora main-street photo; the
+marquee spots (Joe Ferris, Uncork'd, L'Amour, Boot & Western Wear, Chateau Nuts)
+have their own real photos, and a few use their brand logos.
+
 ## Dickinson support
 
 Dickinson (40 minutes east, and one of the drive-in base towns) is a first-class

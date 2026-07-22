@@ -132,6 +132,14 @@
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
     .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
+    .trtp-dinearound{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
+    .trtp-dinearound h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 4px;font-weight:600;}
+    .trtp-dinearound .da-sub{font-size:13px;color:#5c5f62;margin:0 0 11px;}
+    .trtp-dinearound .da-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .da-chip{font:inherit;font-size:13px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:7px 13px;cursor:pointer;color:var(--tr-secondary);transition:all .12s;display:inline-flex;align-items:center;gap:2px;}
+    .da-chip:hover{border-color:var(--tr-primary);background:#fff;transform:translateY(-1px);}
+    .da-chip .plus{color:var(--tr-primary);font-weight:700;margin-right:4px;}
+    .da-chip .cat{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:#9a8a6a;margin-left:5px;}
     .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
     .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 12px;font-weight:600;}
     .trtp-weather .wmonths{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
@@ -1112,9 +1120,33 @@
     }
 
     renderWeather(m);
+    renderDineAround(m);
     m.appendChild(el("div", { class: "trtp-note", html: "The <b>Print / save itinerary</b> button opens a clean, printer-friendly page with every stop, its booking link and phone number — ready to print or save as PDF." }));
   }
   function hasAnyPick() { return S.picks.route.length || S.picks.medora.length || S.picks.library.length; }
+
+  // Encourage dining around Medora + shopping local: unpicked, in-season food & shops
+  // as one-tap adds that fold straight into the schedule.
+  function renderDineAround(m) {
+    var pool = D.medora.attractions.filter(function (a) {
+      return (a.category === "dining" || a.category === "shopping") && monthsBrowseOk(a.avail) && S.picks.medora.indexOf(a.id) < 0;
+    });
+    if (!pool.length) return;
+    pool.sort(function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.category === "dining" ? 0 : 1) - (b.category === "dining" ? 0 : 1); });
+    var box = el("div", { class: "trtp-dinearound" });
+    box.appendChild(el("h4", { text: "Dine around & shop local" }));
+    box.appendChild(el("div", { class: "da-sub", text: "Medora rewards wandering — try a different spot each meal and browse the independent shops. Tap to add any to your plan." }));
+    var wrap = el("div", { class: "da-chips" });
+    pool.slice(0, 14).forEach(function (a) {
+      wrap.appendChild(el("button", { class: "da-chip", type: "button", onclick: function () { toggle("medora", a.id); } }, [
+        el("span", { class: "plus", text: "+" }),
+        a.name,
+        el("span", { class: "cat", text: a.category === "dining" ? (a.meal || "eat") : "shop" })
+      ]));
+    });
+    box.appendChild(wrap);
+    m.appendChild(box);
+  }
 
   // ---- printable ----------------------------------------------------------
   function openPrintable() {

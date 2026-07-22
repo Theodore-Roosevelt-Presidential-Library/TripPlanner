@@ -394,7 +394,7 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "image": "assets/img/13337ae5a4.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg"
     },
     {
       "id": "ferris-store",
@@ -418,30 +418,7 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "image": "assets/img/13337ae5a4.jpg"
-    },
-    {
-      "id": "medora-shops",
-      "name": "Downtown Medora Shops",
-      "category": "shopping",
-      "duration": 60,
-      "lat": 46.913,
-      "lng": -103.5245,
-      "tags": [
-        "family"
-      ],
-      "featured": false,
-      "phone": "+1-800-633-6721",
-      "blurb": "The main-street strip: fudge, leather, hats and souvenirs.",
-      "avail": {
-        "season": [
-          5,
-          9
-        ],
-        "open": "09:00",
-        "close": "20:00"
-      },
-      "image": "assets/img/13337ae5a4.jpg"
+      "image": "assets/img/d43b777a1a.jpg"
     },
     {
       "id": "medora-riding-stables-trail-rides",
@@ -1540,6 +1517,370 @@
       },
       "area": "medora",
       "image": "assets/img/f26b03708a.jpg"
+    },
+    {
+      "id": "medora-uncork-d",
+      "name": "Medora Uncork'd",
+      "category": "dining",
+      "duration": 75,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Western North Dakota's premier wine bar — a full wine, beer and spirits shop paired with a dining room of wood-fired pizzas and small plates.",
+      "avail": {
+        "open": "11:00",
+        "close": "20:00",
+        "season": [
+          5,
+          10
+        ]
+      },
+      "meal": "dinner",
+      "phone": "+1-833-623-2675",
+      "booking": "https://www.medorauncorkd.wine/",
+      "image": "assets/img/f812bec383.jpg"
+    },
+    {
+      "id": "hidden-springs-java",
+      "name": "Hidden Springs Java",
+      "category": "dining",
+      "duration": 30,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A cozy coffee-and-gift stop just off I-94 pouring hand-crafted espresso, cold brew and Italian sodas with fresh bagels, pastries and chocolates.",
+      "avail": {
+        "open": "07:00",
+        "close": "18:00"
+      },
+      "meal": "breakfast",
+      "phone": "+1-701-623-4700",
+      "booking": "https://discovermedora.com/experience-medora/hidden-springs-java/",
+      "image": "assets/img/a2ad43757e.jpg"
+    },
+    {
+      "id": "l-amour-bistro",
+      "name": "L'Amour Bistro",
+      "category": "dining",
+      "duration": 75,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "In the former Cowboy Cafe space, a bistro blending European cafe elegance with modern American cooking across breakfast, lunch and dinner.",
+      "avail": {
+        "open": "17:00",
+        "close": "21:00",
+        "season": [
+          4,
+          10
+        ]
+      },
+      "meal": "dinner",
+      "phone": "+1-701-623-4343",
+      "booking": "https://discovermedora.com/experience-medora/lamour-bistro/",
+      "image": "assets/img/08cd856cc0.jpg"
+    },
+    {
+      "id": "bread-butter",
+      "name": "Bread + Butter",
+      "category": "dining",
+      "duration": 45,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A quick-bite counter of fresh sandwiches, wraps, salads and signature flavored sodas to grab on the spot or take on the trail.",
+      "avail": {
+        "open": "11:00",
+        "close": "20:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "meal": "lunch",
+      "phone": "+1-701-623-1311",
+      "booking": "https://discovermedora.com/experience-medora/bread-butter/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "hatlee-brae",
+      "name": "Hatlee + Brae",
+      "category": "dining",
+      "duration": 30,
+      "tags": [
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A sweet downtown break of 24 ice cream flavors plus espresso drinks, smoothies, kettle corn and Tropical Sno.",
+      "avail": {
+        "open": "07:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "meal": "breakfast",
+      "phone": "+1-701-623-1311",
+      "booking": "https://discovermedora.com/experience-medora/hatlee-brae/",
+      "image": "assets/img/5fc7a58300.jpg"
+    },
+    {
+      "id": "medora-boot-western-wear",
+      "name": "Medora Boot & Western Wear",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A true cowboy outfitter stocked with exotic and custom boots, hats, tack and western accessories.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-1005",
+      "booking": "https://discovermedora.com/experience-medora/medora-boot-western-wear/",
+      "image": "assets/img/7dfc8c89ac.jpg"
+    },
+    {
+      "id": "jq-clothing-co",
+      "name": "JQ Clothing Co.",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A playful women's boutique with a hat bar, kids' and bath sections, and locally made jewelry.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-710-0234",
+      "booking": "https://discovermedora.com/experience-medora/jq-clothing-co/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "bar-diamond-bar-boutique-gallery",
+      "name": "Bar Diamond Bar Boutique & Gallery",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A stylish boutique and art gallery of Pendleton goods, home decor and one-of-a-kind Badlands keepsakes.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-0155",
+      "booking": "https://discovermedora.com/experience-medora/bar-diamond-bar-boutique-gallery/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "chasing-horses",
+      "name": "Chasing Horses",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "An owner-run shop of unique merchandise built around striking photographs of the Badlands' wild horses.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-4773",
+      "booking": "https://discovermedora.com/experience-medora/chasing-horses/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "the-home-merchant",
+      "name": "The Home Merchant",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A whimsical home-and-garden shop layered with decor, fashion and accessories.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-2219",
+      "booking": "https://discovermedora.com/experience-medora/the-home-merchant/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "black-hills-gold-gift-outlet",
+      "name": "Black Hills Gold & Gift Outlet",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A seasonal jewelry outlet specializing in Black Hills gold, knives and western decor.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-5057",
+      "booking": "https://discovermedora.com/experience-medora/black-hills-gold-gift-outlet/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "todd-s-old-time-photo-parlor",
+      "name": "Todd's Old Time Photo Parlor",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "Dress up in Old West or Roaring '20s garb for a themed keepsake portrait, then browse the gift shop.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-4339",
+      "booking": "https://discovermedora.com/experience-medora/todds-old-time-photo-parlor-gift-shop/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "chateau-nuts",
+      "name": "Chateau Nuts",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A tiny downtown shop stacked high with nuts of every imaginable variety.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-4825",
+      "booking": "https://discovermedora.com/experience-medora/chateau-nuts/",
+      "image": "assets/img/dbb6830154.jpg"
+    },
+    {
+      "id": "rushmore-mountain-taffy",
+      "name": "Rushmore Mountain Taffy",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A candy stop making saltwater taffy and fudge fresh daily in a rainbow of flavors.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-4885",
+      "booking": "https://discovermedora.com/experience-medora/rushmore-mountain-taffy/",
+      "image": "assets/img/0d1359f292.jpg"
+    },
+    {
+      "id": "sacajawea-trading-post",
+      "name": "Sacajawea Trading Post",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A family-friendly trading post packed with gifts and souvenirs in historic downtown Medora.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-5050",
+      "booking": "https://discovermedora.com/experience-medora/sacajawea-trading-post/",
+      "image": "assets/img/4c78cb0fe0.jpg"
+    },
+    {
+      "id": "hitching-post",
+      "name": "Hitching Post",
+      "category": "shopping",
+      "duration": 35,
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "featured": false,
+      "blurb": "A downtown gift shop of souvenirs and keepsakes for visitors of all ages.",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "phone": "+1-701-623-4488",
+      "booking": "https://discovermedora.com/experience-medora/hitching-post/",
+      "image": "assets/img/4c78cb0fe0.jpg"
     }
   ]
 }
