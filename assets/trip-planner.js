@@ -974,10 +974,16 @@
     var baseLodge = null; S.picks.lodging.forEach(function (id) { var l = byId(D.lodging.lodging, id); if (l && l.nearbyBase) baseLodge = l; });
     var medoraBase = baseLodge ? baseLodge.name : "Medora";
 
-    // Medora nights from the local activity load at the chosen pace (min 1)
+    // Medora nights from the local activity load at the chosen pace (min 1).
+    // Near day-trips that eat most of a day (their visit + round-trip drive)
+    // really want a day of their own — otherwise they get crammed onto a
+    // travel-heavy arrival/departure day and bumped to a note. Count those
+    // separately, then pack the remaining local load by the daily budget.
     var budget = PACE[S.pace] || 480;
     var totalLocal = local.reduce(function (s, i) { return s + i.duration; }, 0);
-    var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), Math.ceil(totalLocal / budget));
+    var bigTrips = nearLocal.filter(function (n) { return n.duration >= budget * 0.6; });
+    var packLoad = totalLocal - bigTrips.reduce(function (s, n) { return s + n.duration; }, 0);
+    var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), bigTrips.length + Math.ceil(Math.max(0, packLoad) / budget));
     if (medoraDays < 1 && !far.length) medoraDays = 1;
 
     // --- Respect the day budget. If the picks need more days than the guest has,

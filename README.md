@@ -65,7 +65,7 @@ visited step to change answers, no Back-button hunting.
 The flow leads with what the guest wants to see, then handles logistics:
 
 1. **What do you want to see & do?** → interests that surface the best stops
-2. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips), ordered by relationship to the Library (its Medora home anchors the trip, so proximity = how easily a stop pairs with a Library visit) lifted by a `popularity` score, so the closest and best-loved stops lead and carry a "★ Popular" tag
+2. **Build your road trip** → 43 regional stops — national parks, monuments, battlefields, towns, state parks (regional stops become day trips), ordered by relationship to the Library (its Medora home anchors the trip, so proximity = how easily a stop pairs with a Library visit) lifted by a `popularity` score, so the closest and best-loved stops lead and carry a "★ Popular" tag
 3. **Which months?** → the guest picks the month(s) they're considering; the next step is filtered to what's actually open then (the Musical, trail rides and many shops are summer-only)
 4. **Your Medora day** → a deep catalog (60+ items) grouped into See & do, Outdoors & recreation, Guided tours & rides, Shows & evenings, Where to eat, Where to shop, and Festivals & special events — all season-filtered
 5. **The Library** → general admission + the five specialty tours (each with its real days/times/price)

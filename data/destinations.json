@@ -1067,6 +1067,301 @@
       "image": "assets/img/f4673b76bf.jpg",
       "address": "K5 Kayaks, Dickinson, ND 58601",
       "popularity": 2
+    },
+    {
+      "id": "makoshika",
+      "name": "Makoshika State Park",
+      "type": "state_park",
+      "lat": 47.0967,
+      "lng": -104.7003,
+      "milesFromMedora": 68,
+      "dwell": 2,
+      "corridor": [
+        "west"
+      ],
+      "tags": [
+        "outdoors",
+        "scenic",
+        "parks",
+        "family"
+      ],
+      "blurb": "Montana’s largest state park — dramatic badlands, hoodoos and dinosaur fossils right on Glendive’s doorstep.",
+      "url": "https://fwp.mt.gov/stateparks/makoshika-state-park",
+      "duration": 150,
+      "phone": "+1-406-377-6256",
+      "avail": {
+        "open": "08:00",
+        "close": "20:00"
+      },
+      "image": "assets/img/8240ba5487.jpg",
+      "address": "Makoshika State Park, 1301 Snyder Ave, Glendive, MT 59330",
+      "popularity": 4
+    },
+    {
+      "id": "fort-union",
+      "name": "Fort Union Trading Post NHS",
+      "type": "cultural",
+      "lat": 48.0003,
+      "lng": -104.0419,
+      "milesFromMedora": 150,
+      "dwell": 2,
+      "corridor": [
+        "west",
+        "river-road"
+      ],
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "blurb": "A fully reconstructed 1828 fur-trade fort at the Missouri–Yellowstone confluence — the grand trading post of the Northern Plains.",
+      "url": "https://www.nps.gov/fous/",
+      "duration": 90,
+      "phone": "+1-701-572-9083",
+      "avail": {
+        "open": "08:00",
+        "close": "17:30"
+      },
+      "image": "assets/img/f2a19b23e0.jpg",
+      "address": "Fort Union Trading Post NHS, 15550 Highway 1804, Williston, ND 58801",
+      "overnight": {
+        "city": "Williston, ND",
+        "search": "https://www.google.com/search?q=hotels%20in%20Williston%2C%20ND"
+      },
+      "visitDays": 1,
+      "popularity": 4
+    },
+    {
+      "id": "little-bighorn",
+      "name": "Little Bighorn Battlefield NM",
+      "type": "national_monument",
+      "lat": 45.5703,
+      "lng": -107.4319,
+      "milesFromMedora": 270,
+      "dwell": 3,
+      "corridor": [
+        "west"
+      ],
+      "tags": [
+        "culture",
+        "parks",
+        "family"
+      ],
+      "blurb": "The 1876 battlefield where Custer’s 7th Cavalry fell to the Lakota, Cheyenne and Arapaho — white markers trace the fight across the ridges.",
+      "url": "https://www.nps.gov/libi/",
+      "duration": 150,
+      "phone": "+1-406-638-2621",
+      "avail": {
+        "open": "08:00",
+        "close": "18:00"
+      },
+      "image": "assets/img/afb2310ba0.jpg",
+      "address": "Little Bighorn Battlefield NM, 756 Battlefield Tour Rd, Crow Agency, MT 59022",
+      "overnight": {
+        "city": "Hardin, MT",
+        "search": "https://www.google.com/search?q=hotels%20in%20Hardin%2C%20MT"
+      },
+      "visitDays": 1,
+      "popularity": 5
+    },
+    {
+      "id": "pompeys-pillar",
+      "name": "Pompeys Pillar National Monument",
+      "type": "national_monument",
+      "lat": 45.9938,
+      "lng": -107.9553,
+      "milesFromMedora": 230,
+      "dwell": 1,
+      "corridor": [
+        "west"
+      ],
+      "tags": [
+        "culture",
+        "scenic",
+        "family"
+      ],
+      "blurb": "A sandstone butte carved with William Clark’s 1806 signature — the only surviving on-site physical evidence of the Lewis & Clark Expedition.",
+      "url": "https://www.blm.gov/visit/pompeys-pillar-national-monument",
+      "duration": 90,
+      "phone": "+1-406-969-5211",
+      "avail": {
+        "season": [
+          5,
+          9
+        ],
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "image": "assets/img/c84f685cd4.jpg",
+      "address": "Pompeys Pillar National Monument, 3039 Highway 312, Pompeys Pillar, MT 59064",
+      "overnight": {
+        "city": "Billings, MT",
+        "search": "https://www.google.com/search?q=hotels%20in%20Billings%2C%20MT"
+      },
+      "visitDays": 1,
+      "popularity": 4
+    },
+    {
+      "id": "minuteman-missile",
+      "name": "Minuteman Missile NHS",
+      "type": "cultural",
+      "lat": 43.8716,
+      "lng": -102.156,
+      "milesFromMedora": 250,
+      "dwell": 2,
+      "corridor": [
+        "black-hills"
+      ],
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "blurb": "A preserved Cold War launch-control facility and missile silo on the prairie — reserve ahead for the underground Delta-01 tour.",
+      "url": "https://www.nps.gov/mimi/",
+      "duration": 90,
+      "phone": "+1-605-717-7629",
+      "avail": {
+        "open": "08:00",
+        "close": "16:00"
+      },
+      "image": "assets/img/89d4f7f5d6.jpg",
+      "address": "Minuteman Missile NHS Visitor Center, 24545 Cottonwood Rd, Philip, SD 57567",
+      "overnight": {
+        "city": "Wall, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Wall%2C%20SD"
+      },
+      "visitDays": 1,
+      "popularity": 4
+    },
+    {
+      "id": "jewel-cave",
+      "name": "Jewel Cave National Monument",
+      "type": "national_monument",
+      "lat": 43.7307,
+      "lng": -103.8294,
+      "milesFromMedora": 295,
+      "dwell": 2,
+      "corridor": [
+        "black-hills"
+      ],
+      "tags": [
+        "parks",
+        "outdoors",
+        "family"
+      ],
+      "blurb": "One of the world’s longest caves — calcite-crystal passages seen on ranger-led tours (timed tickets go fast in summer).",
+      "url": "https://www.nps.gov/jeca/",
+      "duration": 120,
+      "phone": "+1-605-673-8300",
+      "avail": {
+        "open": "08:30",
+        "close": "16:30"
+      },
+      "image": "assets/img/217ee378a7.jpg",
+      "address": "Jewel Cave National Monument, 11149 US Hwy 16 Bldg B12, Custer, SD 57730",
+      "overnight": {
+        "city": "Custer, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Custer%2C%20SD"
+      },
+      "visitDays": 1,
+      "popularity": 4
+    },
+    {
+      "id": "crazy-horse",
+      "name": "Crazy Horse Memorial",
+      "type": "cultural",
+      "lat": 43.8367,
+      "lng": -103.6236,
+      "milesFromMedora": 280,
+      "dwell": 2,
+      "corridor": [
+        "black-hills"
+      ],
+      "tags": [
+        "culture",
+        "scenic",
+        "family"
+      ],
+      "blurb": "The world’s largest mountain carving in progress, honoring the Lakota leader — with a Native American museum and cultural center.",
+      "url": "https://crazyhorsememorial.org/",
+      "duration": 150,
+      "phone": "+1-605-673-4681",
+      "avail": {
+        "open": "08:00",
+        "close": "20:00"
+      },
+      "image": "assets/img/d987f06fe1.jpg",
+      "address": "Crazy Horse Memorial, 12151 Avenue of the Chiefs, Crazy Horse, SD 57730",
+      "overnight": {
+        "city": "Custer, SD",
+        "search": "https://www.google.com/search?q=hotels%20in%20Custer%2C%20SD"
+      },
+      "visitDays": 1,
+      "popularity": 5
+    },
+    {
+      "id": "bighorn-canyon",
+      "name": "Bighorn Canyon NRA",
+      "type": "scenic",
+      "lat": 44.8375,
+      "lng": -108.266,
+      "milesFromMedora": 350,
+      "dwell": 3,
+      "corridor": [
+        "west"
+      ],
+      "tags": [
+        "outdoors",
+        "scenic",
+        "parks"
+      ],
+      "blurb": "A 70-mile reservoir cut through 1,000-foot canyon walls, with wild horses in the Pryor Mountains and sweeping overlooks.",
+      "url": "https://www.nps.gov/bica/",
+      "duration": 180,
+      "phone": "+1-307-548-5406",
+      "avail": {
+        "open": "08:00",
+        "close": "17:00"
+      },
+      "image": "assets/img/5bd4fa5aad.jpg",
+      "address": "Bighorn Canyon NRA — Cal S. Taggart Visitor Center, 20 US Hwy 14A, Lovell, WY 82431",
+      "overnight": {
+        "city": "Lovell, WY",
+        "search": "https://www.google.com/search?q=hotels%20in%20Lovell%2C%20WY"
+      },
+      "visitDays": 1,
+      "popularity": 4
+    },
+    {
+      "id": "lewis-clark-nd",
+      "name": "Lewis & Clark Interpretive Center & Fort Mandan",
+      "type": "cultural",
+      "lat": 47.2905,
+      "lng": -101.0357,
+      "milesFromMedora": 135,
+      "dwell": 2,
+      "corridor": [
+        "river-road"
+      ],
+      "tags": [
+        "culture",
+        "family"
+      ],
+      "blurb": "Where the Corps of Discovery wintered in 1804–05 — a hands-on interpretive center plus the reconstructed Fort Mandan nearby.",
+      "url": "https://fortmandan.com/",
+      "duration": 120,
+      "phone": "+1-701-462-8535",
+      "avail": {
+        "open": "09:00",
+        "close": "17:00"
+      },
+      "image": "assets/img/e5b5f22fcb.jpg",
+      "address": "North Dakota Lewis & Clark Interpretive Center, 2576 8th St SW, Washburn, ND 58577",
+      "overnight": {
+        "city": "Bismarck, ND",
+        "search": "https://www.google.com/search?q=hotels%20in%20Bismarck%2C%20ND"
+      },
+      "visitDays": 1,
+      "popularity": 3
     }
   ]
 }
