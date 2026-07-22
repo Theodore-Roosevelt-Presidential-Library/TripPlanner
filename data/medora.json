@@ -130,7 +130,8 @@
       "avail": {
         "open": "08:00",
         "close": "20:00"
-      }
+      },
+      "image": "assets/img/1fb0374047.jpg"
     },
     {
       "id": "bully-pulpit",
@@ -268,7 +269,8 @@
       "avail": {
         "open": "11:00",
         "close": "15:00"
-      }
+      },
+      "image": "assets/img/3e6c78e8f0.jpg"
     },
     {
       "id": "theodores",
@@ -337,7 +339,8 @@
         ],
         "open": "11:00",
         "close": "21:00"
-      }
+      },
+      "image": "assets/img/d8d7a64a5c.jpg"
     },
     {
       "id": "farmhouse-cafe",
@@ -356,7 +359,8 @@
       "avail": {
         "open": "07:00",
         "close": "13:00"
-      }
+      },
+      "image": "assets/img/13337ae5a4.jpg"
     },
     {
       "id": "western-edge",
@@ -378,7 +382,8 @@
         ],
         "open": "09:00",
         "close": "18:00"
-      }
+      },
+      "image": "assets/img/13337ae5a4.jpg"
     },
     {
       "id": "ferris-store",
@@ -401,7 +406,8 @@
         ],
         "open": "09:00",
         "close": "18:00"
-      }
+      },
+      "image": "assets/img/13337ae5a4.jpg"
     },
     {
       "id": "medora-shops",
@@ -594,7 +600,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/3a5b950bb9.jpg"
     },
     {
       "id": "point-to-point-trails",
@@ -657,7 +664,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/4b755c8fb7.jpg"
     },
     {
       "id": "ruff-riders-dog-park",
@@ -676,7 +684,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/af6c8bb9f6.jpg"
     },
     {
       "id": "medora-musical-backstage-tour",
@@ -699,7 +708,8 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/9985216fe7.jpg"
     },
     {
       "id": "footsteps-into-medora-s-past-walking-tou",
@@ -722,7 +732,8 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/fd5f931b80.jpg"
     },
     {
       "id": "the-von-hoffman-house",
@@ -744,7 +755,8 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/ca1a2d262c.jpg"
     },
     {
       "id": "harold-schafer-heritage-center",
@@ -767,7 +779,8 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/ed6aa1bcec.jpg"
     },
     {
       "id": "de-mores-park",
@@ -786,7 +799,8 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/98b455840e.jpg"
     },
     {
       "id": "medora-gospel-brunch",
@@ -809,7 +823,8 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/2989b778ea.jpg"
     },
     {
       "id": "the-teddy-roosevelt-show",
@@ -856,7 +871,8 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/a1cd41d9e3.jpg"
     },
     {
       "id": "the-great-american-folk-show",
@@ -879,7 +895,8 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/917dfa62df.jpg"
     },
     {
       "id": "live-music-on-the-town-square-patio",
@@ -915,7 +932,8 @@
           }
         ]
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/fe581fb665.jpg"
     },
     {
       "id": "badlands-pizza-saloon",
@@ -938,7 +956,8 @@
         "open": "11:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/e0fd67d4e7.jpg"
     },
     {
       "id": "sheriff-bear-s-ice-cream-burgers",
@@ -960,7 +979,8 @@
         "open": "11:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/bd4f25f008.jpg"
     },
     {
       "id": "medora-fudge-ice-cream-depot",
@@ -981,7 +1001,8 @@
         "open": "11:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/f1e216e1d8.jpg"
     },
     {
       "id": "tr-s-tavern",
@@ -1000,7 +1021,8 @@
         "open": "11:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/3c88a290d7.jpg"
     },
     {
       "id": "cowboy-lyle-s-candy-barn",
@@ -1083,7 +1105,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/cf15bb12f5.jpg"
     },
     {
       "id": "north-unit-scenic-drive",
@@ -1103,7 +1126,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/89059c3cb5.jpg"
     },
     {
       "id": "wind-canyon-trail",
@@ -1123,7 +1147,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/508c01a08d.jpg"
     },
     {
       "id": "boicourt-overlook-trail",
@@ -1143,7 +1168,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/e187b73c30.jpg"
     },
     {
       "id": "coal-vein-trail",
@@ -1163,7 +1189,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/c20e45ebdc.jpg"
     },
     {
       "id": "little-mo-nature-trail",
@@ -1183,7 +1210,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/f67d05a2a4.jpg"
     },
     {
       "id": "skyline-vista-trail",
@@ -1203,7 +1231,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/26670a9b60.jpg"
     },
     {
       "id": "buck-hill",
@@ -1223,7 +1252,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/b8462870f1.jpg"
     },
     {
       "id": "badlands-wildlife-viewing",
@@ -1243,7 +1273,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/b8c2658b13.jpg"
     },
     {
       "id": "birding-the-badlands",
@@ -1267,7 +1298,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/2a203dbd5f.jpg"
     },
     {
       "id": "junior-ranger-program",
@@ -1288,7 +1320,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/11662b56b8.jpg"
     },
     {
       "id": "ranger-led-program",
@@ -1313,7 +1346,8 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/ad2c616cda.jpg"
     },
     {
       "id": "dakota-nights-astronomy-festival",
@@ -1339,7 +1373,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "park"
+      "area": "park",
+      "image": "assets/img/d8317168f6.jpg"
     },
     {
       "id": "maah-daah-hey-100-bike-race",
@@ -1361,7 +1396,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/0c3bb5fd97.jpg"
     },
     {
       "id": "champions-ride-saddle-bronc-rodeo",
@@ -1383,7 +1419,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/4cbde2baad.jpg"
     },
     {
       "id": "spring-into-summer-wine-walk",
@@ -1405,7 +1442,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/555e25d11c.jpg"
     },
     {
       "id": "wild-west-fall-fest",
@@ -1428,7 +1466,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/f5bc5588bd.jpg"
     },
     {
       "id": "cowboy-christmas",
@@ -1464,7 +1503,8 @@
           }
         ]
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/ffcf75fa65.jpg"
     },
     {
       "id": "dakota-nights-new-year-s-eve-gala",
@@ -1487,7 +1527,8 @@
         "open": "09:00",
         "close": "22:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "image": "assets/img/f26b03708a.jpg"
     }
   ]
 }

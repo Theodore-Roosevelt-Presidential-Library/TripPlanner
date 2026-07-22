@@ -224,7 +224,8 @@
       ],
       "blurb": "The National Park Service campground inside the South Unit, along the Little Missouri.",
       "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm",
-      "phone": "+1-701-623-4466"
+      "phone": "+1-701-623-4466",
+      "image": "assets/img/54f767f263.jpg"
     },
     {
       "id": "juniper",
@@ -239,7 +240,8 @@
       ],
       "blurb": "Quiet NPS campground in the North Unit, 70 miles north.",
       "booking": "https://www.nps.gov/thro/planyourvisit/campgrounds.htm",
-      "phone": "+1-701-623-4466"
+      "phone": "+1-701-623-4466",
+      "image": "assets/img/54f767f263.jpg"
     },
     {
       "id": "belfield-base",
@@ -252,7 +254,8 @@
       "priceHint": "$$",
       "blurb": "The closest drive-in town — a handful of motels 20 minutes east on I-94, often cheaper than in-town Medora.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Belfield%20ND",
-      "phone": null
+      "phone": null,
+      "image": "assets/img/51c574d1ec.jpg"
     },
     {
       "id": "dickinson-base",
@@ -265,7 +268,8 @@
       "priceHint": "$$$",
       "blurb": "A full set of national-brand hotels 40 minutes east — the go-to base when Medora books up in summer.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Dickinson%20ND",
-      "phone": null
+      "phone": null,
+      "image": "assets/img/5e1fecb2b8.jpg"
     },
     {
       "id": "beach-base",
@@ -278,7 +282,8 @@
       "priceHint": "$$",
       "blurb": "A small town 25 minutes west on I-94 at the Montana line, with simple, affordable motels.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Beach%20ND",
-      "phone": null
+      "phone": null,
+      "image": "assets/img/7426ce8669.jpg"
     },
     {
       "id": "glendive-base",
@@ -291,7 +296,8 @@
       "priceHint": "$$$",
       "blurb": "A larger Montana town about 50 minutes west with chain hotels and Makoshika State Park nearby.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Glendive%20MT",
-      "phone": null
+      "phone": null,
+      "image": "assets/img/58d0385905.jpg"
     }
   ]
 }

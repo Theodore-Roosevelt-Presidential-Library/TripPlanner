@@ -204,9 +204,13 @@ we never hotlink other sites' servers. Each item's `image` field is a local path
 (e.g. `assets/img/<hash>.jpg`); the embed resolves it against the script's origin
 so it works when embedded on trlibrary.com.
 
-Sources are a mix of the official sites (medora.com for lodging/dining, the
-Library's own gallery for tours) and **Wikimedia Commons / Wikipedia** lead
-images for parks, monuments and towns (chosen to be iconic and unique per place).
+Sources are a mix of the official sites (medora.com for lodging/dining/activities,
+the NPS for park trails, the Library's own gallery for tours) and **Wikimedia
+Commons / Wikipedia** lead images for parks, monuments and towns (chosen to be
+iconic and unique per place). **Every item has an image** (112/112). A few small
+downtown shops with no available photo share a downtown-Medora image, and a
+couple of same-place items (the two NPS campgrounds, the two Painted Canyon
+entries) share one photo by design.
 
 To add or refresh a photo: set an item's `image` to a remote URL, then run
 
