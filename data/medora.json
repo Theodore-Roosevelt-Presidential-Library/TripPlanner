@@ -157,7 +157,7 @@
       "blurb": "A championship course carved into the badlands — one of the most scenic rounds anywhere.",
       "avail": {
         "season": [
-          5,
+          4,
           10
         ],
         "open": "07:00",
@@ -282,7 +282,7 @@
       "blurb": "The restaurant inside the Library — wood-fired, native and seasonal Badlands cooking, with long views over the Little Missouri.",
       "avail": {
         "open": "11:00",
-        "close": "15:00"
+        "close": "18:00"
       },
       "image": "assets/img/ccc093b76f.jpg",
       "booking": "https://www.saltandscoria.com",
@@ -305,7 +305,13 @@
       "blurb": "The Rough Riders Hotel dining room — Medora's sit-down dinner classic (formerly 'Teddy's').",
       "avail": {
         "open": "17:00",
-        "close": "21:00"
+        "close": "21:00",
+        "days": [
+          0,
+          4,
+          5,
+          6
+        ]
       },
       "image": "assets/img/08c1b471d6.jpg",
       "address": "Rough Riders Hotel, 301 3rd Ave, Medora, ND 58645"
@@ -326,10 +332,6 @@
       "booking": "https://www.medora.com/eat/little-missouri-saloon-dining/",
       "blurb": "The 'Little Mo' — a Medora institution for steaks and burgers.",
       "avail": {
-        "season": [
-          5,
-          9
-        ],
         "open": "11:00",
         "close": "22:00"
       },
@@ -401,7 +403,7 @@
           9
         ],
         "open": "09:00",
-        "close": "18:00"
+        "close": "19:00"
       },
       "image": "assets/img/4c78cb0fe0.jpg",
       "address": "Western Edge Books & Art, Medora, ND 58645"
@@ -426,7 +428,7 @@
           9
         ],
         "open": "09:00",
-        "close": "18:00"
+        "close": "19:00"
       },
       "image": "assets/img/d43b777a1a.jpg",
       "address": "Joe Ferris General Store, Medora, ND 58645"
@@ -451,8 +453,8 @@
           5,
           10
         ],
-        "open": "09:00",
-        "close": "17:00"
+        "open": "07:30",
+        "close": "18:00"
       },
       "area": "medora",
       "address": "Medora Riding Stables & Trail Rides, Medora, ND 58645"
@@ -477,8 +479,8 @@
           5,
           9
         ],
-        "open": "08:00",
-        "close": "19:00"
+        "open": "09:00",
+        "close": "20:00"
       },
       "area": "medora",
       "address": "Little Bully Pulpit Mini Golf, Medora, ND 58645"
@@ -503,7 +505,7 @@
           5,
           9
         ],
-        "open": "08:00",
+        "open": "10:00",
         "close": "19:00"
       },
       "area": "medora",
@@ -529,7 +531,7 @@
           6,
           9
         ],
-        "open": "08:00",
+        "open": "11:00",
         "close": "19:00"
       },
       "area": "medora",
@@ -581,7 +583,7 @@
           6,
           9
         ],
-        "open": "08:00",
+        "open": "10:00",
         "close": "19:00"
       },
       "area": "medora",
@@ -835,8 +837,18 @@
           6,
           9
         ],
-        "open": "17:00",
-        "close": "21:00"
+        "fixed": [
+          {
+            "days": [
+              0,
+              2,
+              3,
+              5
+            ],
+            "start": "09:00",
+            "end": "10:30"
+          }
+        ]
       },
       "area": "medora",
       "image": "assets/img/2989b778ea.jpg",
@@ -861,8 +873,23 @@
           6,
           9
         ],
-        "open": "17:00",
-        "close": "21:00"
+        "fixed": [
+          {
+            "days": [
+              4,
+              6
+            ],
+            "start": "09:00",
+            "end": "11:00"
+          },
+          {
+            "days": [
+              1
+            ],
+            "start": "18:30",
+            "end": "20:30"
+          }
+        ]
       },
       "area": "medora",
       "address": "The Teddy Roosevelt Show, Medora, ND 58645"
@@ -877,7 +904,7 @@
         "family"
       ],
       "featured": false,
-      "blurb": "Performer Kurt Skinner channels a young Theodore Roosevelt in a one-man show about the strenuous life.",
+      "blurb": "Performer Kurt Skinner channels a young Theodore Roosevelt in a one-man show about the strenuous life — a 3:30 pm matinee at the Old Town Hall Theater.",
       "phone": "+1-701-623-4444",
       "booking": "https://medora.com/listing/t-r-the-strenuous-life/",
       "avail": {
@@ -885,8 +912,21 @@
           6,
           9
         ],
-        "open": "17:00",
-        "close": "21:00"
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "15:30",
+            "end": "16:30"
+          }
+        ]
       },
       "area": "medora",
       "image": "assets/img/a1cd41d9e3.jpg",
@@ -896,13 +936,13 @@
       "id": "the-great-american-folk-show",
       "name": "The Great American Folk Show",
       "category": "evening",
-      "duration": 90,
+      "duration": 60,
       "tags": [
         "culture",
         "family"
       ],
       "featured": false,
-      "blurb": "Folk musician Tom Brosseau spins songs and stories of great American folks in an intimate evening performance.",
+      "blurb": "Folk musician Tom Brosseau spins songs and stories of great American folks in an intimate 4:00 pm performance at the Old Town Hall Theater.",
       "phone": "+1-701-623-4444",
       "booking": "https://medora.com/listing/great-american-folk-show/",
       "avail": {
@@ -910,8 +950,21 @@
           6,
           9
         ],
-        "open": "17:00",
-        "close": "21:00"
+        "fixed": [
+          {
+            "days": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "start": "16:00",
+            "end": "17:00"
+          }
+        ]
       },
       "area": "medora",
       "image": "assets/img/917dfa62df.jpg",
@@ -998,7 +1051,7 @@
           9
         ],
         "open": "11:00",
-        "close": "21:00"
+        "close": "19:00"
       },
       "area": "medora",
       "image": "assets/img/bd4f25f008.jpg",
@@ -1041,8 +1094,8 @@
       "booking": "https://medora.com/teddystavern/",
       "meal": "dinner",
       "avail": {
-        "open": "11:00",
-        "close": "21:00"
+        "open": "15:30",
+        "close": "23:00"
       },
       "area": "medora",
       "image": "assets/img/3c88a290d7.jpg",
@@ -1065,8 +1118,8 @@
           6,
           9
         ],
-        "open": "09:00",
-        "close": "18:00"
+        "open": "10:00",
+        "close": "19:00"
       },
       "area": "medora",
       "address": "Cowboy Lyle's Candy Barn, Medora, ND 58645"
@@ -1085,7 +1138,7 @@
       "image": "assets/img/5150ac474e.jpg",
       "avail": {
         "open": "09:00",
-        "close": "18:00"
+        "close": "19:00"
       },
       "area": "medora",
       "address": "Rough Riders Gift, Medora, ND 58645"
@@ -1103,12 +1156,8 @@
       "booking": "https://medora.com/buffalogap/",
       "image": "assets/img/bae11d4fc8.jpg",
       "avail": {
-        "season": [
-          5,
-          9
-        ],
         "open": "09:00",
-        "close": "18:00"
+        "close": "19:00"
       },
       "area": "medora",
       "address": "Buffalo Gap Gift Shop, Medora, ND 58645"
@@ -1130,7 +1179,7 @@
           9
         ],
         "open": "09:00",
-        "close": "18:00"
+        "close": "19:00"
       },
       "area": "medora",
       "image": "assets/img/cf15bb12f5.jpg",
@@ -1433,14 +1482,14 @@
         "family"
       ],
       "featured": false,
-      "blurb": "A three-day September celebration of dark skies with telescope viewing, presentations, and rocket launches.",
+      "blurb": "A two-night August celebration of dark skies with telescope viewing, presentations, and rocket launches.",
       "phone": "+1-701-623-4466",
       "booking": "https://www.nps.gov/thro/learn/nature/dakota-nights-festival.htm",
       "price": "Free",
       "avail": {
         "season": [
-          9,
-          9
+          8,
+          8
         ],
         "open": "09:00",
         "close": "22:00"
@@ -1515,7 +1564,7 @@
       "avail": {
         "season": [
           5,
-          6
+          5
         ],
         "open": "09:00",
         "close": "22:00"
@@ -1539,7 +1588,7 @@
       "booking": "https://medora.com/fallfest/",
       "avail": {
         "season": [
-          9,
+          10,
           10
         ],
         "open": "09:00",
@@ -1628,6 +1677,14 @@
         "season": [
           5,
           10
+        ],
+        "days": [
+          0,
+          2,
+          3,
+          4,
+          5,
+          6
         ]
       },
       "meal": "dinner",
@@ -1648,7 +1705,7 @@
       "blurb": "A cozy coffee-and-gift stop just off I-94 pouring hand-crafted espresso, cold brew and Italian sodas with fresh bagels, pastries and chocolates.",
       "avail": {
         "open": "07:00",
-        "close": "18:00"
+        "close": "16:00"
       },
       "meal": "breakfast",
       "phone": "+1-701-623-4700",
@@ -1667,8 +1724,8 @@
       "featured": false,
       "blurb": "In the former Cowboy Cafe space, a bistro blending European cafe elegance with modern American cooking across breakfast, lunch and dinner.",
       "avail": {
-        "open": "17:00",
-        "close": "21:00",
+        "open": "06:30",
+        "close": "20:00",
         "season": [
           4,
           10
@@ -1716,7 +1773,7 @@
       "blurb": "A sweet downtown break of 24 ice cream flavors plus espresso drinks, smoothies, kettle corn and Tropical Sno.",
       "avail": {
         "open": "07:00",
-        "close": "18:00",
+        "close": "20:00",
         "season": [
           5,
           9
@@ -1741,7 +1798,7 @@
       "blurb": "A true cowboy outfitter stocked with exotic and custom boots, hats, tack and western accessories.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1765,7 +1822,7 @@
       "blurb": "A playful women's boutique with a hat bar, kids' and bath sections, and locally made jewelry.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1789,7 +1846,7 @@
       "blurb": "A stylish boutique and art gallery of Pendleton goods, home decor and one-of-a-kind Badlands keepsakes.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1813,7 +1870,7 @@
       "blurb": "An owner-run shop of unique merchandise built around striking photographs of the Badlands' wild horses.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1837,7 +1894,7 @@
       "blurb": "A whimsical home-and-garden shop layered with decor, fashion and accessories.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1861,7 +1918,7 @@
       "blurb": "A seasonal jewelry outlet specializing in Black Hills gold, knives and western decor.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1885,7 +1942,7 @@
       "blurb": "Dress up in Old West or Roaring '20s garb for a themed keepsake portrait, then browse the gift shop.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1909,7 +1966,7 @@
       "blurb": "A tiny downtown shop stacked high with nuts of every imaginable variety.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1933,7 +1990,7 @@
       "blurb": "A candy stop making saltwater taffy and fudge fresh daily in a rainbow of flavors.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1957,7 +2014,7 @@
       "blurb": "A family-friendly trading post packed with gifts and souvenirs in historic downtown Medora.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9
@@ -1981,7 +2038,7 @@
       "blurb": "A downtown gift shop of souvenirs and keepsakes for visitors of all ages.",
       "avail": {
         "open": "09:00",
-        "close": "18:00",
+        "close": "19:00",
         "season": [
           5,
           9

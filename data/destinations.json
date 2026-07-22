@@ -266,7 +266,11 @@
       "phone": "+1-307-344-7381",
       "avail": {
         "open": "06:00",
-        "close": "20:00"
+        "close": "20:00",
+        "season": [
+          5,
+          10
+        ]
       },
       "image": "assets/img/c687ca93f6.jpg",
       "overnight": {
@@ -299,7 +303,11 @@
       "phone": "+1-307-739-3399",
       "avail": {
         "open": "06:00",
-        "close": "20:00"
+        "close": "20:00",
+        "season": [
+          5,
+          10
+        ]
       },
       "image": "assets/img/43680b3e39.jpg",
       "overnight": {
@@ -332,7 +340,11 @@
       "phone": "+1-406-888-7800",
       "avail": {
         "open": "06:00",
-        "close": "20:00"
+        "close": "20:00",
+        "season": [
+          6,
+          10
+        ]
       },
       "image": "assets/img/290ceeb4ec.jpg",
       "overnight": {
@@ -397,7 +409,11 @@
       "phone": "+1-701-667-6340",
       "avail": {
         "open": "08:00",
-        "close": "18:00"
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
       },
       "image": "assets/img/b5639207b5.jpg",
       "overnight": {

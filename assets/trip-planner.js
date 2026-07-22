@@ -178,6 +178,11 @@
     .da-chip{font:inherit;font-size:13px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:7px 13px;cursor:pointer;color:var(--tr-secondary);transition:all .12s;display:inline-flex;align-items:center;gap:2px;}
     .da-chip:hover{border-color:var(--tr-primary);background:#fff;transform:translateY(-1px);}
     .da-chip .plus{color:var(--tr-primary-text);font-weight:700;margin-right:4px;}
+    .trtp-consider{padding:8px 11px 4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+    .trtp-consider .clabel{font-size:12px;color:#6c6f72;font-family:Arial,sans-serif;width:100%;margin-bottom:2px;}
+    .consider-chip{font:inherit;font-size:12.5px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:6px 12px;cursor:pointer;color:var(--tr-secondary);display:inline-flex;align-items:center;gap:2px;}
+    .consider-chip:hover{border-color:var(--tr-primary);background:#fff;}
+    .consider-chip .cx{color:var(--tr-primary-text);font-weight:700;}
     .da-chip .cat{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:#9a8a6a;margin-left:5px;}
     .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
     .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 12px;font-weight:600;}
@@ -498,7 +503,8 @@
   function renderSidebar() {
     var side = el("div", { class: "trtp-side" });
     side.appendChild(el("h3", { text: "Your Trip" }));
-    side.appendChild(el("div", { class: "trip-name", text: (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip" }));
+    var planDays = hasAnyPick() ? buildSchedule().days.length : 0;
+    side.appendChild(el("div", { class: "trip-name", text: (planDays ? planDays + "-Day " : "") + "Roosevelt Country Trip" }));
     if (S.origin) {
       var f = el("div", { class: "trtp-sec" });
       f.appendChild(el("div", { class: "fact", html: "<b>From:</b> " + S.origin.label }));
@@ -1185,7 +1191,7 @@
     }
     if (!plan.length) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: true, lastMedora: true });
 
-    var days = plan.map(function (p, idx) { var dt = dateForDay(idx); return { index: idx, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, kind: p.kind, dir: p.dir, stop: p.stop, baseCity: p.baseCity, firstMedora: p.firstMedora, lastMedora: p.lastMedora, contd: p.contd, lastOfStop: p.lastOfStop, seg: p.seg, towards: p.towards, arriveHome: p.arriveHome, _driveMin: p._driveMin, _driveFrom: p._driveFrom, items: [], entries: [], notes: [] }; });
+    var days = plan.map(function (p, idx) { var dt = dateForDay(idx); return { index: idx, date: dt, wd: dt ? dt.getDay() : null, month: dt ? dt.getMonth() + 1 : null, kind: p.kind, dir: p.dir, stop: p.stop, baseCity: p.baseCity, firstMedora: p.firstMedora, lastMedora: p.lastMedora, contd: p.contd, lastOfStop: p.lastOfStop, seg: p.seg, towards: p.towards, arriveHome: p.arriveHome, _driveMin: p._driveMin, _driveFrom: p._driveFrom, items: [], entries: [], notes: [], considerItems: [] }; });
     var N = days.length;
     if (entry && entry.air && days[0] && days[0].kind !== "transit") days[0]._arriveAir = entry;
     if (exitShort) { for (var li = days.length - 1; li >= 0; li--) { if (days[li].kind !== "transit") { days[li]._exit = exitShort; break; } } }
@@ -1199,8 +1205,11 @@
       if (!seasonOk(it.avail, d.month)) return false;
       if (!dayOk(it.avail, d.wd)) return false;
       if (it.avail.fixed && conflictsFixed(d, it)) return false;
-      if (it.category === "evening" && d._evening) return false;      // only one evening show per night
-      if (it.category === "evening" && d._exit) return false;         // not on your departure day (you're heading home/to the airport)
+      // Evening-show rules apply only to shows that actually run in the evening on
+      // this weekday (a brunch show — Gospel Brunch, or the TR Show on Thu/Sat AM —
+      // isn't an evening show, so it can share a day with the Musical).
+      if (isEveningShow(it, d.wd) && d._evening) return false;        // only one evening show per night
+      if (isEveningShow(it, d.wd) && d._exit) return false;           // not on your departure day (heading home/to the airport)
       // One of each meal per day — you eat one breakfast, one lunch, one dinner.
       // (The Pitchfork Steak Fondue IS your dinner, so nothing else with meal
       // "dinner" shares its day.) This also spreads multiple dining picks across
@@ -1211,7 +1220,14 @@
       if (d.used + it.duration > budget + 90) return false;
       return true;
     }
-    function place(d, it) { d.items.push(it); d.used += it.duration; if (it.category === "evening") d._evening = true; }
+    function place(d, it) { d.items.push(it); d.used += it.duration; if (isEveningShow(it, d.wd)) d._evening = true; }
+    // A show counts as "evening" (for the one-per-night / not-on-departure rules)
+    // only if its fixed window on this weekday actually starts in the evening.
+    function isEveningShow(it, wd) {
+      if (it.category !== "evening") return false;
+      var w = it.avail && it.avail.fixed ? fixedWindowFor(it.avail, wd) : null;
+      return w ? hmToMin(w.start) >= 17 * 60 : true;
+    }
 
     // 1) Co-locate all Library items (admission + specialty tours) on ONE day, so a
     //    guest doing multiple tours does them the same day. Pick the day that can
@@ -1388,7 +1404,9 @@
       if (day._exit) { var eMin = day._exit.driveMinReal != null ? day._exit.driveMinReal : driveMin(day._exit.driveMi); exitBound = day._exit.air ? 17 * 60 : Math.max(11 * 60, Math.min(17 * 60, 22 * 60 - eMin)); }
       placeFlexUntil(exitBound);
       if (day.baseCity && day.baseCity !== "Medora" && !day._exit) { var bd2 = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd2, drive: true, name: "Return to " + day.baseCity, ds: "~" + durLabel(bd2) }); cursor += bd2 + 10; }
-      flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
+      // Picks assigned to this day that didn't fit the timeline — surfaced as
+      // interactive "also consider" chips (tap to drop) rather than dead text.
+      flex.forEach(function (it) { day.considerItems.push({ id: it.id, name: it.name }); });
     }
 
     // exit travel on the final day (drive to airport + depart, or drive home)
@@ -1417,7 +1435,7 @@
   function renderSchedule(m) {
     var sched = buildSchedule();
     m.appendChild(el("p", { class: "trtp-kicker", text: "Your itinerary" }));
-    m.appendChild(el("h1", { class: "trtp-h display", text: (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip" }));
+    m.appendChild(el("h1", { class: "trtp-h display", text: (sched.days.length ? sched.days.length + "-Day " : "") + "Roosevelt Country Trip" }));
     m.appendChild(el("p", { class: "trtp-sub", text: "Here's your day-by-day plan. Far-flung stops are strung together on the way in and out; your time in Medora is kept as one contiguous stay so you only book one hotel there. The panel below shows how many nights to book in each town, and when." }));
     var seg = el("div", { class: "trtp-seg", role: "group", "aria-label": "Trip pace" });
     [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", type: "button", "aria-pressed": S.pace === p[0] ? "true" : "false", "data-fk": "pace:" + p[0], onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
@@ -1535,6 +1553,14 @@
         card.appendChild(row);
       });
       day.notes.forEach(function (n) { card.appendChild(el("div", { class: "trtp-row" }, [el("div", { class: "bd" }, [el("div", { class: "ds", text: n })])])); });
+      if (day.considerItems.length) {
+        var cwrap = el("div", { class: "trtp-consider" });
+        cwrap.appendChild(el("span", { class: "clabel", text: "Picked, but no room today — tap to drop, or add a day:" }));
+        day.considerItems.forEach(function (ci) {
+          cwrap.appendChild(el("button", { class: "consider-chip", type: "button", title: "Remove " + ci.name, "aria-label": "Remove " + ci.name + " from your trip", "data-fk": "consider:" + ci.id, onclick: function () { removePick(ci.id); } }, [ci.name, el("span", { class: "cx", "aria-hidden": "true" }, [" ✕"])]));
+        });
+        card.appendChild(cwrap);
+      }
       m.appendChild(card);
     });
 
@@ -1677,6 +1703,7 @@
         rows += "<tr><td class='tm'>" + minToLabel(e.start) + "</td>" + thumb + "<td><span class='nm'>" + esc(e.name) + durTag + "</span>" + (e.ds ? "<span class='ds'>" + esc(e.ds) + "</span>" : "") + (book ? "<span class='bk'>" + book + "</span>" : "") + "</td></tr>";
       });
       day.notes.forEach(function (n) { rows += "<tr><td></td><td class='ds'>" + esc(n) + "</td></tr>"; });
+      day.considerItems.forEach(function (ci) { rows += "<tr><td></td><td class='ds'>Also consider: " + esc(ci.name) + "</td></tr>"; });
       rows += "</table></div>";
     });
 
@@ -1731,7 +1758,7 @@
       "@media print{.noprint{display:none;}body{margin:0;}}" +
       "</style></head><body>" +
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +
-      "<h1>" + (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip</h1>" +
+      "<h1>" + (sched.days.length ? sched.days.length + "-Day " : "") + "Roosevelt Country Trip</h1>" +
       "<div class='facts'>" + facts.map(function (f) { return "<div>" + f + "</div>"; }).join("") + "</div>" +
       "<div class='disc'><b>Please double-check before you book.</b> This itinerary is a guide, not a live booking system — it doesn't check real-time availability, ticket inventory or the latest hours, and seasons, showtimes and hours change. Always confirm dates, times and hours directly with each location before finalizing plans or traveling.</div>" +
       bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + weatherHtml + bookHtml +

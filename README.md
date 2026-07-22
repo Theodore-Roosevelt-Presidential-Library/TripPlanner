@@ -366,9 +366,14 @@ show seasons, booking links) is watched separately. Each week this job:
 
 - **Link-rot:** requests every booking/info URL in the data and reports any that
   no longer return a live page.
-- **Season drift:** reads the Medora Musical's advertised season from medora.com
-  and flags it if the months no longer match `data/medora.json` (these change
-  every year — the Musical, Pitchfork Fondue and TR Show `season`/`fixed` blocks).
+- **Show / tour schedule drift:** for every monitored show and tour (the Musical,
+  Pitchfork Fondue, Gospel Brunch, the Teddy Roosevelt Show, the Folk Show, the
+  Strenuous Life, trail rides, golf, the tours…), it reads that attraction's
+  medora.com listing and flags it if the advertised **season** no longer matches
+  `data/medora.json`. It also lists each show's **advertised showtimes** in the
+  report so a human can confirm the curated day/time windows still match — this is
+  how a changed *time* gets caught (times move every season and are too noisy to
+  auto-diff, so they're surfaced for a weekly eyeball rather than hard-flagged).
 - **Staleness:** flags if `events.json` hasn't refreshed in over three weeks.
 
 It **never edits data** — it writes `data/freshness-report.md` and, if anything

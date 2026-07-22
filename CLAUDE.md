@@ -216,6 +216,13 @@ These were added incrementally from user feedback. Preserve them:
   buffer, rounded to nearest 15 — deliberately generous (never rushed). ⚠ Don't
   double-apply circuity; that bug once produced 4h45 for a 3h50 drive. Flight
   arrivals add a **90-min** deplane/luggage/rental buffer.
+- **Day-of-week is not Library-specific.** The same `avail.fixed[].days`/`dayOk`
+  mechanism drives every item. Non-Library examples with real curated patterns: the
+  **Teddy Roosevelt Show** (Mon 6:30pm dinner / Thu & Sat 9am brunch — two `fixed`
+  windows), the **Gospel Brunch** (Tue/Wed/Fri/Sun 9am). The "evening show" rules are
+  **time-aware** (`isEveningShow`): a show only counts as evening if its `fixed` window
+  *that weekday* starts ≥17:00 — so a morning brunch show can share a day with the
+  8pm Musical, and genuine time conflicts are still caught by `conflictsFixed`.
 - **One evening show per night**; **no evening show on your departure day** (you're
   heading home/to the airport — you can't watch the 8pm Musical then drive 3h home);
   **Pitchfork Steak Fondue only on a Medora Musical day** (it's the pre-show dinner);
@@ -246,6 +253,34 @@ These were added incrementally from user feedback. Preserve them:
 - **Over-capacity UI** — "Make it N days →" (bumps `S.days` to the required number),
   "Switch to Packed", "Edit dates", and per-overflow **Remove** buttons that
   recalculate in real time.
+- **Headline & sidebar show the ACTUAL day count** (`sched.days.length`), not the
+  day-bucket max the guest picked (S.days can be 12 for "8+ days" while the plan is 5).
+- **"Also consider" = picks that didn't fit the timeline.** They're collected on
+  `day.considerItems` (id+name) and rendered as **clickable chips** (tap → `removePick`);
+  print shows them as text. They're already in the trip — the dine-around panel is where
+  you *add* new ones.
+- **Curated show/tour times are audited, not assumed.** The seed data shipped several
+  wrong showtimes; a July-2026 audit against medora.com corrected them and they are now
+  watched (see §7). Key facts: the **Great American Folk Show** is a **4:00 pm** show
+  (not evening) and **T.R. – The Strenuous Life** is a **3:30 pm** matinee (not evening) —
+  both encoded as afternoon `fixed` windows so `isEveningShow` correctly does NOT let them
+  block the 8 pm Musical. **Bully Pulpit Golf** is **April–October** (season `[4,10]`),
+  and **trail rides** run **7:30 am–sunset**. When adding/altering any show or tour, verify
+  the real days/times/season against its medora.com listing — don't trust an existing value.
+- **Full data audit (July 2026) beyond the shows.** Every schedule-bearing item was
+  checked against source. Corrections that now live in the data: **festival months** —
+  Dakota Nights Astronomy Festival is **August** (was Sept), Fall Fest is **late October
+  only** (was Sept–Oct), Wine Walk is **early May only** (was May–June). **Dining
+  day/hours** — Little Missouri Saloon is **year-round** (was seasonal), TR's Tavern is
+  **3:30 pm–11 pm** daily, L'Amour Bistro is an **all-day** 6:30 am–8 pm spot (was
+  dinner-only), and two eateries carry a closed-weekday via `avail.days`: **Theodore's**
+  dinner (Sun/Thu/Fri/Sat) and **Uncork'd** (closed Monday). **Far-park seasonal road
+  closures** now carry a `season` so they can't be built onto a winter leg:
+  **Yellowstone `[5,10]`**, **Grand Teton `[5,10]`**, **Glacier `[6,10]`** (Going-to-the-
+  Sun Rd), **Fort Lincoln `[5,9]`** (seasonal Custer House tours). Note: **Wind Cave and
+  Jewel Cave stay year-round** — their tours run all winter, so don't "helpfully" add a
+  caves=summer season. Shops close ~19:00 (not 18:00). When touching any of these, verify
+  against the source — don't trust a seed value.
 - **Weather/packing** keyed to the selected months (or the exact trip dates when set).
 - **Far stops are season-filtered** in `buildSchedule` (out-of-season → overflow with
   "closed on your dates (seasonal)") so a seasonal en-route stop can't be built into a
@@ -284,11 +319,22 @@ operator view; the design intent:
   scrape never empties the calendar), and it **opens a GitHub issue** when a source
   errors/yields nothing. Pure helpers are exported and unit-tested.
 - **`check-data-freshness.mjs`** is a watchdog for the *curated* data the refresher
-  doesn't touch: **link-rot** (every booking/info URL resolves), **season drift**
-  (Musical season on medora.com still matches `medora.json`), **staleness**. It
-  **never edits data** — it opens an issue for a human. This is the deliberate line:
-  automation watches hours/seasons and flags drift; a person confirms and updates,
-  keeping the "not a live booking system" promise honest.
+  doesn't touch: **link-rot** (every booking/info URL resolves), **show/tour schedule
+  drift**, and **staleness**. It **never edits data** — it opens an issue for a human.
+  This is the deliberate line: automation watches hours/seasons and flags drift; a
+  person confirms and updates, keeping the "not a live booking system" promise honest.
+  - **Schedule drift** (`checkSchedules` over `MONITORED_SCHEDULES`) re-fetches each
+    monitored show/tour's medora.com listing and compares the **advertised season** to
+    the curated `avail.season` (a readable mismatch is the only *hard* flag). It also
+    scrapes the page's **advertised showtimes** (`extractShowTimes`) and prints them in
+    the report so a human can eyeball them against the curated `avail.fixed` day/time
+    windows every week — this is how a changed *time* (like the Folk Show moving, or the
+    Strenuous Life being a 3:30 pm not an evening show) gets caught, since times are too
+    noisy to auto-diff. `extractSeasonMonthsLoose` handles month-only ranges ("June -
+    September"). Fetch/parse failures stay silent (keep-calm-on-outage) so a site outage
+    never spams an issue. To monitor a new show/tour, add `{id,url,label}` to
+    `MONITORED_SCHEDULES`. All extractors + `checkSchedules` (via an injectable fetcher)
+    are exported and unit-tested.
 
 Both write generated files (`data/refresh-status.json`, `data/freshness-report.md`)
 that are `.gitignore`d. Committing `events.json` and opening issues needs
@@ -437,5 +483,22 @@ verified before moving on):
     `data-ga` on the script tag; anonymous funnel/action events via `track()`), Open
     Graph/Twitter meta on the host page, real per-origin drive times, morning-aware meal
     assignment (+ fixed a breakfast sort-weight bug), and no-evening-show-on-departure.
+20. **Actual-day headline** + **clickable "Also consider" chips**; **time-aware evening
+    rule** (`isEveningShow`) so morning/afternoon shows coexist with the 8 pm Musical.
+21. **Schedule accuracy audit + watchdog**: audited every show/tour against medora.com
+    and corrected real seed errors — the **Folk Show** (4 pm, was tagged evening 5–9),
+    **T.R. – The Strenuous Life** (3:30 pm matinee, was evening), **Bully Pulpit** golf
+    (April–Oct, was May), **trail rides** (7:30 am–sunset), plus verified TR Show/Gospel
+    Brunch day patterns. Extended `check-data-freshness.mjs` with per-show `checkSchedules`
+    (season-drift hard flag + advertised-showtime surfacing) over `MONITORED_SCHEDULES`,
+    unit-tested and live-verified against the real site. 4,000-scenario harness: 0 new
+    violations.
+22. **Full data audit (all categories)**: parallel-researched every remaining
+    schedule-bearing item against source — festivals (real 2026 dates → month fixes),
+    Medora dining (year-round vs seasonal, closed-weekdays via `avail.days`, real hours),
+    shops/recreation (close ~19:00, per-attraction hours), and far-park **seasonal road
+    closures** (Yellowstone/Grand Teton/Glacier/Fort Lincoln now carry a `season`). ~45
+    curated corrections applied programmatically; 4,000-scenario harness still clean (the
+    lone flag is the pre-existing §9 season-rollover edge, now on Grand Teton). See §6.
 
 For the fine-grained record, see the git log and `README.md`.
