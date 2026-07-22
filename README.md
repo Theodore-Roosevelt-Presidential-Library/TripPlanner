@@ -177,6 +177,22 @@ After editing, commit to `main` — Pages redeploys automatically (usually < 1 m
 
 ---
 
+## Dickinson support
+
+Dickinson (40 minutes east, and one of the drive-in base towns) is a first-class
+part of the planner. Twelve real Dickinson attractions — the Dickinson Museum
+Center / Badlands dinosaur hall, Dakota Dinosaur Museum, Ukrainian Cultural
+Institute, Theodore Roosevelt Center at DSU, Patterson Lake, Crooked Crane Trail,
+West River Community Center, Heart River Golf, Phat Fish Brewing, Fluffy Fields
+Winery and more — are selectable on the Road-trip step (they're ≤110 mi, so they
+fold into the Medora block as day trips), each with a cached photo. A note there
+points to **VisitDickinson**, and choosing Dickinson as your base surfaces its
+hotels plus links to VisitDickinson's things-to-do and events pages.
+VisitDickinson events feed the "Happening while you're here" section and the
+calendar-links list. (VisitDickinson's calendar is JavaScript-rendered with no
+feed, so the auto-refresh keeps a curated seed for it — pulling it live would
+need a headless browser in the Action; noted in `scripts/refresh-events.mjs`.)
+
 ## The events pipeline (GitHub Actions)
 
 `data/events.json` is **auto-generated** — don't hand-edit it. A scheduled Action

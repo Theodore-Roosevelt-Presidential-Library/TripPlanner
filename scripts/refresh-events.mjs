@@ -25,7 +25,12 @@ const SOURCES = [
   { id: "medora",      name: "Medora.com",                 url: "https://www.medora.com/events/" },
   { id: "cowboy-hall", name: "ND Cowboy Hall of Fame",     url: "https://northdakotacowboy.org/events/" },
   { id: "trnp",        name: "TR National Park Events (NPS)", url: "https://www.nps.gov/thro/planyourvisit/calendar.htm" },
-  { id: "chamber",     name: "Medora Chamber of Commerce", url: "https://medorachamber.com/events/" }
+  { id: "chamber",     name: "Medora Chamber of Commerce", url: "https://medorachamber.com/events/" },
+  // VisitDickinson (Saffire CMS) is JavaScript-rendered with no JSON-LD or feed, so a
+  // static fetch can't read its events. Marked rendered:true so we skip the static
+  // parser and preserve the curated seed. To pull these live, render the page in the
+  // Action with a headless browser (e.g. Playwright) and parse the DOM.
+  { id: "dickinson",   name: "VisitDickinson",             url: "https://www.visitdickinson.com/events", rendered: true }
 ];
 
 const UA = "Mozilla/5.0 (compatible; TRLibraryTripPlanner/1.0; +https://trip.labs.trlibrary.com)";
@@ -98,6 +103,11 @@ async function main() {
 
   const collected = [];
   for (const source of SOURCES) {
+    if (source.rendered) {
+      console.log(`• ${source.name}: JS-rendered (needs a headless browser) — keeping curated seed`);
+      collected.push(...(prev.events || []).filter((e) => e.source === source.id));
+      continue;
+    }
     try {
       const evs = await parseSource(source);
       if (evs.length) {

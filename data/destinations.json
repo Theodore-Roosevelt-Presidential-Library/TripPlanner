@@ -651,6 +651,354 @@
         "close": "17:00"
       },
       "image": "assets/img/5e1fecb2b8.jpg"
+    },
+    {
+      "id": "dick-dakota-dinosaur-museum",
+      "name": "Dakota Dinosaur Museum",
+      "type": "family",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1.5,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "family",
+        "culture"
+      ],
+      "blurb": "A private earth-science museum packed with full-size dinosaur replicas, real fossils, and rock and mineral displays — a summer-only Dickinson favorite.",
+      "area": "Dickinson",
+      "duration": 90,
+      "phone": "+1-701-225-3466",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "url": "https://dakotadino.com/",
+      "booking": "https://dakotadino.com/",
+      "image": "assets/img/5e1fecb2b8.jpg"
+    },
+    {
+      "id": "dick-prairie-outpost-park",
+      "name": "Prairie Outpost Park",
+      "type": "cultural",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1.2,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "culture"
+      ],
+      "blurb": "An open-air village of eleven historic and reproduction prairie buildings with free guided tours through Dickinson's homestead-era past.",
+      "area": "Dickinson",
+      "duration": 75,
+      "phone": "+1-701-456-6225",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          8
+        ]
+      },
+      "url": "https://www.dickinsongov.com/museum-center/page/prairie-outpost-park",
+      "booking": "https://www.dickinsongov.com/museum-center/page/prairie-outpost-park",
+      "image": "assets/img/8f2dfd0f78.jpg"
+    },
+    {
+      "id": "dick-ukrainian-cultural-institute",
+      "name": "Ukrainian Cultural Institute",
+      "type": "cultural",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "culture"
+      ],
+      "blurb": "A vibrant museum of Ukrainian folk art, religious icons, and the hand-painted Pysanky Easter eggs celebrating the region's immigrant heritage.",
+      "area": "Dickinson",
+      "duration": 60,
+      "phone": "+1-701-483-1486",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://www.ucitoday.org/",
+      "booking": "https://www.ucitoday.org/",
+      "image": "assets/img/375b6a7979.jpg"
+    },
+    {
+      "id": "dick-theodore-roosevelt-center-at-dsu",
+      "name": "Theodore Roosevelt Center at DSU",
+      "type": "cultural",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "culture"
+      ],
+      "blurb": "The digital home of Roosevelt's presidential papers, with free exhibits on the Rough Rider's Dakota years at Dickinson State University.",
+      "area": "Dickinson",
+      "duration": 60,
+      "phone": "+1-701-502-4436",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://www.theodorerooseveltcenter.org/about/visit-us/",
+      "booking": "https://www.theodorerooseveltcenter.org/about/visit-us/",
+      "image": "assets/img/c22b43a64d.jpg"
+    },
+    {
+      "id": "dick-patterson-lake-recreation-area",
+      "name": "Patterson Lake Recreation Area",
+      "type": "outdoors",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 2.5,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "outdoors",
+        "scenic"
+      ],
+      "blurb": "Dickinson's summer playground — a sandy public beach, boating, fishing, and a lakeside campground on the Heart River.",
+      "area": "Dickinson",
+      "duration": 150,
+      "phone": "+1-701-456-2074",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "url": "https://dickinsonparks.org/patterson-lake-recreation-area/",
+      "booking": "https://dickinsonparks.org/patterson-lake-recreation-area/",
+      "image": "assets/img/f4673b76bf.jpg"
+    },
+    {
+      "id": "dick-crooked-crane-trail",
+      "name": "Crooked Crane Trail",
+      "type": "outdoors",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1.5,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "outdoors",
+        "scenic"
+      ],
+      "blurb": "A multi-surface hiking and mountain-biking loop winding through wooded draws and prairie around Patterson Lake.",
+      "area": "Dickinson",
+      "duration": 90,
+      "phone": "+1-701-456-2074",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://dickinsonparks.org/groups/crooked-crane-trail/",
+      "booking": "https://dickinsonparks.org/groups/crooked-crane-trail/",
+      "image": "assets/img/bb25d31661.jpg"
+    },
+    {
+      "id": "dick-west-river-community-center",
+      "name": "West River Community Center",
+      "type": "recreation",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 2,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "family"
+      ],
+      "blurb": "A full-service indoor rec complex with a water park, climbing wall, gyms, indoor track, and golf simulator — great on a hot or rainy day.",
+      "area": "Dickinson",
+      "duration": 120,
+      "phone": "+1-701-456-2070",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://westrivercommunitycenter.com/",
+      "booking": "https://westrivercommunitycenter.com/",
+      "image": "assets/img/ad3915bc29.jpg"
+    },
+    {
+      "id": "dick-heart-river-golf-course",
+      "name": "Heart River Golf Course",
+      "type": "recreation",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 4,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "family"
+      ],
+      "blurb": "A challenging 18-hole, par-72 layout threading along the Heart River with panoramic views over Patterson Lake.",
+      "area": "Dickinson",
+      "duration": 240,
+      "phone": "+1-701-456-2050",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          4,
+          10
+        ]
+      },
+      "url": "https://heartrivergolfcourse.com/",
+      "booking": "https://heartrivergolfcourse.com/",
+      "image": "assets/img/741c25dcf8.jpg"
+    },
+    {
+      "id": "dick-phat-fish-brewing",
+      "name": "Phat Fish Brewing",
+      "type": "recreation",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1.2,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "family"
+      ],
+      "blurb": "A family-friendly brewpub pouring house craft beers and firestone pizza, with axe throwing next door at Phat Axe.",
+      "area": "Dickinson",
+      "duration": 75,
+      "phone": "+1-701-761-0170",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://www.phatfishbrewing.com/",
+      "booking": "https://www.phatfishbrewing.com/",
+      "image": "assets/img/909e51968c.jpg"
+    },
+    {
+      "id": "dick-fluffy-fields-vineyard-winery",
+      "name": "Fluffy Fields Vineyard & Winery",
+      "type": "recreation",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 1.2,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "family"
+      ],
+      "blurb": "A relaxed, family-owned farm winery pouring wines made from grapes and fruit grown in its own vineyards and orchards.",
+      "area": "Dickinson",
+      "duration": 75,
+      "phone": "+1-701-483-2242",
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "http://www.fluffyfields.com/",
+      "booking": "http://www.fluffyfields.com/",
+      "image": "assets/img/70dbdbb061.jpg"
+    },
+    {
+      "id": "dick-badlands-art-gallery",
+      "name": "Badlands Art Gallery",
+      "type": "cultural",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 0.8,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "culture"
+      ],
+      "blurb": "A rotating exhibition space for regional artists on the Dickinson State University campus.",
+      "area": "Dickinson",
+      "duration": 45,
+      "phone": null,
+      "avail": {
+        "open": "09:00",
+        "close": "18:00"
+      },
+      "url": "https://www.visitdickinson.com/business/badlands-art-gallery",
+      "booking": "https://www.visitdickinson.com/business/badlands-art-gallery",
+      "image": "assets/img/3f28694eb0.jpg"
+    },
+    {
+      "id": "dick-k5-kayaks",
+      "name": "K5 Kayaks",
+      "type": "outdoors",
+      "lat": 46.879,
+      "lng": -102.789,
+      "milesFromMedora": 42,
+      "dwell": 2,
+      "corridor": [
+        "bismarck",
+        "east"
+      ],
+      "tags": [
+        "outdoors",
+        "scenic"
+      ],
+      "blurb": "A local outfitter renting kayaks for paddling Dickinson's lakes and the Heart River in the warm months.",
+      "area": "Dickinson",
+      "duration": 120,
+      "phone": null,
+      "avail": {
+        "open": "09:00",
+        "close": "18:00",
+        "season": [
+          5,
+          9
+        ]
+      },
+      "url": "https://www.visitdickinson.com/business/k5-kayaks",
+      "booking": "https://www.visitdickinson.com/business/k5-kayaks",
+      "image": "assets/img/f4673b76bf.jpg"
     }
   ]
 }

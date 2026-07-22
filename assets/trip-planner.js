@@ -433,13 +433,14 @@
           m.appendChild(el("h1", { class: "trtp-h", text: "Add stops you want to see" }));
           m.appendChild(el("p", { class: "trtp-sub", text: "National parks, monuments, great Western towns and state parks within reach of Medora. Pick the ones you want — regional stops become their own day trips in your schedule." }));
           var items = D.destinations.destinations.filter(function (d) { return matchesStyle(d.tags); }).sort(function (a, b) { return a.milesFromMedora - b.milesFromMedora; });
-          var tl = { national_park: "National Park", national_monument: "National Monument", state_park: "State Park", town: "Western Town", cultural: "History & Culture", scenic: "Scenic" };
+          var tl = { national_park: "National Park", national_monument: "National Monument", state_park: "State Park", town: "Western Town", cultural: "History & Culture", scenic: "Scenic", outdoors: "Outdoors", recreation: "Recreation", family: "Family" };
           cardGrid(m, items, {
             wide: true, selected: function (d) { return isPicked("route", d.id); },
             blurb: function (d) { return d.blurb; },
-            meta: function (d) { return tl[d.type] + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
+            meta: function (d) { return (d.area && d.area !== "Medora" && d.area !== "National Park" ? d.area + " · " : "") + (tl[d.type] || "Stop") + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
             onclick: function (d) { toggle("route", d.id); }
           });
+          m.appendChild(el("div", { class: "trtp-note", html: "Just 40 minutes east, <b>Dickinson</b> adds dinosaur museums, the Ukrainian Cultural Institute, Patterson Lake and more — a great half-day or a cheaper place to stay. It's mixed into the list above; see everything at <a href='https://www.visitdickinson.com' target='_blank' rel='noopener'>VisitDickinson ↗</a>." }));
         },
         canAdvance: function () { return true; }, nextLabel: "Plan my Medora day →"
       },
@@ -493,7 +494,8 @@
           if (evs.length) {
             m.appendChild(el("div", { class: "trtp-sub-h", text: "Happening while you're here" }));
             var note = el("div", { class: "trtp-note" });
-            note.innerHTML = evs.map(function (e) { return "<div style='margin:2px 0'><b>" + e.title + "</b>" + (e.location ? " — " + e.location : "") + " <a href='" + e.url + "' target='_blank' rel='noopener'>details ↗</a></div>"; }).join("") + "<div style='margin-top:8px;font-size:12px;opacity:.7'>Auto-updated from medora.com, the ND Cowboy Hall of Fame, the National Park and the Medora Chamber.</div>";
+            var calLinks = (D.events.sources || []).map(function (s) { return "<a href='" + s.url + "' target='_blank' rel='noopener'>" + s.name + " ↗</a>"; }).join(" · ");
+            note.innerHTML = evs.map(function (e) { return "<div style='margin:2px 0'><b>" + e.title + "</b>" + (e.location ? " — " + e.location : "") + " <a href='" + e.url + "' target='_blank' rel='noopener'>details ↗</a></div>"; }).join("") + "<div style='margin-top:8px;font-size:12px;opacity:.75'>Full event calendars: " + calLinks + "</div>";
             m.appendChild(note);
           }
         },
@@ -683,6 +685,7 @@
               var hl = el("div", { class: "trtp-note" });
               hl.innerHTML = baseChosen.hotels.map(function (h) { return "<div style='margin:3px 0'>• <a href='" + h.search + "' target='_blank' rel='noopener'>" + h.name + " ↗</a></div>"; }).join("") + (baseChosen.bookingSearch ? "<div style='margin-top:6px'><a href='" + baseChosen.bookingSearch + "' target='_blank' rel='noopener'>See all " + baseChosen.name + " hotels ↗</a></div>" : "");
               m.appendChild(hl);
+              if (baseChosen.id === "dickinson-base") m.appendChild(el("div", { class: "trtp-note", html: "Basing in Dickinson? It's a destination in its own right — dinosaur museums, the Ukrainian Cultural Institute, Patterson Lake, breweries and a full events calendar. Add Dickinson stops on the Road-trip step, and see <a href='https://www.visitdickinson.com' target='_blank' rel='noopener'>things to do ↗</a> and the <a href='https://www.visitdickinson.com/events' target='_blank' rel='noopener'>events calendar ↗</a>." }));
             }
           }
         },
