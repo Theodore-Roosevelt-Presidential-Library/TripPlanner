@@ -37,6 +37,11 @@ itinerary** they can print, export to calendar, or share by URL.
   too): **Clearface** (serif — titles/body), **Dharma Gothic E** (condensed uppercase —
   display/labels, Oswald kept only as a fallback), **Ginter/Inter** (UI sans). Don't
   redistribute the licensed woff2 into this repo — reference them from trlibrary.com.
+  ⚠ **Dharma Gothic E is extremely condensed**, so it reads visually smaller than a
+  normal face at the same `px` — its sizes are deliberately bumped up (+weight to 700/800)
+  vs. what you'd use for Oswald/Inter (hero display 50px/800, stepper 12.5px/700, buttons
+  15px/700, labels 12px/700). If you add a Dharma label, size it a notch larger than it
+  "looks like it needs".
 
 ---
 
