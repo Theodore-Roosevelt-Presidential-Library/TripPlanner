@@ -1,16 +1,19 @@
 name: Refresh events
 
-# Pulls fresh event data from medora.com, the ND Cowboy Hall of Fame,
-# the National Park (NPS) and the Medora Chamber into data/events.json,
-# then commits it. Pages redeploys automatically on the push.
+# Pulls fresh event data from medora.com, the ND Cowboy Hall of Fame, the
+# National Park (NPS), the Medora Chamber and VisitDickinson into
+# data/events.json, then commits it. Pages redeploys automatically on the push.
+# Runs WEEKLY. If any source fails, yields nothing, or the data looks stale,
+# it opens/updates a tracking issue so failures are never silent.
 
 on:
   schedule:
-    - cron: "0 11 * * *"   # daily at 11:00 UTC (~5–6am Central)
+    - cron: "0 11 * * 1"   # Mondays 11:00 UTC (~5–6am Central)
   workflow_dispatch: {}      # allow manual runs from the Actions tab
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   refresh:
@@ -22,7 +25,15 @@ jobs:
         with:
           node-version: "20"
 
+      # Playwright renders the JS-heavy sources (Medora calendar, VisitDickinson).
+      # Installed only in CI — it is NOT a project dependency.
+      - name: Install Playwright (Chromium)
+        run: |
+          npm install playwright@1.48.0
+          npx playwright install --with-deps chromium
+
       - name: Refresh events.json
+        id: refresh
         run: node scripts/refresh-events.mjs
 
       - name: Commit if changed
@@ -36,3 +47,20 @@ jobs:
           else
             echo "No event changes."
           fi
+
+      - name: Open/update issue on trouble
+        if: steps.refresh.outputs.status == 'warn'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = ${{ toJSON(steps.refresh.outputs.summary) }};
+            const body = `One or more event sources need attention (weekly refresh):\n\n\`\`\`\n${summary}\n\`\`\`\n\nThe planner kept the previous data for any failing source, so nothing is broken for visitors — but a scraper or source URL may have changed. See \`scripts/refresh-events.mjs\`.`;
+            const label = "automated-data-check";
+            const title = "⚠ Event refresh needs attention";
+            const existing = await github.rest.issues.listForRepo({ owner: context.repo.owner, repo: context.repo.repo, state: "open", labels: label });
+            const found = existing.data.find(i => i.title === title);
+            if (found) {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: found.number, body });
+            } else {
+              await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, labels: [label], body });
+            }

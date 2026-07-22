@@ -325,25 +325,56 @@ calendar-links list. (VisitDickinson's calendar is JavaScript-rendered with no
 feed, so the auto-refresh keeps a curated seed for it — pulling it live would
 need a headless browser in the Action; noted in `scripts/refresh-events.mjs`.)
 
-## The events pipeline (GitHub Actions)
+## The data pipeline (GitHub Actions)
 
-`data/events.json` is **auto-generated** — don't hand-edit it. A scheduled Action
-(`refresh-events.yml`, daily) runs `scripts/refresh-events.mjs`, which:
+Two scheduled Actions keep the time-sensitive data honest. Both run **weekly**
+(Monday mornings) and are resilient by design — a broken source never breaks the
+site, and problems are never silent.
 
-1. Fetches each source page: **medora.com/events**, the **ND Cowboy Hall of Fame**,
-   the **National Park (NPS) calendar**, and the **Medora Chamber**.
-2. Extracts schema.org `Event` data (JSON-LD) from each.
-3. Keeps current/upcoming events (out to ~13 months) and writes `events.json`.
-4. If a source changes or is temporarily down, the previous events for that
-   source are **preserved** — one broken scrape never empties the planner.
+### 1. Event refresh — `refresh-events.yml` → `scripts/refresh-events.mjs`
+
+`data/events.json` is **auto-generated** — don't hand-edit it. Each week the
+Action:
+
+1. Fetches each source: **medora.com/calendar** (Modern Events Calendar),
+   the **ND Cowboy Hall of Fame**, the **NPS calendar**, the **Medora Chamber**,
+   and **VisitDickinson**.
+2. Parses events per source — schema.org `Event` (JSON-LD) where available, plus
+   **site-specific parsers** for the Medora MEC calendar and the Saffire
+   (VisitDickinson) layout. The two JavaScript-rendered sources are rendered with
+   **Playwright (headless Chromium)** in CI so they pull live; if Playwright is
+   unavailable it falls back to a static fetch.
+3. **Retries with backoff** on 429/5xx/timeouts, **validates** every event
+   (real calendar dates, non-empty titles) and drops junk, keeps current/upcoming
+   events (out to ~13 months), and writes `events.json`.
+4. If a source errors or yields nothing, its **previous events are preserved** —
+   one broken scrape never empties the planner — and the run is flagged.
 5. Commits the file if it changed; the deploy workflow republishes.
+6. **Fails loudly:** if any source needed attention, the Action opens (or updates)
+   a GitHub issue titled *"⚠ Event refresh needs attention"* with a per-source
+   summary, so a silently-rotting scraper gets noticed.
 
-Run it on demand from the **Actions → Refresh events → Run workflow** button, or
-locally with `node scripts/refresh-events.mjs`.
+### 2. Freshness watchdog — `check-data.yml` → `scripts/check-data-freshness.mjs`
 
-To harden a specific source (some calendars don't publish JSON-LD), add a
-site-specific branch in `parseSource()`. The JSON-LD path already handles any
-source with standard Event markup.
+The refresher only touches *events*. The curated data it doesn't touch (hours,
+show seasons, booking links) is watched separately. Each week this job:
+
+- **Link-rot:** requests every booking/info URL in the data and reports any that
+  no longer return a live page.
+- **Season drift:** reads the Medora Musical's advertised season from medora.com
+  and flags it if the months no longer match `data/medora.json` (these change
+  every year — the Musical, Pitchfork Fondue and TR Show `season`/`fixed` blocks).
+- **Staleness:** flags if `events.json` hasn't refreshed in over three weeks.
+
+It **never edits data** — it writes `data/freshness-report.md` and, if anything
+looks off, opens/updates an issue for a human to confirm and update. This is the
+deliberate line: automation *watches* the hours/seasons and tells us when to
+look, but a person makes the change, keeping the "not a live booking system"
+promise honest.
+
+Run either on demand from **Actions → Run workflow**, or locally with
+`node scripts/refresh-events.mjs` / `node scripts/check-data-freshness.mjs`.
+The pure parser/validation helpers are exported and unit-tested.
 
 ---
 
@@ -354,7 +385,7 @@ source with standard Event markup.
    file is already committed); the DNS `CNAME` record should point at
    `theodore-roosevelt-presidential-library.github.io`. Enable *Enforce HTTPS*.
 3. **Settings → Actions → General →** Workflow permissions = *Read and write*
-   (so the event refresh can commit).
+   (so the event refresh can commit and the watchdogs can open issues).
 
 ---
 
