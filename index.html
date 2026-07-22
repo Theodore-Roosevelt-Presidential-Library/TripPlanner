@@ -4,7 +4,33 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trip Planner — Theodore Roosevelt Presidential Library</title>
-  <meta name="description" content="Plan your visit to the Theodore Roosevelt Presidential Library and Medora — an interactive trip planner." />
+  <meta name="description" content="Plan your visit to the Theodore Roosevelt Presidential Library and Medora, North Dakota — an interactive, day-by-day trip planner you can print, export to calendar, and share." />
+  <link rel="canonical" href="https://trip.labs.trlibrary.com/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Theodore Roosevelt Presidential Library" />
+  <meta property="og:url" content="https://trip.labs.trlibrary.com/" />
+  <meta property="og:title" content="Plan Your Visit — TR Presidential Library Trip Planner" />
+  <meta property="og:description" content="Answer a few questions, click what appeals, and build a dated, day-by-day trip to the Theodore Roosevelt Presidential Library and Medora, North Dakota — printable, shareable, calendar-ready." />
+  <meta property="og:image" content="https://trip.labs.trlibrary.com/assets/img/34bd88cc67.jpg" />
+  <meta property="og:image:alt" content="The Theodore Roosevelt Presidential Library and the North Dakota Badlands" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Plan Your Visit — TR Presidential Library Trip Planner" />
+  <meta name="twitter:description" content="Build a dated, day-by-day trip to the Theodore Roosevelt Presidential Library and Medora, North Dakota — printable, shareable, calendar-ready." />
+  <meta name="twitter:image" content="https://trip.labs.trlibrary.com/assets/img/34bd88cc67.jpg" />
+
+  <!-- Google Analytics 4 — replace G-XXXXXXXXXX with the library's Measurement ID.
+       The planner widget also forwards anonymous usage events to this gtag. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
+  </script>
   <style>
     body{margin:0;background:#efe7d6;font-family:'Helvetica Neue',Arial,sans-serif;color:#25282a;}
     .page{max-width:1080px;margin:0 auto;padding:32px 20px 60px;}
@@ -35,6 +61,8 @@
       <br /><br />
       <code>&lt;div id="tr-trip-planner"&gt;&lt;/div&gt;</code><br />
       <code>&lt;script src="https://trip.labs.trlibrary.com/assets/trip-planner.js" data-container="tr-trip-planner"&gt;&lt;/script&gt;</code>
+      <br /><br />
+      <strong>Analytics (optional):</strong> if the host page already has Google Analytics, the planner forwards anonymous usage events automatically. To send them to a specific GA4 property instead, add <code>data-ga="G-XXXXXXXXXX"</code> to the script tag.
     </div>
   </div>
 </body>

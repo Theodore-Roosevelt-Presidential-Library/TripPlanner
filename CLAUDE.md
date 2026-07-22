@@ -56,6 +56,14 @@ itinerary** they can print, export to calendar, or share by URL.
    works from curated data. Keep the "confirm with each venue" messaging intact.
 6. **End every change** by: `node --check assets/trip-planner.js`, validate all
    `data/*.json` parse, run the relevant jsdom tests, then `present_files`.
+7. **Keep it accessible (WCAG 2.1 AA / Section 508).** Every interactive element is a
+   real `<button>` (never a click-only `<div>`); toggles carry `aria-pressed`, the
+   stepper is a `<nav>` with `aria-current="step"`, the date input has a `<label>`,
+   icon-only buttons have `aria-label`. Terracotta text on light uses the darkened
+   `--tr-primary-text` (#B04E2F, ≥4.5:1) — the bright `--tr-primary` is for
+   backgrounds/borders/on-navy only. `render()` preserves focus (via `data-fk`) so a
+   re-render doesn't drop keyboard users; `goto()` moves focus to the step heading.
+   Respect `prefers-reduced-motion`. Re-run the axe-core-in-jsdom scan after UI changes.
 
 ---
 
@@ -208,9 +216,20 @@ These were added incrementally from user feedback. Preserve them:
   buffer, rounded to nearest 15 — deliberately generous (never rushed). ⚠ Don't
   double-apply circuity; that bug once produced 4h45 for a 3h50 drive. Flight
   arrivals add a **90-min** deplane/luggage/rental buffer.
-- **One evening show per night**; **Pitchfork Steak Fondue only on a Medora Musical
-  day** (it's the pre-show dinner); **one breakfast/lunch/dinner per day** (Pitchfork
-  counts as the dinner). Violations → `overflow`/notes with a clear reason.
+- **One evening show per night**; **no evening show on your departure day** (you're
+  heading home/to the airport — you can't watch the 8pm Musical then drive 3h home);
+  **Pitchfork Steak Fondue only on a Medora Musical day** (it's the pre-show dinner);
+  **one breakfast/lunch/dinner per day** (Pitchfork counts as the dinner). Violations →
+  `overflow`/notes with a clear reason.
+- **Meals are time-of-day aware.** Breakfast/lunch are assigned to a day with a free
+  morning/midday (not one eaten by an arrival flight or long drive-in) so they schedule
+  instead of dropping to a note. The `layoutDay` flex sort uses `ordOf()` (not
+  `order[...]||2`) so breakfast's sort weight of 0 isn't clobbered to 2.
+- **Real origin↔Medora drive times.** `segDrive()` uses each origin's curated
+  `driveHours` (origins.json) for the origin↔Medora leg instead of haversine, so far
+  drives aren't over-estimated (Chicago reads ~13.5h, not ~18h). `entry/exit.realToMedora`
+  carries it; the exit drive uses `driveMinReal` end-to-end so the split decision and the
+  rendered drive agree.
 - **Library tours + admission co-locate** on one day. Admission = 4.5h (3.5h exhibits
   + 1h grounds); every specialty tour = 1h.
 - **Meal windows** — breakfast before ~10:30, lunch ~12–14:00, dinner from 17:00;
@@ -404,5 +423,10 @@ verified before moving on):
 18. **Multi-day drive split**: first the origin↔Medora case, then a **general
     per-segment rewrite** (segment walk + transit days + anti-cram exit). Stress harness
     now: 4,000 fuzz scenarios → 1 violation (a negligible season-rollover edge, §9).
+19. **Launch-readiness pass**: accessibility (axe-clean, contrast, focus, ARIA — see
+    golden rule 7), real-browser/mobile responsive tweaks, **GA4** analytics (optional
+    `data-ga` on the script tag; anonymous funnel/action events via `track()`), Open
+    Graph/Twitter meta on the host page, real per-origin drive times, morning-aware meal
+    assignment (+ fixed a breakfast sort-weight bug), and no-evening-show-on-departure.
 
 For the fine-grained record, see the git log and `README.md`.

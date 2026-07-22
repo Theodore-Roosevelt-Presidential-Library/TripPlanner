@@ -383,6 +383,24 @@ The pure parser/validation helpers are exported and unit-tested.
 
 ---
 
+## Accessibility, analytics & sharing
+
+- **Accessibility (WCAG 2.1 AA / Section 508).** Every control is a real button, so the
+  whole wizard is keyboard-operable; selections expose `aria-pressed`, the step bar is a
+  `<nav>` with `aria-current`, the date field is labelled, and focus moves to the step
+  heading on navigation (and is preserved when you toggle a pick). Text colors meet AA
+  contrast, focus is always visible, and motion respects `prefers-reduced-motion`.
+  Verified with an axe-core scan across every step (0 violations).
+- **Analytics (GA4, optional & privacy-friendly).** If the host page already has Google
+  Analytics, the planner forwards anonymous funnel/action events (step progression,
+  plan built, print, calendar export, share, dine-around adds) automatically. To send
+  them to a specific property, add `data-ga="G-XXXXXXXXXX"` to the embed script tag. No
+  personal data is collected and IPs are anonymized.
+- **Social sharing.** The host page carries Open Graph + Twitter Card meta, so a shared
+  link (including a permalinked plan) renders a proper preview card.
+
+---
+
 ## One-time GitHub setup
 
 1. **Settings → Pages →** Source = *GitHub Actions*.

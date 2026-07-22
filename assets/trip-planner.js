@@ -17,6 +17,28 @@
   // origin so cached photos load correctly even when embedded on another site.
   function imgURL(src) { return src && !/^https?:\/\//.test(src) ? BASE + src : src; }
 
+  // ---- privacy-friendly analytics (GA4, optional) -------------------------
+  // Fires anonymous funnel/usage events (no personal data). If the script tag has
+  // data-ga="G-XXXXXXX" we load GA4 ourselves; otherwise we just forward events to
+  // any gtag() already on the host page. Fully guarded — never throws if absent.
+  var GA_ID = THIS.getAttribute("data-ga") || null;
+  (function initGA() {
+    if (!GA_ID || typeof window === "undefined" || window.__trtpGAloaded) return;
+    try {
+      window.__trtpGAloaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+      var g = document.createElement("script"); g.async = true;
+      g.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_ID);
+      document.head.appendChild(g);
+      window.gtag("js", new Date());
+      window.gtag("config", GA_ID, { anonymize_ip: true });
+    } catch (e) { }
+  })();
+  function track(name, params) {
+    try { if (typeof window !== "undefined" && typeof window.gtag === "function") window.gtag("event", name, params || {}); } catch (e) { }
+  }
+
   // ---- helpers ------------------------------------------------------------
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -39,6 +61,7 @@
   var DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var DOWLONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var MONTHFULL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
   // ---- state --------------------------------------------------------------
   var PACE = { relaxed: 360, balanced: 480, packed: 600 };
@@ -68,10 +91,14 @@
     if (document.getElementById("trtp-style")) return;
     var css = `
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
-    #${CONTAINER_ID}{--tr-primary:${c.primary};--tr-secondary:${c.secondary};--tr-muted:${c.muted};--tr-paper:${c.paper};--tr-ink:${c.ink};
+    #${CONTAINER_ID}{--tr-primary:${c.primary};--tr-secondary:${c.secondary};--tr-muted:${c.muted};--tr-paper:${c.paper};--tr-ink:${c.ink};--tr-primary-text:#B04E2F;
       color:var(--tr-ink);background:var(--tr-paper);border-radius:6px;overflow:hidden;
       font-family:Frutiger,'Helvetica Neue',Arial,sans-serif;line-height:1.5;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.04);}
     #${CONTAINER_ID} *{box-sizing:border-box;}
+    /* Visible keyboard focus (WCAG 2.4.7) */
+    #${CONTAINER_ID} :focus-visible{outline:3px solid var(--tr-secondary);outline-offset:2px;border-radius:3px;}
+    #${CONTAINER_ID} .trtp-card:focus-visible{outline-offset:-1px;}
+    @media (prefers-reduced-motion: reduce){#${CONTAINER_ID} *{transition:none !important;animation:none !important;}}
     .trtp-steps{display:flex;flex-wrap:wrap;gap:2px;background:var(--tr-secondary);padding:10px 14px;}
     .trtp-step{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;
       color:#9fb3cc;background:transparent;border:none;padding:6px 9px;border-radius:3px;cursor:pointer;white-space:nowrap;}
@@ -87,7 +114,7 @@
     .trtp-main{padding:26px 30px 34px;}
     .trtp-side{background:var(--tr-secondary);color:#fff;padding:22px 22px;}
     @media(max-width:820px){.trtp-side{order:2;}}
-    .trtp-kicker{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--tr-primary);font-weight:600;margin:0 0 6px;}
+    .trtp-kicker{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;font-size:12px;color:var(--tr-primary-text);font-weight:600;margin:0 0 6px;}
     .trtp-h{font-family:'Clearface',Georgia,serif;font-weight:600;color:var(--tr-secondary);font-size:29px;line-height:1.08;margin:0 0 8px;}
     .trtp-h.display{font-family:Oswald,'Dharma Gothic E',sans-serif;text-transform:uppercase;letter-spacing:.02em;font-weight:700;font-size:36px;}
     .trtp-sub{font-size:15px;color:#4a4d50;margin:0 0 20px;max-width:58ch;}
@@ -100,12 +127,12 @@
     .trtp-card.dis{opacity:.45;cursor:not-allowed;filter:grayscale(.6);}
     .trtp-card.dis:hover{transform:none;box-shadow:none;border-color:#e4ddcd;}
     .trtp-rec2{background:#092a4d;color:#fff;border-radius:6px;padding:12px 16px;margin:4px 0 14px;font-size:14px;}
-    .trtp-rec2 b{color:var(--tr-primary);}
+    .trtp-rec2 b{color:var(--tr-primary-text);}
     .trtp-card.has-img{padding-top:0;overflow:hidden;}
     .trtp-card .cimg{display:block;width:calc(100% + 30px)!important;max-width:none!important;height:140px;object-fit:cover;margin:-14px -15px 12px -15px;background:#e9e2d2;border-bottom:1px solid #e4ddcd;}
     .trtp-card .t{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:16px;color:var(--tr-secondary);margin:0 0 3px;}
     .trtp-card .b{font-size:13px;color:#5c5f62;margin:0;}
-    .trtp-card .meta{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary);margin-top:8px;font-weight:600;}
+    .trtp-card .meta{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:10.5px;color:var(--tr-primary-text);margin-top:8px;font-weight:600;}
     .trtp-card .check{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--tr-primary);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;}
     .trtp-card.sel .check{display:flex;}
     .trtp-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap;}
@@ -145,22 +172,30 @@
     .trtp-field label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:var(--tr-secondary);font-weight:600;}
     .trtp-field input{font:inherit;padding:10px 12px;border:1px solid #d8cfb9;border-radius:4px;background:#fff;}
     .trtp-dinearound{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
-    .trtp-dinearound h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 4px;font-weight:600;}
+    .trtp-dinearound h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 4px;font-weight:600;}
     .trtp-dinearound .da-sub{font-size:13px;color:#5c5f62;margin:0 0 11px;}
     .trtp-dinearound .da-chips{display:flex;flex-wrap:wrap;gap:8px;}
     .da-chip{font:inherit;font-size:13px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:7px 13px;cursor:pointer;color:var(--tr-secondary);transition:all .12s;display:inline-flex;align-items:center;gap:2px;}
     .da-chip:hover{border-color:var(--tr-primary);background:#fff;transform:translateY(-1px);}
-    .da-chip .plus{color:var(--tr-primary);font-weight:700;margin-right:4px;}
+    .da-chip .plus{color:var(--tr-primary-text);font-weight:700;margin-right:4px;}
     .da-chip .cat{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:10px;color:#9a8a6a;margin-left:5px;}
     .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
-    .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary);margin:0 0 12px;font-weight:600;}
+    .trtp-weather h4{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--tr-primary-text);margin:0 0 12px;font-weight:600;}
     .trtp-weather .wmonths{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
     .trtp-weather .wmo{flex:1;min-width:120px;background:var(--tr-paper);border:1px solid #e4ddcd;border-radius:5px;padding:9px 11px;}
     .trtp-weather .wm{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:12px;color:var(--tr-secondary);font-weight:600;}
     .trtp-weather .wt{font-family:'Clearface',Georgia,serif;font-size:18px;color:var(--tr-primary);font-weight:600;margin:1px 0;}
     .trtp-weather .wc{font-size:11.5px;color:#6c6f72;line-height:1.35;}
     .trtp-weather .wcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-    @media(max-width:560px){.trtp-weather .wcols{grid-template-columns:1fr;}}
+    @media(max-width:560px){.trtp-weather .wcols{grid-template-columns:1fr;}
+      #${CONTAINER_ID} .trtp-main{padding:18px 15px 26px;}
+      #${CONTAINER_ID} .trtp-grid,#${CONTAINER_ID} .trtp-grid.wide{grid-template-columns:1fr;}
+      #${CONTAINER_ID} .trtp-steps{padding:8px 8px;gap:3px;}
+      #${CONTAINER_ID} .trtp-step{font-size:11px;padding:8px 9px;}
+      #${CONTAINER_ID} .trtp-seg button{padding:11px 14px;}
+      #${CONTAINER_ID} .trtp-chip{padding:10px 14px;}
+      #${CONTAINER_ID} .trtp-side{padding:20px 16px;}
+    }
     .trtp-weather .wlbl{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px;color:var(--tr-secondary);font-weight:600;margin-bottom:4px;}
     .trtp-weather .wlist{margin:0;padding-left:17px;}
     .trtp-weather .wlist li{font-size:13px;color:#4a4d50;margin:3px 0;line-height:1.4;}
@@ -189,7 +224,7 @@
     .trtp-row .bd .ds{font-size:12.5px;color:#6c6f72;margin-top:1px;}
     .trtp-row .bd .raddr{font-size:11.5px;color:#8a8d90;margin-top:2px;}
     .trtp-row .bd .bk{font-size:12px;margin-top:3px;}
-    .trtp-row .bd .bk a{color:var(--tr-primary);text-decoration:none;font-weight:600;}
+    .trtp-row .bd .bk a{color:var(--tr-primary-text);text-decoration:underline;font-weight:600;}
     .trtp-row.drive{background:#faf6ee;}
     .trtp-row.drive .nm{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;color:#8a7a5f;}
     .trtp-seg{display:inline-flex;border:1px solid #d8cfb9;border-radius:4px;overflow:hidden;margin:2px 0 6px;}
@@ -336,13 +371,14 @@
   }
 
   // ---- render root --------------------------------------------------------
-  function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; render(); scrollToTop(); }
+  function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; pendingFocus = "heading"; render(); scrollToTop(); track("wizard_step", { step_index: i, step_name: STEP_LABELS[i], arrival: S.arrival || "", pace: S.pace, days: S.days || 0 }); }
   function scrollToTop() {
     var host = document.getElementById(CONTAINER_ID);
     if (!host) return;
     try {
       var top = host.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0);
-      window.scrollTo({ top: Math.max(0, top - 12), behavior: "smooth" });
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: Math.max(0, top - 12), behavior: reduce ? "auto" : "smooth" });
     } catch (e) { if (host.scrollIntoView) host.scrollIntoView(); }
   }
   // ---- shareable permalink ------------------------------------------------
@@ -404,12 +440,16 @@
     return base + "#" + encodeState();
   }
 
+  var pendingFocus = null;   // "heading" after a step change; else preserve the active control
   function render() {
     var host = document.getElementById(CONTAINER_ID);
+    // remember which control had focus so a re-render (e.g. toggling a pick) doesn't
+    // drop keyboard users back to the top of the page.
+    var prevFk = (document.activeElement && document.activeElement.getAttribute) ? document.activeElement.getAttribute("data-fk") : null;
     var root = el("div", {});
     root.appendChild(renderStepper());
     var wrap = el("div", { class: "trtp-wrap" });
-    var main = el("div", { class: "trtp-main" });
+    var main = el("div", { class: "trtp-main", role: "region", "aria-label": STEP_LABELS[S.step] + " — step " + (S.step + 1) + " of " + STEP_LABELS.length });
     STEPS[S.step].render(main);
     var nav = el("div", { class: "trtp-nav" });
     var back = el("button", { class: "trtp-btn ghost", onclick: function () { if (S.step > 0) goto(S.step - 1); } }, ["← Back"]);
@@ -427,15 +467,29 @@
     root.appendChild(wrap);
     host.innerHTML = ""; host.appendChild(root);
     syncURL();
+    // Focus: on a step change move to the step heading (announces the new step to
+    // screen readers); otherwise restore focus to the control the user just used.
+    try {
+      if (pendingFocus === "heading") {
+        var h = main.querySelector(".trtp-h") || main.querySelector("h1,h2");
+        if (h) { h.setAttribute("tabindex", "-1"); h.focus(); }
+      } else if (prevFk) {
+        var els = host.querySelectorAll("[data-fk]");
+        for (var i = 0; i < els.length; i++) { if (els[i].getAttribute("data-fk") === prevFk) { els[i].focus(); break; } }
+      }
+    } catch (e) { }
+    pendingFocus = null;
   }
   function renderStepper() {
-    var bar = el("div", { class: "trtp-steps" });
+    var bar = el("nav", { class: "trtp-steps", "aria-label": "Trip planner steps" });
     STEP_LABELS.forEach(function (lbl, i) {
       var cls = "trtp-step" + (i === S.step ? " on" : (i < S.step || i <= S.maxStep ? " done" : ""));
       bar.appendChild(el("button", {
         class: cls, disabled: i <= S.maxStep || i === S.step ? null : "disabled",
+        "aria-current": i === S.step ? "step" : null,
+        "aria-label": "Step " + (i + 1) + ": " + lbl + (i < S.step || (i <= S.maxStep && i !== S.step) ? " (done)" : ""),
         onclick: function () { if (i <= S.maxStep) goto(i); }
-      }, [el("span", { class: "n", text: "" + (i + 1) }), lbl]));
+      }, [el("span", { class: "n", "aria-hidden": "true", text: "" + (i + 1) }), lbl]));
     });
     return bar;
   }
@@ -471,7 +525,7 @@
       var it = byId(source, id); if (!it) return;
       var row = el("div", { class: "trtp-item" });
       row.appendChild(el("span", { text: it.name }));
-      row.appendChild(el("button", { class: "x", title: "Remove", onclick: function () { toggle(bucket, id); } }, ["×"]));
+      row.appendChild(el("button", { class: "x", type: "button", title: "Remove " + it.name, "aria-label": "Remove " + it.name, onclick: function () { toggle(bucket, id); } }, [el("span", { "aria-hidden": "true" }, ["×"])]));
       sec.appendChild(row);
     });
     side.appendChild(sec); return true;
@@ -491,10 +545,13 @@
       }
       grid.appendChild(el("button", {
         class: "trtp-card" + (img ? " has-img" : "") + (sel ? " sel" : "") + (dis ? " dis" : ""), type: "button",
+        "aria-pressed": opts.selected ? (sel ? "true" : "false") : null,
+        disabled: dis ? "disabled" : null,
+        "data-fk": "card:" + (it.id || it.code || it.name),
         onclick: function () { opts.onclick(it); }
       }, [
         img,
-        el("span", { class: "check", html: "✓" }),
+        el("span", { class: "check", "aria-hidden": "true", html: "✓" }),
         el("div", { class: "t", text: it[opts.title || "name"] }),
         opts.blurb ? el("div", { class: "b", text: (typeof opts.blurb === "function" ? opts.blurb(it) : it[opts.blurb]) }) : null,
         opts.meta ? el("div", { class: "meta", text: opts.meta(it) }) : null
@@ -553,6 +610,8 @@
           for (var i = 1; i <= 12; i++) (function (mo) {
             chips.appendChild(el("button", {
               class: "trtp-chip" + (S.months.indexOf(mo) > -1 ? " on" : ""), type: "button",
+              "aria-pressed": S.months.indexOf(mo) > -1 ? "true" : "false",
+              "aria-label": MONTHFULL[mo - 1], "data-fk": "mon:" + mo,
               onclick: function () { var k = S.months.indexOf(mo); if (k > -1) S.months.splice(k, 1); else S.months.push(mo); render(); }
             }, [MON[mo - 1]]));
           })(i);
@@ -730,8 +789,8 @@
           m.appendChild(el("h1", { class: "trtp-h", text: "Your dates and pace" }));
           m.appendChild(el("p", { class: "trtp-sub", text: "Tell us when you're arriving and how many days you have. An arrival date lets us line up tours and shows on the exact days they actually run, and time your drive." }));
           var fld = el("div", { class: "trtp-field" });
-          fld.appendChild(el("label", { text: "Arrival date (optional, but recommended)" }));
-          fld.appendChild(el("input", { type: "date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
+          fld.appendChild(el("label", { "for": "trtp-arrival-date", text: "Arrival date (optional, but recommended)" }));
+          fld.appendChild(el("input", { id: "trtp-arrival-date", type: "date", "data-fk": "arrival-date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
           m.appendChild(fld);
           // Smart estimate of how many days the current picks need — shown right above the day picker
           if (hasAnyPick()) {
@@ -751,9 +810,9 @@
           ];
           cardGrid(m, opts, { title: "label", selected: function (o) { return S.days === o.d; }, blurb: function (o) { return o.note; }, onclick: function (o) { S.days = o.d; render(); } });
           m.appendChild(el("div", { class: "trtp-sub-h", text: "What's your pace?" }));
-          var seg = el("div", { class: "trtp-seg" });
+          var seg = el("div", { class: "trtp-seg", role: "group", "aria-label": "Trip pace" });
           [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) {
-            seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]]));
+            seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", type: "button", "aria-pressed": S.pace === p[0] ? "true" : "false", "data-fk": "pace:" + p[0], onclick: function () { S.pace = p[0]; render(); } }, [p[1]]));
           });
           m.appendChild(seg);
           m.appendChild(el("div", { class: "trtp-note", text: S.pace === "relaxed" ? "Relaxed: about 6 hours of activity a day, with room to breathe." : S.pace === "packed" ? "Packed: up to 10 hours a day — see as much as possible." : "Balanced: about 8 hours of activity a day." }));
@@ -927,14 +986,16 @@
   function driveHrs(mi) { return driveMin(mi) / 60; }
   function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
   function fmtD(d) { return MON[d.getMonth()] + " " + d.getDate(); }
+  // realToMedora = curated real drive minutes from this origin to Medora (origins.json
+  // driveHours), used instead of the haversine estimate for the origin↔Medora leg.
   function entryPoint() {
     if (S.arrival === "air" && S.airport) { var a = airport(S.airport); return { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true }; }
-    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false };
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
     return null;
   }
   function exitPoint() {
     if (S.arrival === "air") { var a = airport(S.diffReturn && S.airportOut ? S.airportOut : S.airport); return a ? { lat: a.lat, lng: a.lng, label: a.name.replace(/ –.*/, ""), code: a.code, air: true } : null; }
-    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false };
+    if (S.origin && S.origin.lat != null) return { lat: S.origin.lat, lng: S.origin.lng, label: S.origin.label, air: false, realToMedora: S.origin.driveHours ? Math.round(S.origin.driveHours * 60 / 15) * 15 : null };
     return null;
   }
   function baseDriveMin(city) { var b = null; D.lodging.lodging.forEach(function (l) { if (l.nearbyBase && (l.name === city || l.area === city)) b = l; }); return b ? b.driveMin : 30; }
@@ -993,9 +1054,15 @@
     var DAY_DRIVE = 600;   // max ~10h of driving on a transit day
     var originLabel = S.origin ? S.origin.label : "home";
     function tCount(m) { return m > DAY_DRIVE ? Math.ceil(m / DAY_DRIVE) : 0; }
-    function segDrive(a, b) { return (a && b && a.lat != null && b.lat != null) ? driveMin(haversine(a.lat, a.lng, b.lat, b.lng)) : 0; }
+    var MEDORA_POS = { lat: MEDORA.lat, lng: MEDORA.lng, label: "Medora" };
+    function segDrive(a, b) {
+      if (!a || !b || a.lat == null || b.lat == null) return 0;
+      if (a.realToMedora && b.label === "Medora") return a.realToMedora;   // curated real drive
+      if (b.realToMedora && a.label === "Medora") return b.realToMedora;
+      return driveMin(haversine(a.lat, a.lng, b.lat, b.lng));
+    }
     // Leg-independent estimate of dedicated driving days, for the capacity math.
-    var transitEstimate = tCount(segDrive(entry, MEDORA)) + tCount(segDrive(MEDORA, exit));
+    var transitEstimate = tCount(segDrive(entry, MEDORA_POS)) + tCount(segDrive(MEDORA_POS, exit));
 
     // Medora nights from the local activity load at the chosen pace (min 1).
     // Near day-trips that eat most of a day (their visit + round-trip drive)
@@ -1044,7 +1111,7 @@
     }
 
     var plan = [];
-    var walkPrev = entry ? { lat: entry.lat, lng: entry.lng, label: entry.label } : null;
+    var walkPrev = entry ? { lat: entry.lat, lng: entry.lng, label: entry.label, realToMedora: entry.realToMedora } : null;
     // Drive to `pos`; if longer than a day, emit transit days (node gets no drive-in).
     function connect(pos, dir, towards, force) {
       var fromLabel = walkPrev ? walkPrev.label : null;
@@ -1065,9 +1132,9 @@
     });
     // Anti-cram: a 1-day Medora block that also carries the drive home shouldn't also
     // absorb a big arrival drive — dedicate the arrival to a transit day.
-    var returnMin = (!outbound.length && effExit) ? segDrive({ lat: MEDORA.lat, lng: MEDORA.lng }, effExit) : 0;
-    var forceArr = medoraDays === 1 && returnMin > 0 && (segDrive(walkPrev, { lat: MEDORA.lat, lng: MEDORA.lng }) + returnMin) > DAY_DRIVE;
-    var cm = connect({ lat: MEDORA.lat, lng: MEDORA.lng, label: "Medora" }, "in", "Medora", forceArr);
+    var returnMin = (!outbound.length && effExit) ? segDrive(MEDORA_POS, effExit) : 0;
+    var forceArr = medoraDays === 1 && returnMin > 0 && (segDrive(walkPrev, MEDORA_POS) + returnMin) > DAY_DRIVE;
+    var cm = connect(MEDORA_POS, "in", "Medora", forceArr);
     for (var mi2 = 0; mi2 < medoraDays; mi2++) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: mi2 === 0, lastMedora: mi2 === medoraDays - 1, _driveMin: mi2 === 0 ? cm.min : 0, _driveFrom: mi2 === 0 ? cm.from : null });
     outbound.forEach(function (f) {
       var c = connect({ lat: f.lat, lng: f.lng, label: f.overnight ? f.overnight.city : f.name }, "out", f.name.replace(/ \(.*\)/, ""), false);
@@ -1093,7 +1160,7 @@
         var eseg = Math.round(de / ne / 15) * 15;
         for (var ei = 0; ei < ne; ei++) plan.push({ kind: "transit", dir: "out", seg: eseg, towards: originLabel, arriveHome: ei === ne - 1, baseCity: ei === ne - 1 ? null : "En route" });
       } else {
-        exitShort = { to: effExit.label, code: effExit.code, air: effExit.air, driveMi: haversine(walkPrev.lat, walkPrev.lng, effExit.lat, effExit.lng) };
+        exitShort = { to: effExit.label, code: effExit.code, air: effExit.air, driveMi: haversine(walkPrev.lat, walkPrev.lng, effExit.lat, effExit.lng), driveMinReal: de };
       }
     }
     if (!plan.length) plan.push({ kind: "medora", baseCity: medoraBase, firstMedora: true, lastMedora: true });
@@ -1113,6 +1180,7 @@
       if (!dayOk(it.avail, d.wd)) return false;
       if (it.avail.fixed && conflictsFixed(d, it)) return false;
       if (it.category === "evening" && d._evening) return false;      // only one evening show per night
+      if (it.category === "evening" && d._exit) return false;         // not on your departure day (you're heading home/to the airport)
       // One of each meal per day — you eat one breakfast, one lunch, one dinner.
       // (The Pitchfork Steak Fondue IS your dinner, so nothing else with meal
       // "dinner" shares its day.) This also spreads multiple dining picks across
@@ -1145,15 +1213,25 @@
       });
     }
 
-    // 2) Everything else — least-full day that can take it
+    // 2) Everything else — least-full day that can take it. Meals are steered by
+    //    time-of-day: a breakfast wants a day with a free morning (not one eaten by
+    //    an arrival flight or a long drive-in), lunch a free midday — so they get
+    //    scheduled instead of dropped to an "Also consider" note.
     others.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
+    function morningTaken(d) { return !!(d._arriveAir || (d._driveMin && d._driveMin > 60)); }
     others.forEach(function (it) {
-      var best = null;
-      for (var j = 0; j < medoraDayObjs.length; j++) { var d = medoraDayObjs[j]; if (!canPlace(d, it)) continue; if (!best || d.used < best.used) best = d; }
+      var best = null, bestScore = Infinity;
+      for (var j = 0; j < medoraDayObjs.length; j++) {
+        var d = medoraDayObjs[j]; if (!canPlace(d, it)) continue;
+        var score = d.used;
+        if (it.meal === "breakfast" && morningTaken(d)) score += 100000;                 // morning gone
+        if (it.meal === "lunch" && d._driveMin && d._driveMin > 4 * 60) score += 100000;  // midday gone
+        if (score < bestScore) { best = d; bestScore = score; }
+      }
       if (best) place(best, it);
       else {
         var reason = reasonUnfit(it, medoraDayObjs);
-        if (it.category === "evening" && medoraDayObjs.every(function (d) { return d._evening; })) reason = "only one evening show fits per night — add a night or drop one (they'd overlap)";
+        if (it.category === "evening" && medoraDayObjs.every(function (d) { return d._evening || d._exit; })) reason = "no free evening — shows can't go on your departure night, and it's one show per night; add a night to catch it";
         if (it.id === "pitchfork-fondue" && !medoraDayObjs.some(function (d) { return d.items.some(function (x) { return x.id === "medora-musical"; }); })) reason = "the Pitchfork Steak Fondue is the pre-Musical dinner — add the Medora Musical to include it (they're booked together)";
         else if (it.meal && medoraDayObjs.every(function (d) { return d.items.some(function (x) { return x.meal === it.meal; }); })) reason = "you've already got " + it.meal + " each day — one " + it.meal + " spot per day (add a day for another, or swap it in)";
         overflow.push({ item: it, reason: reason });
@@ -1245,7 +1323,8 @@
       var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
       var flex = day.items.filter(function (i) { return !i.avail.fixed; });
       var order = { breakfast: 0, attraction: 1, destination: 1, daytrip: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
-      flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
+      var ordOf = function (x) { var v = order[x.meal || x.kind]; return v == null ? 2 : v; };   // don't let 0 (breakfast) fall through
+      flex.sort(function (a, b) { return ordOf(a) - ordOf(b); });
       // Place flexible items in time order, each inside its own opening hours
       // AND its meal window. Anything that can't fit before `lim` (or whose
       // window has already passed — e.g. a breakfast cafe when it's now evening)
@@ -1286,7 +1365,7 @@
       // Leave enough of the day for a same-day drive home so it can't cross midnight
       // (air exits keep a 5pm cutoff for the airport buffer).
       var exitBound = limit;
-      if (day._exit) exitBound = day._exit.air ? 17 * 60 : Math.max(11 * 60, Math.min(17 * 60, 22 * 60 - driveMin(day._exit.driveMi)));
+      if (day._exit) { var eMin = day._exit.driveMinReal != null ? day._exit.driveMinReal : driveMin(day._exit.driveMi); exitBound = day._exit.air ? 17 * 60 : Math.max(11 * 60, Math.min(17 * 60, 22 * 60 - eMin)); }
       placeFlexUntil(exitBound);
       if (day.baseCity && day.baseCity !== "Medora" && !day._exit) { var bd2 = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd2, drive: true, name: "Return to " + day.baseCity, ds: "~" + durLabel(bd2) }); cursor += bd2 + 10; }
       flex.forEach(function (it) { day.notes.push("Also consider: " + it.name); });
@@ -1294,7 +1373,7 @@
 
     // exit travel on the final day (drive to airport + depart, or drive home)
     if (day._exit) {
-      var dm2 = driveMin(day._exit.driveMi);
+      var dm2 = day._exit.driveMinReal != null ? day._exit.driveMinReal : driveMin(day._exit.driveMi);
       entries.push({ start: cursor, dur: dm2, drive: true, name: day._exit.air ? "Drive to " + day._exit.to + " (" + day._exit.code + ")" : "Drive home to " + day._exit.to, ds: "~" + durLabel(dm2) + (day._exit.air ? " — plus arrive ~2h early for your flight" : "") });
       cursor += dm2 + 15;
       if (day._exit.air) entries.push({ start: cursor, dur: 0, name: "Depart " + day._exit.code, ds: "Return flight home" });
@@ -1320,8 +1399,8 @@
     m.appendChild(el("p", { class: "trtp-kicker", text: "Your itinerary" }));
     m.appendChild(el("h1", { class: "trtp-h display", text: (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip" }));
     m.appendChild(el("p", { class: "trtp-sub", text: "Here's your day-by-day plan. Far-flung stops are strung together on the way in and out; your time in Medora is kept as one contiguous stay so you only book one hotel there. The panel below shows how many nights to book in each town, and when." }));
-    var seg = el("div", { class: "trtp-seg" });
-    [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
+    var seg = el("div", { class: "trtp-seg", role: "group", "aria-label": "Trip pace" });
+    [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", type: "button", "aria-pressed": S.pace === p[0] ? "true" : "false", "data-fk": "pace:" + p[0], onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
     m.appendChild(seg);
 
     // Share + calendar tools. The whole plan lives in the URL (the address bar
@@ -1331,7 +1410,7 @@
       var tools = el("div", { class: "trtp-toolrow" });
       var shareBtn = el("button", { class: "trtp-btn ghost xsm", onclick: function (ev) {
         var url = shareURL(), b = ev.currentTarget;
-        var done = function () { b.textContent = "Link copied ✓"; setTimeout(function () { b.textContent = "🔗 Copy shareable link"; }, 2000); };
+        track("share_link", {}); var done = function () { b.textContent = "Link copied ✓"; setTimeout(function () { b.textContent = "🔗 Copy shareable link"; }, 2000); };
         try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done); else done(); } catch (e) { done(); }
       } }, ["🔗 Copy shareable link"]);
       tools.appendChild(shareBtn);
@@ -1373,7 +1452,7 @@
       var overBox = el("div", { class: "trtp-overcap" });
       overBox.appendChild(el("div", { html: "<b>This is more than your " + cap.setDays + " day" + (cap.setDays > 1 ? "s" : "") + " can hold.</b> Your selections would take about " + cap.requiredDays + " days at a " + S.pace + " pace — we fit what we could. Fix it in one click:" }));
       var fixes = el("div", { class: "trtp-fixrow" });
-      fixes.appendChild(el("button", { class: "trtp-btn primary", onclick: function () { S.days = cap.requiredDays; if (S.maxStep < 7) S.maxStep = 7; render(); } }, ["Make it " + cap.requiredDays + " days →"]));
+      fixes.appendChild(el("button", { class: "trtp-btn primary", onclick: function () { S.days = cap.requiredDays; if (S.maxStep < 7) S.maxStep = 7; track("fix_make_days", { days: cap.requiredDays }); render(); } }, ["Make it " + cap.requiredDays + " days →"]));
       if (S.pace !== "packed") fixes.appendChild(el("button", { class: "trtp-btn ghost", onclick: function () { S.pace = "packed"; render(); } }, ["Switch to Packed pace"]));
       fixes.appendChild(el("button", { class: "trtp-btn ghost", onclick: function () { goto(7); } }, ["Edit dates"]));
       overBox.appendChild(fixes);
@@ -1470,7 +1549,7 @@
     box.appendChild(el("div", { class: "da-sub", text: "Medora rewards wandering — try a different spot each meal and browse the independent shops. Tap to add any to your plan." }));
     var wrap = el("div", { class: "da-chips" });
     pool.slice(0, 14).forEach(function (a) {
-      wrap.appendChild(el("button", { class: "da-chip", type: "button", onclick: function () { toggle("medora", a.id); } }, [
+      wrap.appendChild(el("button", { class: "da-chip", type: "button", "aria-label": "Add " + a.name, onclick: function () { track("dine_around_add", { id: a.id }); toggle("medora", a.id); } }, [
         el("span", { class: "plus", text: "+" }),
         a.name,
         el("span", { class: "cat", text: a.category === "dining" ? (a.meal || "eat") : "shop" })
@@ -1523,6 +1602,7 @@
   }
   function downloadICS() {
     if (!S.startDate) return;
+    track("calendar_export", { days: S.days || 0 });
     var ics = buildICS(buildSchedule());
     try {
       var blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
@@ -1537,6 +1617,7 @@
   }
 
   function openPrintable() {
+    track("print_itinerary", { days: S.days || 0, pace: S.pace });
     var sched = buildSchedule();
     var c = D.config.brand.colors;
     var w = window.open("", "_blank");
@@ -1620,7 +1701,7 @@
       ".rdur{font-family:Oswald,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:" + c.primary + ";border-radius:9px;padding:1px 7px;margin-left:6px;}" +
       ".ds{display:block;font-size:12px;color:#6c6f72;font-family:Arial,sans-serif;}" +
       ".bk{display:block;font-size:11.5px;font-family:Arial,sans-serif;margin-top:2px;}" +
-      ".bk a{color:" + c.primary + ";}" +
+      ".bk a{color:#B04E2F;text-decoration:underline;}" +
       ".free{color:#6c6f72;font-style:italic;}" +
       ".book td{border-bottom:1px solid #eee;padding:5px 8px;font-size:13px;font-family:Arial,sans-serif;}" +
       ".warn{background:#fff4ef;border-left:3px solid " + c.primary + ";padding:8px 12px;font-size:13px;margin:16px 0;}" +
