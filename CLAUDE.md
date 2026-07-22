@@ -229,14 +229,18 @@ These were added incrementally from user feedback. Preserve them:
   arriving (long drive-in) is skipped to a note, never overlapped onto the drive.
 - **Every activity `entry` carries its `id`** (leg/flex/anchor) — used for de-dup,
   traceability, and the stress harness's id-based invariant checks.
-- **Multi-day drive split.** A car origin whose drive to the first stop/Medora is
-  longer than a day is spread over dedicated **`transit` days** (`kind:"transit"`,
-  each driving ≤ `DAY_DRIVE`=600 min, "overnight en route"), so no drive row crosses
-  midnight and the Medora days stay clean (no drive-in on arrival). Triggered by
-  `driveMin(entry→firstNode) > DAY_DRIVE`; `firstArrival` in the routing pass skips
-  the first stop's drive-in when transit covered it. Transit days count toward
-  `requiredDays` and can't be trimmed. On a same-day car return, the exit-day activity
-  cutoff is pulled earlier so the drive home can't cross midnight.
+- **Multi-day drive split (general, per-segment).** The plan is built by a **segment
+  walk** (`connect()`): entry → inbound legs → Medora → outbound legs → exit. ANY
+  single drive longer than a day (`> DAY_DRIVE`=600 min) becomes dedicated **`transit`
+  days** (`kind:"transit"`, each ≤ `DAY_DRIVE`, "overnight en route"), and the node
+  after transit arrives with **no drive-in** (no giant row). Drive-ins are stored as
+  `_driveMin` (minutes) on the first day of each node; transit days carry `seg`/
+  `towards`/`arriveHome`. **Anti-cram:** a 1-day Medora block that also carries the
+  drive home dedicates its arrival to a transit day (`forceArr`), and the **exit** gets
+  its own day when `lastDayContent + driveHome > 13h` of daytime (`DAY_SPAN`), so
+  arrival + departure never stack past midnight. Transit days count toward
+  `requiredDays` (`transitEstimate`, leg-independent) and can't be trimmed. Verified by
+  the stress harness (§8): 4,000 fuzz scenarios → 0 midnight rows (down from ~250).
 
 ---
 
@@ -308,17 +312,18 @@ There is no test runner committed. Verification is ad-hoc but rigorous:
 
 ## 9. Known limitations & gotchas
 
-- **Far car-origin drives are now split** into en-route transit days (see §6), so the
-  common case (drive straight from a far city to Medora — Chicago, Seattle) no longer
-  crosses midnight. **Residual (~3% of fuzz):** exotic combos of a far origin *plus
-  multiple far-flung national parks in different directions* (e.g. Winnipeg + Yellowstone
-  + Grand Teton) can still stack a long leg→Medora drive and the drive home on one
-  Medora day, or leave a long inter-leg drive unsplit — an over-long drive row (no
-  broken visible time, just unrealistic). The full fix is a **general per-segment
-  transit split** (split *any* segment > `DAY_DRIVE`, not just the origin connection)
-  plus never cramming arrival+departure on a single Medora day. Rare in real
-  Medora-trip use; deferred. Also: haversine×1.15 over-estimates long east–west US
-  drives (Chicago→Medora reads ~18h vs ~13h); per-corridor real mileages would help.
+- **Long drives are split per-segment** (see §6) — the general fix landed, so the
+  stress harness finds **no midnight/stacking rows** across 4,000 fuzz scenarios
+  (Chicago, Seattle, Winnipeg + Yellowstone + Grand Teton, far origins + scattered far
+  parks all lay out cleanly). Only remaining edge: the **season-rollover** below.
+- **Season rollover edge (~1 in 4000).** The far-stop season filter uses the trip's
+  *start* month; a trip that begins in-season but a far stop's leg lands a day or two
+  into the next, out-of-season month isn't caught (e.g. start Sep 28, leg on Oct 1 for
+  a May–Sep stop). Negligible and the stop is barely out of season; documented, not
+  fixed (fixing needs per-leg-date season checks — risk not worth it).
+- **Drive-time estimate.** haversine×1.15 over-estimates long east–west US drives
+  (Chicago→Medora reads ~18h vs ~13h), so far trips use a day or two more transit days
+  than strictly needed. Generous by design; per-corridor real mileages would tighten it.
 - **Season rollover edge.** The far-stop season filter uses the trip's *start* month;
   a trip that begins in-season but a far stop's leg lands a day or two into the next,
   out-of-season month is not caught (≈1 in 3000 fuzz scenarios). Negligible; noted.
@@ -396,8 +401,8 @@ verified before moving on):
 17. **Invariant stress test** (thousands of seeded scenarios): found & fixed four
     scheduler bug classes — season-blind legs, anchor/drive overlaps, past-midnight leg
     visits, out-of-season far stops; added `id` to entries.
-18. **Multi-day drive split**: far car origins now spread the drive over dedicated
-    transit days (no midnight rows for the common straight-to-Medora case). Residual:
-    exotic far-origin + multi-far-park combos (see §9), deferred.
+18. **Multi-day drive split**: first the origin↔Medora case, then a **general
+    per-segment rewrite** (segment walk + transit days + anti-cram exit). Stress harness
+    now: 4,000 fuzz scenarios → 1 violation (a negligible season-rollover edge, §9).
 
 For the fine-grained record, see the git log and `README.md`.
