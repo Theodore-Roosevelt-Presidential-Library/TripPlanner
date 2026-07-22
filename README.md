@@ -8,6 +8,8 @@ print and book.
 
 **Live:** https://trip.labs.trlibrary.com
 **Hosting:** GitHub Pages (static). No server, no API keys, no per-query cost.
+**Contributing / picking this up?** Read [`CLAUDE.md`](./CLAUDE.md) first — it's the
+builder's guide (architecture, scheduler rules, conventions, gotchas, and history).
 
 ---
 
