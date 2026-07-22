@@ -388,6 +388,13 @@ The pure parser/validation helpers are exported and unit-tested.
    `theodore-roosevelt-presidential-library.github.io`. Enable *Enforce HTTPS*.
 3. **Settings → Actions → General →** Workflow permissions = *Read and write*
    (so the event refresh can commit and the watchdogs can open issues).
+   - If that radio is **greyed out**, an **organization** owner has locked the
+     default to read-only. Fix it at the org level: **Organization → Settings →
+     Actions → General → Workflow permissions → Read and write → Save** (or grant
+     this repo an exception). Without this, the data workflows fail with
+     `403: Resource not accessible by integration`, and Pages deploys may fail too.
+     A per-repo alternative is to run the workflows with a fine-grained PAT/App
+     token secret instead of the default `GITHUB_TOKEN`.
 
 ---
 

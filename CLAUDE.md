@@ -241,8 +241,14 @@ operator view; the design intent:
   keeping the "not a live booking system" promise honest.
 
 Both write generated files (`data/refresh-status.json`, `data/freshness-report.md`)
-that are `.gitignore`d. Opening issues needs repo setting **Actions → General →
-Workflow permissions = Read and write**.
+that are `.gitignore`d. Committing `events.json` and opening issues needs
+**Actions → General → Workflow permissions = Read and write**. ⚠ If that radio is
+greyed out, the **org** has locked the default to read-only — fix it at
+**Organization → Settings → Actions → General** (per-workflow `permissions:` blocks
+generally can't exceed an org-locked read-only default; you'd otherwise hit
+`403: Resource not accessible by integration`, and Pages deploys may fail too).
+The fallback is running the workflows with a fine-grained PAT/App-token secret
+instead of the default `GITHUB_TOKEN`.
 
 ⚠ The MEC/Saffire DOM parsers are best-effort against live layouts that couldn't be
 tested offline. If a layout doesn't match, they yield nothing → seed preserved →
