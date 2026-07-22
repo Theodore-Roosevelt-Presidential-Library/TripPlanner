@@ -1759,7 +1759,8 @@
       "phone": "+1-701-623-1311",
       "booking": "https://discovermedora.com/experience-medora/bread-butter/",
       "image": "assets/img/2089b93e4d.jpg",
-      "address": "Bread + Butter, Medora, ND 58645"
+      "address": "Bread + Butter, Medora, ND 58645",
+      "closed": true
     },
     {
       "id": "hatlee-brae",
@@ -1975,7 +1976,8 @@
       "phone": "+1-701-623-4825",
       "booking": "https://discovermedora.com/experience-medora/chateau-nuts/",
       "image": "assets/img/dbb6830154.jpg",
-      "address": "Chateau Nuts, Medora, ND 58645"
+      "address": "Chateau Nuts, Medora, ND 58645",
+      "closed": true
     },
     {
       "id": "rushmore-mountain-taffy",

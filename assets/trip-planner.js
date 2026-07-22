@@ -189,6 +189,8 @@
     .trtp-toolrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
     .trtp-disclaimer{background:#fbf7ef;border:1px dashed var(--tr-muted);border-radius:6px;padding:11px 14px;font-size:12.5px;line-height:1.5;color:#5f5137;margin:0 0 16px;}
     .trtp-disclaimer b{color:var(--tr-secondary);}
+    .trtp-notbooking{background:#fdece5;border:1px solid var(--tr-primary);border-left:5px solid var(--tr-primary);border-radius:6px;padding:13px 16px;font-size:13.5px;line-height:1.5;color:#7a3d27;margin:14px 0 16px;}
+    .trtp-notbooking b{color:var(--tr-secondary);}
     .trtp-fixrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;}
     .trtp-btn.xsm{font-size:12px;padding:6px 12px;}
     .trtp-ofrow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:6px 0;border-top:1px solid #f0d9cd;}
@@ -700,7 +702,7 @@
           })(i);
           m.appendChild(chips);
           if (S.months.length) {
-            var openCount = D.medora.attractions.filter(function (a) { return monthsBrowseOk(a.avail); }).length;
+            var openCount = D.medora.attractions.filter(function (a) { return !a.closed && monthsBrowseOk(a.avail); }).length;
             var seasonalHidden = D.medora.attractions.length - openCount;
             m.appendChild(el("div", { class: "trtp-note", text: "Showing what's open in " + S.months.slice().sort(function (a, b) { return a - b; }).map(function (x) { return MON[x - 1]; }).join(", ") + "." + (seasonalHidden > 0 ? " " + seasonalHidden + " seasonal option(s) will be hidden on the next step." : "") }));
             var wi = weatherInfo();
@@ -719,7 +721,7 @@
           if (S.months.length) m.appendChild(el("div", { class: "trtp-note", html: "Filtered to what's open in <b>" + S.months.slice().sort(function (a, b) { return a - b; }).map(function (x) { return MON[x - 1]; }).join(", ") + "</b>. <a href='#' onclick='return false' style='color:var(--tr-primary)'>Change months on the Season step ↑</a>" }));
           var groups = [{ key: "attraction", label: "See & do" }, { key: "recreation", label: "Outdoors & recreation" }, { key: "tour", label: "Guided tours & rides" }, { key: "evening", label: "Shows & evenings" }, { key: "dining", label: "Where to eat" }, { key: "shopping", label: "Where to shop" }, { key: "event", label: "Festivals & special events" }];
           groups.forEach(function (g) {
-            var items = D.medora.attractions.filter(function (a) { return a.category === g.key && monthsBrowseOk(a.avail); });
+            var items = D.medora.attractions.filter(function (a) { return !a.closed && a.category === g.key && monthsBrowseOk(a.avail); });
             if (!items.length) return;
             m.appendChild(el("div", { class: "trtp-sub-h", text: g.label }));
             cardGrid(m, items, {
@@ -1116,7 +1118,7 @@
 
   function buildSchedule() {
     var lib = S.picks.library.map(function (id) { return libItem(id); }).filter(Boolean).map(normLib).filter(function (x) { return x.duration > 0 || x.kind === "tour" || x.kind === "admission"; });
-    var med = S.picks.medora.map(function (id) { return byId(D.medora.attractions, id); }).filter(Boolean).map(normMed);
+    var med = S.picks.medora.map(function (id) { return byId(D.medora.attractions, id); }).filter(function (a) { return a && !a.closed; }).map(normMed);
     var dest = S.picks.route.map(function (id) { return byId(D.destinations.destinations, id); }).filter(Boolean).map(normDest);
     var near = dest.filter(function (d) { return d.miles <= NEAR_MI; });
     var far = dest.filter(function (d) { return d.miles > NEAR_MI; });
@@ -1458,9 +1460,11 @@
   }
   function reasonUnfit(it, localDays) {
     if (it.avail.season && !localDays.some(function (d) { return seasonOk(it.avail, d.month); })) return "closed on your dates (seasonal)";
+    // Does it run on ANY of your Medora weekdays at all? If not, that's the reason —
+    // before we blame a Library closure (which only applies if it would otherwise run).
+    if (it.avail.fixed && !localDays.some(function (d) { return dayOk(it.avail, d.wd); })) return "runs only on days that aren't in your Medora stay — add a day or shift your dates to catch it";
     if (it.area === "library" && !localDays.some(function (d) { return dayOk(it.avail, d.wd) && (!d.date || libraryHours(d.date) !== null); }))
       return "the Library is closed the day(s) this runs during your visit (off-season weekday closures) — see trlibrary.com/visit/hours";
-    if (it.avail.fixed && !localDays.some(function (d) { return dayOk(it.avail, d.wd); })) return "doesn't run on your travel days";
     return "no room left in your days at this pace";
   }
   function layoutDay(day) {
@@ -1560,7 +1564,7 @@
         var a = anchors[ai];
         // If its reserved time has already passed because you're still arriving
         // (a long drive-in on this day), don't overlap it onto the drive — note it.
-        if (a.start < cursor) { day.notes.push(a.it.name + " runs at " + minToLabel(a.start) + ", but you're still arriving then — book it on a full Medora day."); continue; }
+        if (a.start < cursor) { day.considerItems.push({ id: a.it.id, name: a.it.name }); day.notes.push(a.it.name + " runs at " + minToLabel(a.start) + ", but you're still arriving then — catch it on a full Medora day (add a day if this is your only one)."); continue; }
         placeFlexUntil(a.start);
         entries.push({ id: a.it.id, start: a.start, dur: a.end - a.start, name: a.it.name, ds: descFor(a.it) + " · reserved time", booking: a.it.booking, phone: a.it.phone, image: a.it.image, addr: a.it.address, lat: a.it.lat, lng: a.it.lng, gps: a.it.gps, anchor: true });
         cursor = Math.max(cursor, a.end + 15);
@@ -1604,6 +1608,8 @@
     m.appendChild(el("p", { class: "trtp-kicker", text: "Your itinerary" }));
     m.appendChild(el("h1", { class: "trtp-h display", text: (sched.days.length ? sched.days.length + "-Day " : "") + "Roosevelt Country Trip" }));
     m.appendChild(el("p", { class: "trtp-sub", text: "Here's your day-by-day plan. Far-flung stops are strung together on the way in and out; your time in Medora is kept as one contiguous stay so you only book one hotel there. The panel below shows how many nights to book in each town, and when." }));
+    // Prominent, up-front: this tool plans, it does not book.
+    m.appendChild(el("div", { class: "trtp-notbooking", role: "note", html: "🎟️ <b>This is a planning tool — not a booking system.</b> Adding an experience to your trip does <b>not</b> reserve, hold, or pay for anything. You'll book each tour, show, meal and stay yourself, directly with the venue. Hours and availability change, so confirm details when you book." }));
     var seg = el("div", { class: "trtp-seg", role: "group", "aria-label": "Trip pace" });
     [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", type: "button", "aria-pressed": S.pace === p[0] ? "true" : "false", "data-fk": "pace:" + p[0], onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
     m.appendChild(seg);
@@ -1623,10 +1629,7 @@
       m.appendChild(tools);
     }
 
-    // Not-a-live-booking disclaimer — this is a guide, availability/hours change.
-    if (hasAnyPick()) {
-      m.appendChild(el("div", { class: "trtp-disclaimer", html: "<b>Please double-check before you book.</b> This planner is a guide, not a live booking system — it doesn't check real-time availability, ticket inventory or the latest hours, and seasons, showtimes and hours change. Always confirm dates, times and hours directly with each location before finalizing plans or traveling." }));
-    }
+    // (The prominent "not a booking system" note sits at the top of the itinerary.)
 
     if (!hasAnyPick()) m.appendChild(el("div", { class: "trtp-note", text: "You haven't added anything yet. Jump back to Road trip, Medora or Library and click what appeals — it'll lay out here by day and time." }));
 
@@ -1760,7 +1763,7 @@
   // as one-tap adds that fold straight into the schedule.
   function renderDineAround(m) {
     var pool = D.medora.attractions.filter(function (a) {
-      return (a.category === "dining" || a.category === "shopping") && monthsBrowseOk(a.avail) && S.picks.medora.indexOf(a.id) < 0;
+      return !a.closed && (a.category === "dining" || a.category === "shopping") && monthsBrowseOk(a.avail) && S.picks.medora.indexOf(a.id) < 0;
     });
     if (!pool.length) return;
     pool.sort(function (a, b) { return (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.category === "dining" ? 0 : 1) - (b.category === "dining" ? 0 : 1); });
@@ -1938,7 +1941,7 @@
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +
       "<h1>" + (sched.days.length ? sched.days.length + "-Day " : "") + "Roosevelt Country Trip</h1>" +
       "<div class='facts'>" + facts.map(function (f) { return "<div>" + f + "</div>"; }).join("") + "</div>" +
-      "<div class='disc'><b>Please double-check before you book.</b> This itinerary is a guide, not a live booking system — it doesn't check real-time availability, ticket inventory or the latest hours, and seasons, showtimes and hours change. Always confirm dates, times and hours directly with each location before finalizing plans or traveling.</div>" +
+      "<div class='disc'><b>This is a planning tool, not a booking system.</b> Nothing on this itinerary is reserved, held, or paid for — you'll book each tour, show, meal and stay yourself, directly with the venue. It also doesn't check real-time availability or the latest hours, and seasons, showtimes and hours change, so always confirm dates and times with each location before you finalize or travel.</div>" +
       bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + weatherHtml + bookHtml +
       "<div class='foot'>Planned with the Theodore Roosevelt Presidential Library trip planner · trlibrary.com/visit · Times, hours and availability are estimates only — always confirm directly with each location before you book or travel.</div>" +
       "</body></html>";

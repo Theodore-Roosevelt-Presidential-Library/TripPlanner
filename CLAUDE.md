@@ -206,7 +206,10 @@ Most fields are self-explanatory; the load-bearing ones:
   `library._all` (= admission + tours + options) and `lodging.lodging` are index-addressed
   by the compact permalink (§4). Add new items at the **end**; do not reorder or delete
   mid-array, or older short links will resolve to the wrong (shifted) picks. (Editing an
-  item's fields in place is fine — only its array position matters.)
+  item's fields in place is fine — only its array position matters.) To retire a closed
+  business, set **`closed: true`** on it (bread-butter, chateau-nuts) — the card grids,
+  dine-around and scheduler all skip `closed` items, but it stays in the array so indices
+  don't shift. Never delete it.
 
 - **`avail`** drives scheduling:
   - `season: [openMonth, closeMonth]` — seasonal availability (month granularity).
