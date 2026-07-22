@@ -1338,6 +1338,12 @@
     if (libItems.length) {
       var libDay = medoraDayObjs.slice().sort(function (a, b) {
         var aOpen = !a.date || libraryHours(a.date) !== null, bOpen = !b.date || libraryHours(b.date) !== null;
+        // The Library is the whole point — it must get a real day. Never seat it on an
+        // arrival/long-drive-in day (morningTaken) when a FULL open Medora day exists,
+        // or its 4.5h admission gets crowded into an "Also consider" chip. Rank:
+        // (open & full) > (open, cramped) > (closed); then most library items; then earliest.
+        var aFull = aOpen && !morningTaken(a), bFull = bOpen && !morningTaken(b);
+        if (aFull !== bFull) return aFull ? -1 : 1;
         var sa = aOpen ? libItems.filter(function (it) { return seasonOk(it.avail, a.month) && dayOk(it.avail, a.wd); }).length : -1;
         var sb = bOpen ? libItems.filter(function (it) { return seasonOk(it.avail, b.month) && dayOk(it.avail, b.wd); }).length : -1;
         return sb - sa || a.index - b.index;

@@ -293,7 +293,10 @@ These were added incrementally from user feedback. Preserve them:
 - **Library tours + admission co-locate** on one day. Admission = 4.5h (3.5h exhibits
   + 1h grounds); every specialty tour = 1h.
 - **ALWAYS prioritize the Library.** General Admission is the anchor of the Library day
-  and must never be crowded out. `layoutDay` places admission as a priority flex block
+  and must never be crowded out. The Library day is chosen to be a **full** open Medora
+  day — the `libDay` sort ranks `(open & !morningTaken) > (open, cramped) > (closed)`, so
+  it never lands on the arrival / long-drive-in day (where the 4.5h admission would get
+  bumped to an "Also consider" chip) when a real day is available. `layoutDay` places admission as a priority flex block
   (sort weight 0.5, right after breakfast) and **folds any same-day specialty tours INTO
   the admission block** ("· includes Badlands Landscape Tour at 11:30 am") instead of
   laying them out as separate fixed anchors — a tour happens *during* your admission
