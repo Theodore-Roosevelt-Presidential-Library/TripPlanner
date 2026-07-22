@@ -405,6 +405,14 @@
     if (!S.startDate) return null;
     var p = S.startDate.split("-"); var d = new Date(+p[0], +p[1] - 1, +p[2]); d.setDate(d.getDate() + i); return d;
   }
+  // ISO 1st-of-month for the earliest month the guest is considering (Season step), in
+  // the next upcoming year for that month — used to open the arrival-date picker there.
+  function seasonStartISO() {
+    if (!S.months || !S.months.length) return "";
+    var m = Math.min.apply(null, S.months), now = new Date(), y = now.getFullYear();
+    if ((m - 1) < now.getMonth()) y += 1;   // that month already passed this year → next year
+    return y + "-" + (m < 10 ? "0" : "") + m + "-01";
+  }
 
   // ---- render root --------------------------------------------------------
   function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; pendingFocus = "heading"; render(); scrollToTop(); track("wizard_step", { step_index: i, step_name: STEP_LABELS[i], arrival: S.arrival || "", pace: S.pace, days: S.days || 0 }); }
@@ -413,7 +421,7 @@
   function resetAll() {
     if (typeof window.confirm === "function" && !window.confirm("Start over? This clears every answer and pick for this trip.")) return;
     S.step = 0; S.maxStep = 0; S.origin = null; S.startDate = null; S.months = []; S.days = null; S.pace = "balanced";
-    S.arrival = null; S.airport = null; S.diffReturn = false; S.airportOut = null; S.rental = null; S.styles = []; S.tier = null;
+    S.arrival = null; S.airport = null; S.diffReturn = false; S.airportOut = null; S.rental = null; S.styles = []; S.tier = null; S.dateTouched = false;
     S.picks = { route: [], lodging: [], medora: [], library: [] };
     track("reset"); pendingFocus = "heading"; render(); scrollToTop();
   }
@@ -865,7 +873,12 @@
           m.appendChild(el("p", { class: "trtp-sub", text: "Tell us when you're arriving and how many days you have. An arrival date lets us line up tours and shows on the exact days they actually run, and time your drive." }));
           var fld = el("div", { class: "trtp-field" });
           fld.appendChild(el("label", { "for": "trtp-arrival-date", text: "Arrival date (optional, but recommended)" }));
-          fld.appendChild(el("input", { id: "trtp-arrival-date", type: "date", "data-fk": "arrival-date", value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; render(); } }));
+          // Open the picker on the first month you're considering (Season step): seed a
+          // sensible, fully-editable default (1st of that month) the first time you land
+          // here. Once you change or clear it, dateTouched keeps us from overriding you.
+          if (!S.startDate && !S.dateTouched && S.months && S.months.length) S.startDate = seasonStartISO();
+          var dmin = (S.months && S.months.length) ? seasonStartISO() : null;
+          fld.appendChild(el("input", { id: "trtp-arrival-date", type: "date", "data-fk": "arrival-date", min: dmin, value: S.startDate || "", onchange: function (e) { S.startDate = e.target.value || null; S.dateTouched = true; render(); } }));
           m.appendChild(fld);
           // Smart estimate of how many days the current picks need — shown right above the day picker
           if (hasAnyPick()) {

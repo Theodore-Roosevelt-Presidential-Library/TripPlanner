@@ -271,6 +271,13 @@ These were added incrementally from user feedback. Preserve them:
   to include a weekday the pick actually runs, rather than dropping it. Without a set
   date, `fixedWindowFor(av,null)` returns the first window so items stay browsable
   (approximate — the "set a date" nudge covers this).
+- **Arrival-date picker opens on the guest's season.** Native `<input type=date>` opens
+  to the month of its `value` (today's month if empty; `min`/`max` don't move the view).
+  So the Dates step seeds a sensible, fully-editable default — the **1st of the earliest
+  selected month** in the next upcoming year (`seasonStartISO()`) — the first time you
+  land there, and sets the input's `min` to it. A `dateTouched` flag (reset by
+  `resetAll`) means once you change or clear the date, we never override your choice, so
+  it stays truly optional. No months picked → no default (opens at today, unbounded).
 - **Meals are time-of-day aware.** Breakfast/lunch are assigned to a day with a free
   morning/midday (not one eaten by an arrival flight or long drive-in) so they schedule
   instead of dropping to a note. The `layoutDay` flex sort uses `ordOf()` (not
