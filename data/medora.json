@@ -2218,14 +2218,14 @@
         "family"
       ],
       "booking": "https://discovermedora.com/experience-medora/the-white-house",
-      "blurb": "Family gift and souvenir shop in downtown Medora, also offering sweets and wine.",
+      "blurb": "Family gift and souvenir shop in downtown Medora with clothing, accessories, sweets and wine.",
       "avail": {
         "season": [
           5,
           9
         ],
         "open": "10:00",
-        "close": "19:00"
+        "close": "17:00"
       },
       "address": "Medora, ND 58645",
       "featured": false,

@@ -4,6 +4,15 @@
   "toursUrl": "https://www.trlibrary.com/visit/tours",
   "phone": "+1-701-892-6070",
   "hoursNote": "Now open — check trlibrary.com/visit for current daily hours and seasonal changes.",
+  "hoursNoteSource": "Seasonal hours + closed days from trlibrary.com/visit/hours (verified 2026-07). closed = weekdays the Library is closed that season (0=Sun..6=Sat). Summer is daily; spring/fall closed Mon; winter closed Mon+Tue. closedDates are MM-DD holiday closures.",
+  "hours": [
+    { "from": "01-01", "to": "03-01", "closed": [1, 2], "open": "10:00", "close": "16:00" },
+    { "from": "03-02", "to": "05-31", "closed": [1], "open": "10:00", "close": "16:00" },
+    { "from": "06-01", "to": "09-13", "closed": [], "open": "09:00", "close": "18:00" },
+    { "from": "09-14", "to": "11-30", "closed": [1], "open": "10:00", "close": "16:00" },
+    { "from": "12-01", "to": "12-31", "closed": [1, 2], "open": "10:00", "close": "16:00" }
+  ],
+  "closedDates": ["11-26", "12-25", "12-31", "01-01"],
   "generalAdmission": {
     "id": "general-admission",
     "name": "General Admission",

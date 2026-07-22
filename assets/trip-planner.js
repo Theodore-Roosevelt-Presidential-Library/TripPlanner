@@ -1016,6 +1016,21 @@
   }
   function fixedWindowFor(av, wd) { if (!av || !av.fixed) return null; if (wd == null) return av.fixed[0]; for (var i = 0; i < av.fixed.length; i++) if (av.fixed[i].days.indexOf(wd) > -1) return av.fixed[i]; return null; }
   function dayOk(av, wd) { if (!av) return true; if (av.fixed) return fixedWindowFor(av, wd) != null; if (av.days && wd != null) return av.days.indexOf(wd) > -1; return true; }
+  // The Library's real hours are SEASONAL with off-season weekday closures (closed
+  // Mondays spring/fall, Mon+Tue winter, daily in summer) + holiday closures — see
+  // trlibrary.com/visit/hours (data in library.json). Returns {open,close} when the
+  // Library is open on that date, null when closed, or undefined when we can't tell
+  // (no date / date outside the tiers) so callers fall back to the item's own avail.
+  function libraryHours(dt) {
+    var L = D.library && D.library.hours; if (!L || !dt) return undefined;
+    var d = (typeof dt === "string") ? new Date(dt + "T12:00:00") : dt;
+    if (!(d instanceof Date) || isNaN(d.getTime())) return undefined;
+    var mm = d.getMonth() + 1, dd = d.getDate();
+    var md = (mm < 10 ? "0" : "") + mm + "-" + (dd < 10 ? "0" : "") + dd, wd = d.getDay();
+    if (D.library.closedDates && D.library.closedDates.indexOf(md) > -1) return null;
+    for (var i = 0; i < L.length; i++) { var t = L[i]; if (md >= t.from && md <= t.to) return (t.closed && t.closed.indexOf(wd) > -1) ? null : { open: t.open, close: t.close }; }
+    return undefined;
+  }
 
   function buildSchedule() {
     var lib = S.picks.library.map(function (id) { return libItem(id); }).filter(Boolean).map(normLib).filter(function (x) { return x.duration > 0 || x.kind === "tour" || x.kind === "admission"; });
@@ -1204,6 +1219,7 @@
     function canPlace(d, it) {
       if (!seasonOk(it.avail, d.month)) return false;
       if (!dayOk(it.avail, d.wd)) return false;
+      if (it.area === "library" && d.date && libraryHours(d.date) === null) return false;  // Library closed that day (off-season weekday / holiday)
       if (it.avail.fixed && conflictsFixed(d, it)) return false;
       // Evening-show rules apply only to shows that actually run in the evening on
       // this weekday (a brunch show — Gospel Brunch, or the TR Show on Thu/Sat AM —
@@ -1237,8 +1253,9 @@
     libItems.sort(function (a, b) { var af = a.avail.fixed ? 0 : 1, bf = b.avail.fixed ? 0 : 1; return af - bf || (b.duration - a.duration); });
     if (libItems.length) {
       var libDay = medoraDayObjs.slice().sort(function (a, b) {
-        var sa = libItems.filter(function (it) { return seasonOk(it.avail, a.month) && dayOk(it.avail, a.wd); }).length;
-        var sb = libItems.filter(function (it) { return seasonOk(it.avail, b.month) && dayOk(it.avail, b.wd); }).length;
+        var aOpen = !a.date || libraryHours(a.date) !== null, bOpen = !b.date || libraryHours(b.date) !== null;
+        var sa = aOpen ? libItems.filter(function (it) { return seasonOk(it.avail, a.month) && dayOk(it.avail, a.wd); }).length : -1;
+        var sb = bOpen ? libItems.filter(function (it) { return seasonOk(it.avail, b.month) && dayOk(it.avail, b.wd); }).length : -1;
         return sb - sa || a.index - b.index;
       })[0];
       libItems.forEach(function (it) {
@@ -1312,6 +1329,8 @@
   }
   function reasonUnfit(it, localDays) {
     if (it.avail.season && !localDays.some(function (d) { return seasonOk(it.avail, d.month); })) return "closed on your dates (seasonal)";
+    if (it.area === "library" && !localDays.some(function (d) { return dayOk(it.avail, d.wd) && (!d.date || libraryHours(d.date) !== null); }))
+      return "the Library is closed the day(s) this runs during your visit (off-season weekday closures) — see trlibrary.com/visit/hours";
     if (it.avail.fixed && !localDays.some(function (d) { return dayOk(it.avail, d.wd); })) return "doesn't run on your travel days";
     return "no room left in your days at this pace";
   }
@@ -1356,9 +1375,23 @@
       if (day.baseCity) day.notes.push("Overnight in " + day.baseCity);
     } else if (day.kind === "medora") {
       if (day.baseCity && day.baseCity !== "Medora") { var bd = baseDriveMin(day.baseCity); entries.push({ start: cursor, dur: bd, drive: true, name: "Drive into Medora from " + day.baseCity, ds: "~" + durLabel(bd) }); cursor += bd + 10; }
-      var anchors = day.items.filter(function (i) { return i.avail.fixed; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
-      var flex = day.items.filter(function (i) { return !i.avail.fixed; });
-      var order = { breakfast: 0, attraction: 1, destination: 1, daytrip: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
+      // ALWAYS PRIORITIZE THE LIBRARY. When General Admission is on this day, it's the
+      // anchor of the visit (self-guided galleries + grounds, ~4.5h). Any Library
+      // specialty tours that day happen DURING that admission window, so we fold them
+      // INTO the admission block (shown as "includes … at 11:30 am") instead of laying
+      // them out as separate fixed anchors that could split the day and crowd admission
+      // into an "Also consider" note. Admission is also sorted first among flex (right
+      // after breakfast) so it lands before other sightseeing.
+      var libAdmDay = day.items.filter(function (i) { return i.area === "library" && i.kind === "admission"; })[0];
+      var libTourIds = {}, libTourNote = "";
+      if (libAdmDay) {
+        var lt = day.items.filter(function (i) { return i.area === "library" && i.kind === "tour" && fixedWindowFor(i.avail, day.wd); });
+        lt.forEach(function (t) { libTourIds[t.id] = 1; });
+        libTourNote = lt.map(function (t) { var w = fixedWindowFor(t.avail, day.wd); return t.name + " at " + minToLabel(hmToMin(w.start)); }).join(", ");
+      }
+      var anchors = day.items.filter(function (i) { return i.avail.fixed && !libTourIds[i.id]; }).map(function (i) { var w = fixedWindowFor(i.avail, day.wd); return { it: i, start: hmToMin(w.start), end: hmToMin(w.end) }; }).sort(function (a, b) { return a.start - b.start; });
+      var flex = day.items.filter(function (i) { return !i.avail.fixed && !libTourIds[i.id]; });
+      var order = { breakfast: 0, admission: 0.5, attraction: 1, destination: 1, daytrip: 1, recreation: 1, tour: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
       var ordOf = function (x) { var v = order[x.meal || x.kind]; return v == null ? 2 : v; };   // don't let 0 (breakfast) fall through
       flex.sort(function (a, b) { return ordOf(a) - ordOf(b); });
       // Place flexible items in time order, each inside its own opening hours
@@ -1374,6 +1407,9 @@
           var it = flex[qi];
           var open = it.avail.open ? hmToMin(it.avail.open) : 8 * 60;
           var close = it.avail.close ? hmToMin(it.avail.close) : 24 * 60;
+          // The Library's real seasonal hours (open/close for this date) override the
+          // item's static avail — so admission runs inside the true daily window.
+          if (it.area === "library" && day.date) { var lh = libraryHours(day.date); if (lh) { open = hmToMin(lh.open); close = hmToMin(lh.close); } }
           var start = cursor;
           if (mealFloor[it.meal] && start < mealFloor[it.meal]) start = mealFloor[it.meal];
           if (start < open) start = open;
@@ -1381,7 +1417,9 @@
           // the segment cap — otherwise hold it back (a later segment, or a note)
           var tooLate = mealCeil[it.meal] && start > mealCeil[it.meal];
           if (!tooLate && start + it.duration <= Math.min(lim, close)) {
-            entries.push({ id: it.id, start: start, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
+            var ds = descFor(it);
+            if (it.id === (libAdmDay && libAdmDay.id) && libTourNote) ds += " · includes " + libTourNote;
+            entries.push({ id: it.id, start: start, dur: it.duration, name: it.name, ds: ds, booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
             cursor = start + it.duration + 15;
           } else {
             keep.push(it);   // doesn't fit this segment/window — try a later segment or note it

@@ -253,6 +253,27 @@ These were added incrementally from user feedback. Preserve them:
   rendered drive agree.
 - **Library tours + admission co-locate** on one day. Admission = 4.5h (3.5h exhibits
   + 1h grounds); every specialty tour = 1h.
+- **ALWAYS prioritize the Library.** General Admission is the anchor of the Library day
+  and must never be crowded out. `layoutDay` places admission as a priority flex block
+  (sort weight 0.5, right after breakfast) and **folds any same-day specialty tours INTO
+  the admission block** ("· includes Badlands Landscape Tour at 11:30 am") instead of
+  laying them out as separate fixed anchors — a tour happens *during* your admission
+  visit, so it must not split the day and push the 4.5h admission into an "Also consider"
+  note (the bug this fixed). If a picked tour genuinely can't run on any open Library day
+  of the trip, it goes to `overflow` with a clear reason; admission still schedules.
+- **Library seasonal hours + off-season closed days are real and enforced.** The Library
+  is **closed Mondays** (spring & fall), **Mon+Tue** (winter), **daily in summer**, plus
+  holiday closures — from `trlibrary.com/visit/hours`, curated in `library.json` as
+  `hours:[{from:"MM-DD",to:"MM-DD",closed:[wd…],open,close}]` + `closedDates:["MM-DD"…]`.
+  `libraryHours(date)` (a `Date`, not a string — that bit me once) returns `{open,close}`,
+  `null` (closed), or `undefined` (unknown → fall back to the item's `avail`). `canPlace`
+  blocks any `area:"library"` item on a closed date, the Library-day picker prefers open
+  days, and `layoutDay` uses these hours for the admission window. Verified against the
+  **live event calendar** (`trlibrary.com/calendar?date=YYYY-MM-DD` returns "0 activities"
+  on closed days — e.g. Mon Oct 5 2026). Stress harness has a `library-on-closed-day`
+  invariant (0 across 4,000 dated scenarios). ⚠ These hours are the one genuinely
+  seasonal-with-closed-days schedule in the data — the generic single-`season` + `fixed`
+  model can't express it, hence the dedicated `hours[]` tiers.
 - **Meal windows** — breakfast before ~10:30, lunch ~12–14:00, dinner from 17:00;
   outside-window items become "Also consider" notes rather than mis-timed rows.
 - **Over-capacity UI** — "Make it N days →" (bumps `S.days` to the required number),
@@ -520,5 +541,17 @@ verified before moving on):
     scenario harness after additions: only the pre-existing season-rollover edge. Some new
     items (Shooting Gallery, The White House) have approximate hours — flagged for the
     watchdog era, verify before launch.
+24. **Library prioritization + real seasonal hours.** A reported itinerary (Oct, fall)
+    dropped **General Admission** to "Also consider" because its 4.5h block couldn't fit
+    around a same-day specialty tour on a day the Library is actually **closed** (Mondays
+    in fall). Fixes: (a) `library.json` now carries the real `hours[]`/`closedDates` from
+    trlibrary.com/visit/hours; `libraryHours(date)` gates `canPlace` so no Library item
+    lands on a closed day, and the Library-day picker prefers open days; (b) `layoutDay`
+    makes admission the priority anchor and **folds same-day tours into it** rather than
+    letting them split the day. Result for the repro: admission schedules on the open
+    Sunday, Monday is Library-free, and the Badlands Tour (runs Mon/Wed–Sat, only Monday
+    falls in-block) overflows with a clear "Library closed that day" reason. Confirmed
+    against the **live event calendar** (0 activities on Mon Oct 5 2026). Harness: new
+    `library-on-closed-day` invariant, 0 across 4,000 dated scenarios.
 
 For the fine-grained record, see the git log and `README.md`.
