@@ -130,6 +130,15 @@
     .trtp-overcap{background:#fff4ef;border:1px solid var(--tr-primary);border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:13px 16px;font-size:13.5px;color:#8a4a2f;margin:0 0 16px;}
     .trtp-overcap b{color:#6f3115;}
     .trtp-overcap li{margin:3px 0;}
+    .trtp-toolrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+    .trtp-disclaimer{background:#fbf7ef;border:1px dashed var(--tr-muted);border-radius:6px;padding:11px 14px;font-size:12.5px;line-height:1.5;color:#5f5137;margin:0 0 16px;}
+    .trtp-disclaimer b{color:var(--tr-secondary);}
+    .trtp-fixrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px;}
+    .trtp-btn.xsm{font-size:12px;padding:6px 12px;}
+    .trtp-ofrow{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:6px 0;border-top:1px solid #f0d9cd;}
+    .trtp-ofrow:first-of-type{border-top:none;}
+    .trtp-ofrow .oftext{flex:1;line-height:1.35;}
+    .trtp-ofrow .trtp-btn{flex:none;}
     .trtp-loading{padding:60px 30px;text-align:center;color:var(--tr-secondary);font-family:'Clearface',Georgia,serif;font-size:20px;}
     .trtp-sub-h{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:var(--tr-secondary);margin:22px 0 8px;}
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
@@ -209,6 +218,7 @@
         D.library._all = [D.library.generalAdmission].concat(D.library.tours || [], D.library.options || []);
         injectCSS(D.config.brand.colors);
         defineSteps();
+        try { decodeState(window.location.hash); } catch (e) { }
         render();
       })
       .catch(function (err) {
@@ -295,6 +305,8 @@
     m.appendChild(box);
   }
   function toggle(bucket, id) { var a = S.picks[bucket]; var i = a.indexOf(id); if (i > -1) a.splice(i, 1); else a.push(id); render(); }
+  // Remove a picked item by id from whichever bucket holds it, then re-render.
+  function removePick(id) { ["route", "medora", "library"].forEach(function (k) { var i = S.picks[k].indexOf(id); if (i > -1) S.picks[k].splice(i, 1); }); render(); }
   // Lodging is a base decision: a nearby drive-in town and in-Medora stays are
   // mutually exclusive, and only one base town can be chosen at a time.
   function toggleLodging(id) {
@@ -333,6 +345,65 @@
       window.scrollTo({ top: Math.max(0, top - 12), behavior: "smooth" });
     } catch (e) { if (host.scrollIntoView) host.scrollIntoView(); }
   }
+  // ---- shareable permalink ------------------------------------------------
+  // The whole wizard state lives in the URL hash, so any plan can be bookmarked
+  // or shared. We write it (via replaceState, so we don't spam history) after
+  // every render, and restore from it on load.
+  function encodeState() {
+    var p = [];
+    function add(k, v) { if (v == null || v === "" || v === false || (Array.isArray(v) && !v.length)) return; p.push(k + "=" + encodeURIComponent(Array.isArray(v) ? v.join(",") : v)); }
+    add("st", S.step);
+    add("o", S.origin && S.origin.id);
+    add("a", S.arrival);
+    add("ap", S.airport);
+    add("dr", S.diffReturn ? 1 : "");
+    add("apo", S.airportOut);
+    add("r", S.rental);
+    add("m", S.months);
+    add("d", S.startDate);
+    add("days", S.days);
+    add("p", S.pace !== "balanced" ? S.pace : "");
+    add("t", S.tier);
+    add("sty", S.styles);
+    add("rt", S.picks.route);
+    add("md", S.picks.medora);
+    add("lb", S.picks.library);
+    add("lg", S.picks.lodging);
+    return p.join("&");
+  }
+  function decodeState(hash) {
+    if (!hash) return false;
+    var q = {}, any = false;
+    hash.replace(/^#/, "").split("&").forEach(function (kv) { var i = kv.indexOf("="); if (i > 0) { q[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); any = true; } });
+    if (!any) return false;
+    var list = function (v) { return v ? v.split(",") : []; };
+    if (q.o) S.origin = byId(D.origins.origins, q.o) || null;
+    if (q.a) S.arrival = q.a;
+    if (q.ap) S.airport = q.ap;
+    if (q.dr) S.diffReturn = true;
+    if (q.apo) S.airportOut = q.apo;
+    if (q.r) S.rental = q.r;
+    if (q.m) S.months = list(q.m).map(Number).filter(function (n) { return n >= 1 && n <= 12; });
+    if (q.d) S.startDate = q.d;
+    if (q.days) S.days = parseInt(q.days, 10) || null;
+    if (q.p) S.pace = q.p;
+    if (q.t) S.tier = q.t;
+    if (q.sty) S.styles = list(q.sty);
+    if (q.rt) S.picks.route = list(q.rt);
+    if (q.md) S.picks.medora = list(q.md);
+    if (q.lb) S.picks.library = list(q.lb);
+    if (q.lg) S.picks.lodging = list(q.lg);
+    var st = parseInt(q.st, 10); if (!isNaN(st)) { S.step = Math.max(0, Math.min(st, STEP_LABELS.length - 1)); S.maxStep = Math.max(S.maxStep, S.step); }
+    return true;
+  }
+  function syncURL() {
+    try { if (window.history && window.history.replaceState) window.history.replaceState(null, "", "#" + encodeState()); } catch (e) { }
+  }
+  function shareURL() {
+    var base = location.href.split("#")[0];
+    return base + "#" + encodeState();
+  }
+
   function render() {
     var host = document.getElementById(CONTAINER_ID);
     var root = el("div", {});
@@ -355,6 +426,7 @@
     wrap.appendChild(renderSidebar());
     root.appendChild(wrap);
     host.innerHTML = ""; host.appendChild(root);
+    syncURL();
   }
   function renderStepper() {
     var bar = el("div", { class: "trtp-steps" });
@@ -947,6 +1019,11 @@
       if (!dayOk(it.avail, d.wd)) return false;
       if (it.avail.fixed && conflictsFixed(d, it)) return false;
       if (it.category === "evening" && d._evening) return false;      // only one evening show per night
+      // One of each meal per day — you eat one breakfast, one lunch, one dinner.
+      // (The Pitchfork Steak Fondue IS your dinner, so nothing else with meal
+      // "dinner" shares its day.) This also spreads multiple dining picks across
+      // days instead of piling several onto one.
+      if (it.meal && d.items.some(function (x) { return x.meal === it.meal; })) return false;
       // Pitchfork Steak Fondue is the pre-Musical dinner — only on a Medora Musical day
       if (it.id === "pitchfork-fondue" && !d.items.some(function (x) { return x.id === "medora-musical"; })) return false;
       if (d.used + it.duration > budget + 90) return false;
@@ -984,6 +1061,7 @@
         var reason = reasonUnfit(it, medoraDayObjs);
         if (it.category === "evening" && medoraDayObjs.every(function (d) { return d._evening; })) reason = "only one evening show fits per night — add a night or drop one (they'd overlap)";
         if (it.id === "pitchfork-fondue" && !medoraDayObjs.some(function (d) { return d.items.some(function (x) { return x.id === "medora-musical"; }); })) reason = "the Pitchfork Steak Fondue is the pre-Musical dinner — add the Medora Musical to include it (they're booked together)";
+        else if (it.meal && medoraDayObjs.every(function (d) { return d.items.some(function (x) { return x.meal === it.meal; }); })) reason = "you've already got " + it.meal + " each day — one " + it.meal + " spot per day (add a day for another, or swap it in)";
         overflow.push({ item: it, reason: reason });
       }
     });
@@ -1078,17 +1156,33 @@
       var flex = day.items.filter(function (i) { return !i.avail.fixed; });
       var order = { breakfast: 0, attraction: 1, destination: 1, daytrip: 1, recreation: 1, tour: 1, admission: 1, lunch: 2, shopping: 3, event: 4, dinner: 5 };
       flex.sort(function (a, b) { return (order[a.meal || a.kind] || 2) - (order[b.meal || b.kind] || 2); });
+      // Place flexible items in time order, each inside its own opening hours
+      // AND its meal window. Anything that can't fit before `lim` (or whose
+      // window has already passed — e.g. a breakfast cafe when it's now evening)
+      // is kept back and surfaced as an "Also consider" note rather than being
+      // jammed in at a time the place is closed.
+      var mealFloor = { breakfast: 7 * 60, lunch: 12 * 60, dinner: 17 * 60 };   // earliest sensible start
+      var mealCeil = { breakfast: 10 * 60 + 30, lunch: 14 * 60 };               // latest sensible start
       var placeFlexUntil = function (lim) {
-        while (flex.length && cursor + flex[0].duration <= lim) {
-          var it = flex.shift();
-          var open = it.avail.open ? hmToMin(it.avail.open) : cursor;
-          if (it.meal === "lunch" && cursor < 12 * 60) cursor = 12 * 60;
-          if (it.meal === "dinner" && cursor < 17 * 60) cursor = 17 * 60;
-          if (cursor < open) cursor = open;
-          if (cursor + it.duration > lim) { flex.unshift(it); break; }
-          entries.push({ start: cursor, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
-          cursor += it.duration + 15;
+        var keep = [];
+        for (var qi = 0; qi < flex.length; qi++) {
+          var it = flex[qi];
+          var open = it.avail.open ? hmToMin(it.avail.open) : 8 * 60;
+          var close = it.avail.close ? hmToMin(it.avail.close) : 24 * 60;
+          var start = cursor;
+          if (mealFloor[it.meal] && start < mealFloor[it.meal]) start = mealFloor[it.meal];
+          if (start < open) start = open;
+          // must start within its meal window, and finish within opening hours &
+          // the segment cap — otherwise hold it back (a later segment, or a note)
+          var tooLate = mealCeil[it.meal] && start > mealCeil[it.meal];
+          if (!tooLate && start + it.duration <= Math.min(lim, close)) {
+            entries.push({ start: start, dur: it.duration, name: it.name, ds: descFor(it), booking: it.booking, phone: it.phone, image: it.image, addr: it.address, lat: it.lat, lng: it.lng, gps: it.gps });
+            cursor = start + it.duration + 15;
+          } else {
+            keep.push(it);   // doesn't fit this segment/window — try a later segment or note it
+          }
         }
+        flex = keep;
       };
       for (var ai = 0; ai < anchors.length; ai++) {
         placeFlexUntil(anchors[ai].start);
@@ -1133,6 +1227,26 @@
     [["relaxed", "Relaxed"], ["balanced", "Balanced"], ["packed", "Packed"]].forEach(function (p) { seg.appendChild(el("button", { class: S.pace === p[0] ? "on" : "", onclick: function () { S.pace = p[0]; render(); } }, [p[1]])); });
     m.appendChild(seg);
 
+    // Share + calendar tools. The whole plan lives in the URL (the address bar
+    // updates automatically as you go), so this copies a bookmarkable permalink.
+    // The calendar export appears only once a real arrival date is set.
+    if (hasAnyPick()) {
+      var tools = el("div", { class: "trtp-toolrow" });
+      var shareBtn = el("button", { class: "trtp-btn ghost xsm", onclick: function (ev) {
+        var url = shareURL(), b = ev.currentTarget;
+        var done = function () { b.textContent = "Link copied ✓"; setTimeout(function () { b.textContent = "🔗 Copy shareable link"; }, 2000); };
+        try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done); else done(); } catch (e) { done(); }
+      } }, ["🔗 Copy shareable link"]);
+      tools.appendChild(shareBtn);
+      if (S.startDate) tools.appendChild(el("button", { class: "trtp-btn ghost xsm", onclick: function () { downloadICS(); } }, ["📅 Add to calendar (.ics)"]));
+      m.appendChild(tools);
+    }
+
+    // Not-a-live-booking disclaimer — this is a guide, availability/hours change.
+    if (hasAnyPick()) {
+      m.appendChild(el("div", { class: "trtp-disclaimer", html: "<b>Please double-check before you book.</b> This planner is a guide, not a live booking system — it doesn't check real-time availability, ticket inventory or the latest hours, and seasons, showtimes and hours change. Always confirm dates, times and hours directly with each location before finalizing plans or traveling." }));
+    }
+
     if (!hasAnyPick()) m.appendChild(el("div", { class: "trtp-note", text: "You haven't added anything yet. Jump back to Road trip, Medora or Library and click what appeals — it'll lay out here by day and time." }));
 
     // Strong nudge to set a date — availability is only real once we know the weekday
@@ -1154,20 +1268,25 @@
       m.appendChild(ebox);
     }
 
-    // Over-capacity guidance: picks need more days than the guest set
+    // Over-capacity guidance: picks need more days than the guest set. We show
+    // one-click fixes right here — bump to the days you need, switch pace — and
+    // list what got trimmed with a Remove button that recalculates in real time.
     var cap = sched.capacity;
     if (cap.over) {
       var overBox = el("div", { class: "trtp-overcap" });
-      var msg = "<b>This is more than your " + cap.setDays + " day" + (cap.setDays > 1 ? "s" : "") + " can hold.</b> Your selections would take about " + cap.requiredDays + " days at a " + S.pace + " pace. We fit what we could and trimmed the rest.";
-      var recs = [];
-      recs.push("Add days on the <b>Dates</b> step (you'd need about " + cap.requiredDays + ")");
-      if (cap.trimmedFar.length) recs.push("Or drop far stops: " + cap.trimmedFar.join(", "));
-      if (cap.medoraNeeded > cap.medoraShown) recs.push("Or trim some Medora activities (they don't all fit in " + cap.medoraShown + " day" + (cap.medoraShown > 1 ? "s" : "") + " here)");
-      recs.push("Or switch pace to <b>Packed</b> to squeeze in more per day");
-      overBox.innerHTML = msg + "<ul style='margin:8px 0 0;padding-left:20px'>" + recs.map(function (r) { return "<li>" + r + "</li>"; }).join("") + "</ul>";
+      overBox.appendChild(el("div", { html: "<b>This is more than your " + cap.setDays + " day" + (cap.setDays > 1 ? "s" : "") + " can hold.</b> Your selections would take about " + cap.requiredDays + " days at a " + S.pace + " pace — we fit what we could. Fix it in one click:" }));
+      var fixes = el("div", { class: "trtp-fixrow" });
+      fixes.appendChild(el("button", { class: "trtp-btn primary", onclick: function () { S.days = cap.requiredDays; if (S.maxStep < 7) S.maxStep = 7; render(); } }, ["Make it " + cap.requiredDays + " days →"]));
+      if (S.pace !== "packed") fixes.appendChild(el("button", { class: "trtp-btn ghost", onclick: function () { S.pace = "packed"; render(); } }, ["Switch to Packed pace"]));
+      fixes.appendChild(el("button", { class: "trtp-btn ghost", onclick: function () { goto(7); } }, ["Edit dates"]));
+      overBox.appendChild(fixes);
       m.appendChild(overBox);
     } else if (cap.spare && hasAnyPick()) {
-      m.appendChild(el("div", { class: "trtp-note", text: "You've got room to spare — your plan fills " + cap.plannedDays + " of your " + cap.setDays + " days. Add a few more stops or a day trip to round it out." }));
+      var spareBox = el("div", { class: "trtp-note" });
+      spareBox.appendChild(document.createTextNode("You've got room to spare — your plan fills " + cap.plannedDays + " of your " + cap.setDays + " days. Add a few more stops, or "));
+      var tight = el("a", { href: "#", onclick: function (ev) { ev.preventDefault(); S.days = Math.max(1, cap.requiredDays); render(); } }, ["tighten to " + Math.max(1, cap.requiredDays) + " day" + (Math.max(1, cap.requiredDays) > 1 ? "s" : "")]);
+      spareBox.appendChild(tight); spareBox.appendChild(document.createTextNode("."));
+      m.appendChild(spareBox);
     }
 
     // Where to book — contiguous nights per town, with dates
@@ -1225,7 +1344,13 @@
 
     if (sched.overflow.length) {
       var w = el("div", { class: "trtp-warn" });
-      w.innerHTML = "<b>Couldn't fit these into your dates</b> — availability or time ran short:<br>" + sched.overflow.map(function (o) { return "• " + o.item.name + " — " + o.reason; }).join("<br>");
+      w.appendChild(el("div", { html: "<b>Couldn't fit these into your dates</b> — availability or time ran short. Add days above, or remove any to recalculate:" }));
+      sched.overflow.forEach(function (o) {
+        var orow = el("div", { class: "trtp-ofrow" });
+        orow.appendChild(el("div", { class: "oftext", html: "<b>" + o.item.name + "</b> — " + o.reason }));
+        if (o.item.id) orow.appendChild(el("button", { class: "trtp-btn ghost xsm", onclick: function () { removePick(o.item.id); } }, ["Remove"]));
+        w.appendChild(orow);
+      });
       m.appendChild(w);
     }
 
@@ -1259,6 +1384,61 @@
   }
 
   // ---- printable ----------------------------------------------------------
+  // ---- iCal (.ics) export -------------------------------------------------
+  // Only meaningful once a real arrival date is set. Times are written as
+  // "floating" local time (no timezone) so each event shows at its local clock
+  // time wherever it is — right for an itinerary that can cross time zones.
+  function icsEsc(s) { return String(s == null ? "" : s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n"); }
+  function icsFold(line) { var out = ""; while (line.length > 73) { out += line.slice(0, 73) + "\r\n "; line = line.slice(73); } return out + line; }
+  function icsDT(dateObj, minutes) {
+    var base = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+    base.setMinutes(base.getMinutes() + minutes);
+    return base.getFullYear() + pad2(base.getMonth() + 1) + pad2(base.getDate()) + "T" + pad2(base.getHours()) + pad2(base.getMinutes()) + "00";
+  }
+  function buildICS(sched) {
+    var now = new Date();
+    var stamp = now.getUTCFullYear() + pad2(now.getUTCMonth() + 1) + pad2(now.getUTCDate()) + "T" + pad2(now.getUTCHours()) + pad2(now.getUTCMinutes()) + pad2(now.getUTCSeconds()) + "Z";
+    var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Theodore Roosevelt Presidential Library//Trip Planner//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:Roosevelt Country Trip"];
+    var n = 0;
+    sched.days.forEach(function (day) {
+      if (!day.date) return;
+      day.entries.forEach(function (e) {
+        var durMin = (e.dur && e.dur > 0) ? e.dur : 30;
+        var loc = e.addr ? e.addr : (e.lat != null && e.lng != null ? e.lat + "," + e.lng : "Medora, ND");
+        var desc = [];
+        if (e.ds) desc.push(e.ds);
+        if (e.booking) desc.push("Info/booking: " + e.booking);
+        if (e.phone) desc.push("Phone: " + e.phone);
+        desc.push("Confirm details directly with the venue — this itinerary is a guide, not a live booking.");
+        lines.push("BEGIN:VEVENT");
+        lines.push("UID:trtp-" + (n++) + "-" + icsDT(day.date, e.start) + "@trlibrary.com");
+        lines.push("DTSTAMP:" + stamp);
+        lines.push("DTSTART:" + icsDT(day.date, e.start));
+        lines.push("DTEND:" + icsDT(day.date, e.start + durMin));
+        lines.push("SUMMARY:" + icsEsc(e.name));
+        lines.push("DESCRIPTION:" + icsEsc(desc.join("\n")));
+        lines.push("LOCATION:" + icsEsc(loc));
+        lines.push("END:VEVENT");
+      });
+    });
+    lines.push("END:VCALENDAR");
+    return lines.map(icsFold).join("\r\n");
+  }
+  function downloadICS() {
+    if (!S.startDate) return;
+    var ics = buildICS(buildSchedule());
+    try {
+      var blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "roosevelt-country-trip.ics";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    } catch (e) {
+      try { window.open("data:text/calendar;charset=utf-8," + encodeURIComponent(ics)); } catch (e2) { }
+    }
+  }
+
   function openPrintable() {
     var sched = buildSchedule();
     var c = D.config.brand.colors;
@@ -1347,6 +1527,7 @@
       ".free{color:#6c6f72;font-style:italic;}" +
       ".book td{border-bottom:1px solid #eee;padding:5px 8px;font-size:13px;font-family:Arial,sans-serif;}" +
       ".warn{background:#fff4ef;border-left:3px solid " + c.primary + ";padding:8px 12px;font-size:13px;margin:16px 0;}" +
+      ".disc{background:#fbf7ef;border:1px dashed #c9b79a;border-radius:6px;padding:9px 13px;font-size:12px;line-height:1.5;color:#5f5137;margin:0 0 16px;font-family:Arial,sans-serif;}" +
       ".foot{margin-top:22px;font-size:12px;color:#8a8d90;font-family:Arial,sans-serif;border-top:1px solid #e4ddcd;padding-top:10px;}" +
       ".pbtn{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:" + c.primary + ";color:#25282a;border:none;padding:11px 20px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;}" +
       "@media print{.noprint{display:none;}body{margin:0;}}" +
@@ -1354,8 +1535,9 @@
       "<div class='noprint' style='text-align:right;margin-bottom:10px'><button class='pbtn' onclick='window.print()'>Print / Save as PDF</button></div>" +
       "<h1>" + (S.days ? S.days + "-Day " : "") + "Roosevelt Country Trip</h1>" +
       "<div class='facts'>" + facts.map(function (f) { return "<div>" + f + "</div>"; }).join("") + "</div>" +
+      "<div class='disc'><b>Please double-check before you book.</b> This itinerary is a guide, not a live booking system — it doesn't check real-time availability, ticket inventory or the latest hours, and seasons, showtimes and hours change. Always confirm dates, times and hours directly with each location before finalizing plans or traveling.</div>" +
       bookingHtml + lodgingHtml + "<h2>Day by day</h2>" + rows + overflow + weatherHtml + bookHtml +
-      "<div class='foot'>Planned with the Theodore Roosevelt Presidential Library trip planner · trlibrary.com/visit · Times and availability are estimates — please confirm when you book.</div>" +
+      "<div class='foot'>Planned with the Theodore Roosevelt Presidential Library trip planner · trlibrary.com/visit · Times, hours and availability are estimates only — always confirm directly with each location before you book or travel.</div>" +
       "</body></html>";
     w.document.open(); w.document.write(html); w.document.close();
   }
@@ -1365,5 +1547,5 @@
   else boot();
 
   // expose for tests
-  if (typeof window !== "undefined") window.__TRTP = { state: S, build: buildSchedule, data: D, recommend: recommendAirports };
+  if (typeof window !== "undefined") window.__TRTP = { state: S, build: buildSchedule, data: D, recommend: recommendAirports, render: render, goto: goto, encode: encodeState, decode: decodeState, ics: buildICS };
 })();

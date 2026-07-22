@@ -114,6 +114,52 @@ onto a single day** so a guest doing several tours does them together. Each stop
 shows **how long to spend there** (a `~1h 30m` pill) in both the schedule and
 the printout.
 
+**Meals respect real hours and meal windows.** A dining spot is only placed
+inside its actual opening hours (a breakfast cafe that closes at 1 pm never
+lands at 9 pm) and within a sensible meal window — breakfast in the morning,
+lunch midday, dinner from 5 pm. There's **one breakfast, one lunch and one
+dinner per day** (the Pitchfork Steak Fondue *is* your dinner, so nothing else
+dinner-ish shares its night), which also spreads multiple dining picks across
+days. Anything that can't fit its window becomes an **"Also consider"** note on
+that day rather than being jammed in at a time the place is closed.
+
+### Fix-it-here over-capacity controls
+
+When your picks need more days than you've set, the over-capacity banner offers
+**one-click fixes right there**: a **"Make it N days →"** button that bumps you
+to the number of days the plan actually needs and re-lays it instantly, a
+**Switch to Packed pace** button, and an **Edit dates** shortcut. The
+"couldn't fit these" list gives every trimmed item a **Remove** button that
+drops it and **recalculates in real time** — no bouncing back through the
+wizard. When you have days to spare, a link offers to **tighten** to the days
+you need.
+
+### Shareable permalink
+
+The entire wizard state — origin, airports, dates, days, pace, comfort, months
+and every pick — lives in the **URL hash**, so any plan can be bookmarked or
+shared. The **browser address bar updates automatically** as you go (via
+`replaceState`, so it doesn't spam history) — so copying the URL straight from
+the address bar works just as well as the **"Copy shareable link"** button on
+the schedule step. Opening any such link restores the whole plan.
+
+### Calendar export (.ics)
+
+Once a real arrival date is set, the schedule step shows an **"Add to calendar
+(.ics)"** button that downloads a standard iCalendar file — one event per
+scheduled stop, ready to import into Apple Calendar, Google Calendar or Outlook.
+Times are written as **floating local time** (no timezone), so each event shows
+at its local clock time even on a trip that crosses into Mountain Time. The
+button only appears with a date set, since undated events would be meaningless.
+
+### Not a live booking system
+
+Availability, showtimes and hours change, and the planner works from curated
+data — not live inventory. A **prominent disclaimer** on the schedule step and
+in the printout makes this explicit: it's a guide, and guests should **confirm
+dates, times and hours directly with each location** before finalizing plans or
+traveling. Every calendar event carries the same reminder in its notes.
+
 If no arrival date is set, the schedule shows a prominent flag explaining that
 tour/show availability is only exact with a date, and offers a **recommended
 date** (the first Saturday of the chosen month) to apply in one click — which
