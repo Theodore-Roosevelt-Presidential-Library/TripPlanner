@@ -182,7 +182,13 @@ capacity, exitNote, medoraDays, medoraBase }`.
 - **Permalink**: `encodeState()`/`decodeState()` serialize `S` to the URL hash;
   `syncURL()` writes it via `history.replaceState` on every render (so the browser
   address bar itself is a shareable link). `shareURL()` + a "Copy shareable link"
-  button on the schedule step.
+  button on the schedule step. **Compact form:** multi-value params join with `.`
+  (URL-safe, unlike the old `,`→`%2C`) and the four pick lists are stored as numeric
+  **indices** into their data arrays (`encPicks`/`decPicks`, `pickSrc`) — e.g.
+  `md=0.10.11.65.66` — ~50% shorter than the old slug form. `decodeState` still accepts
+  the old slug form (any non-numeric token = a slug), so previously shared links keep
+  working. ⚠ This makes pick arrays **index-addressed** → they must stay **append-only**
+  (see §5); no true hashing because there's no backend to store a hash→state table.
 - **iCal**: `buildICS(sched)` → `downloadICS()`. One VEVENT per scheduled entry,
   **floating local time** (no TZID — correct for a trip that crosses into Mountain
   Time). Button only shown when `S.startDate` is set.
@@ -195,6 +201,12 @@ capacity, exitNote, medoraDays, medoraBase }`.
 ## 5. Data model — key semantics
 
 Most fields are self-explanatory; the load-bearing ones:
+
+- **⚠ Pickable arrays are APPEND-ONLY.** `destinations.destinations`, `medora.attractions`,
+  `library._all` (= admission + tours + options) and `lodging.lodging` are index-addressed
+  by the compact permalink (§4). Add new items at the **end**; do not reorder or delete
+  mid-array, or older short links will resolve to the wrong (shifted) picks. (Editing an
+  item's fields in place is fine — only its array position matters.)
 
 - **`avail`** drives scheduling:
   - `season: [openMonth, closeMonth]` — seasonal availability (month granularity).

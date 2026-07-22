@@ -430,9 +430,28 @@
   // The whole wizard state lives in the URL hash, so any plan can be bookmarked
   // or shared. We write it (via replaceState, so we don't spam history) after
   // every render, and restore from it on load.
+  // --- Permalink compaction. The URL was long mostly because pick lists were stored as
+  // full slugs joined by commas (which encodeURIComponent turns into 3-char %2C). We now
+  // (a) join multi-value params with "." (URL-safe, not percent-encoded), and (b) store
+  // the four pick lists as numeric INDICES into their data arrays (e.g. md=1.42.15) —
+  // fully reversible in the browser, no backend. Decoding still accepts the OLD slug form
+  // (any non-numeric token is treated as a slug), so previously shared links keep working.
+  // NOTE: this makes the pick arrays index-addressed — keep them APPEND-ONLY (see CLAUDE.md
+  // §5); reordering/deleting mid-array would shift indices and break older short links.
+  function pickSrc(bucket) {
+    return bucket === "route" ? D.destinations.destinations : bucket === "medora" ? D.medora.attractions : bucket === "library" ? (D.library._all || []) : bucket === "lodging" ? D.lodging.lodging : [];
+  }
+  function encPicks(bucket, ids) {
+    var src = pickSrc(bucket);
+    return (ids || []).map(function (id) { for (var i = 0; i < src.length; i++) if (src[i].id === id) return String(i); return id; });
+  }
+  function decPicks(bucket, v) {
+    var src = pickSrc(bucket);
+    return (v ? v.split(/[.,]/) : []).map(function (tok) { if (/^\d+$/.test(tok)) { var it = src[parseInt(tok, 10)]; return it ? it.id : null; } return tok; }).filter(Boolean);
+  }
   function encodeState() {
     var p = [];
-    function add(k, v) { if (v == null || v === "" || v === false || (Array.isArray(v) && !v.length)) return; p.push(k + "=" + encodeURIComponent(Array.isArray(v) ? v.join(",") : v)); }
+    function add(k, v) { if (v == null || v === "" || v === false || (Array.isArray(v) && !v.length)) return; p.push(k + "=" + encodeURIComponent(Array.isArray(v) ? v.join(".") : v)); }
     add("st", S.step);
     add("o", S.origin && S.origin.id);
     add("a", S.arrival);
@@ -446,10 +465,10 @@
     add("p", S.pace !== "balanced" ? S.pace : "");
     add("t", S.tier);
     add("sty", S.styles);
-    add("rt", S.picks.route);
-    add("md", S.picks.medora);
-    add("lb", S.picks.library);
-    add("lg", S.picks.lodging);
+    add("rt", encPicks("route", S.picks.route));
+    add("md", encPicks("medora", S.picks.medora));
+    add("lb", encPicks("library", S.picks.library));
+    add("lg", encPicks("lodging", S.picks.lodging));
     return p.join("&");
   }
   function decodeState(hash) {
@@ -457,7 +476,7 @@
     var q = {}, any = false;
     hash.replace(/^#/, "").split("&").forEach(function (kv) { var i = kv.indexOf("="); if (i > 0) { q[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); any = true; } });
     if (!any) return false;
-    var list = function (v) { return v ? v.split(",") : []; };
+    var list = function (v) { return v ? v.split(/[.,]/) : []; };   // accepts new "." and legacy ","
     if (q.o) S.origin = byId(D.origins.origins, q.o) || null;
     if (q.a) S.arrival = q.a;
     if (q.ap) S.airport = q.ap;
@@ -470,10 +489,10 @@
     if (q.p) S.pace = q.p;
     if (q.t) S.tier = q.t;
     if (q.sty) S.styles = list(q.sty);
-    if (q.rt) S.picks.route = list(q.rt);
-    if (q.md) S.picks.medora = list(q.md);
-    if (q.lb) S.picks.library = list(q.lb);
-    if (q.lg) S.picks.lodging = list(q.lg);
+    if (q.rt) S.picks.route = decPicks("route", q.rt);
+    if (q.md) S.picks.medora = decPicks("medora", q.md);
+    if (q.lb) S.picks.library = decPicks("library", q.lb);
+    if (q.lg) S.picks.lodging = decPicks("lodging", q.lg);
     var st = parseInt(q.st, 10); if (!isNaN(st)) { S.step = Math.max(0, Math.min(st, STEP_LABELS.length - 1)); S.maxStep = Math.max(S.maxStep, S.step); }
     return true;
   }
