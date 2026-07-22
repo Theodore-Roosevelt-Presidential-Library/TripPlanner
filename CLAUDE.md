@@ -324,6 +324,12 @@ These were added incrementally from user feedback. Preserve them:
   case: **TRNP's North Unit is in the Central zone** (NPS-documented) while the South Unit
   is Mountain — flagged when the North Unit is in the plan. iCal stays **floating-local**
   (no TZID) so exported wall-clock times read correctly across the line.
+- **Daylight Saving Time is surfaced too** (same gain/lose framing). If a dated trip
+  straddles a US DST change — **spring-forward** (2nd Sunday of March → lose an hour,
+  clocks forward) or **fall-back** (1st Sunday of November → gain an hour, clocks back),
+  computed per the day's year in `buildSchedule` (`nthSunday`/`dstOn`) — the crossing day
+  gets a "🕑 Daylight Saving Time begins/ends today…" note and the `tz.summary` gains a
+  matching line. ~1.5% of random dated trips hit one.
 - **Weather/packing** keyed to the selected months (or the exact trip dates when set).
 - **Far stops are season-filtered** in `buildSchedule` (out-of-season → overflow with
   "closed on your dates (seasonal)") so a seasonal en-route stop can't be built into a

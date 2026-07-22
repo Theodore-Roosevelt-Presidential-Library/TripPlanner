@@ -1340,6 +1340,21 @@
     var hasNorth = days.some(function (d) { return (d.items || []).some(function (x) { return x.id === "trnp-north" || x.id === "north-unit-scenic-drive"; }) || (d.stop && d.stop.id === "trnp-north"); });
     if (hasNorth) tzSummary += " Heads-up: the National Park's <b>North Unit is in the Central zone</b> — an hour ahead of Medora — so mind the clock on that day trip.";
 
+    // Daylight Saving Time: if the dated trip straddles a US DST change, flag it with the
+    // same gain/lose framing. Spring-forward = 2nd Sunday of March (lose an hour, clocks
+    // forward); fall-back = 1st Sunday of November (gain an hour, clocks back). Both happen
+    // at 2 a.m. local. Computed per the day's year so it's correct every season.
+    function nthSunday(y, m0, n) { var d = new Date(y, m0, 1); return new Date(y, m0, 1 + ((7 - d.getDay()) % 7) + (n - 1) * 7); }
+    function dstOn(dt) { var y = dt.getFullYear(), k = function (x) { return x.getMonth() + "/" + x.getDate(); }; return k(dt) === k(nthSunday(y, 2, 2)) ? "spring" : k(dt) === k(nthSunday(y, 10, 1)) ? "fall" : null; }
+    var dstHit = null;
+    days.forEach(function (d) {
+      if (!d.date) return; var t = dstOn(d.date); if (!t) return; dstHit = t;
+      d.notes.push(t === "fall"
+        ? "🕑 Daylight Saving Time ends today — set your clocks back an hour overnight (you gain an hour)."
+        : "🕑 Daylight Saving Time begins today — set your clocks forward an hour overnight (you lose an hour); double-check morning start times.");
+    });
+    if (dstHit) tzSummary += " Your trip also crosses the <b>Daylight Saving Time</b> change — you'll " + (dstHit === "fall" ? "gain" : "lose") + " an hour overnight when it " + (dstHit === "fall" ? "ends" : "begins") + ".";
+
     var booking = buildBooking(days);
     var reqDays = Math.max(requiredDays, N);   // transit days can push the actual plan past the estimate
     var capacity = {
