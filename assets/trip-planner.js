@@ -124,6 +124,9 @@
     .trtp-cta{display:block;text-align:center;background:var(--tr-primary);color:#25282a !important;text-decoration:none;font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;padding:12px;border-radius:3px;margin-top:16px;}
     .trtp-note{background:#fff;border-left:3px solid var(--tr-primary);padding:10px 14px;font-size:13.5px;color:#5c5f62;border-radius:0 4px 4px 0;margin:14px 0;}
     .trtp-warn{background:#fff4ef;border-left:3px solid var(--tr-primary);padding:10px 14px;font-size:13px;color:#8a4a2f;border-radius:0 4px 4px 0;margin:12px 0;}
+    .trtp-overcap{background:#fff4ef;border:1px solid var(--tr-primary);border-left:4px solid var(--tr-primary);border-radius:0 6px 6px 0;padding:13px 16px;font-size:13.5px;color:#8a4a2f;margin:0 0 16px;}
+    .trtp-overcap b{color:#6f3115;}
+    .trtp-overcap li{margin:3px 0;}
     .trtp-loading{padding:60px 30px;text-align:center;color:var(--tr-secondary);font-family:'Clearface',Georgia,serif;font-size:20px;}
     .trtp-sub-h{font-family:'Clearface',Georgia,serif;font-weight:600;font-size:18px;color:var(--tr-secondary);margin:22px 0 8px;}
     .trtp-field{display:flex;flex-direction:column;gap:6px;margin:4px 0 8px;max-width:280px;}
@@ -213,10 +216,23 @@
   }
 
   // ---- weather & packing --------------------------------------------------
+  // Months the trip actually touches. Exact dates win (span start..start+days),
+  // so we don't show a broad 3-month range once real dates are chosen.
   function tripMonths() {
+    if (S.startDate) {
+      var p = S.startDate.split("-"), start = new Date(+p[0], +p[1] - 1, +p[2]);
+      var days = S.days || 1, set = {};
+      for (var i = 0; i < days; i++) { var d = new Date(start.getTime()); d.setDate(d.getDate() + i); set[d.getMonth() + 1] = 1; }
+      return Object.keys(set).map(Number).sort(function (a, b) { return a - b; });
+    }
     if (S.months.length) return S.months.slice().sort(function (a, b) { return a - b; });
-    if (S.startDate) return [parseInt(S.startDate.split("-")[1], 10)];
     return [];
+  }
+  function tripDateRangeLabel() {
+    if (!S.startDate) return null;
+    var p = S.startDate.split("-"), start = new Date(+p[0], +p[1] - 1, +p[2]);
+    var end = new Date(start.getTime()); end.setDate(end.getDate() + Math.max(0, (S.days || 1) - 1));
+    return fmtD(start) + (S.days > 1 ? " – " + fmtD(end) : "");
   }
   function seasonOfMonth(m) { if (m >= 6 && m <= 8) return "summer"; if (m === 4 || m === 5) return "spring"; if (m === 9 || m === 10) return "fall"; return "winter"; }
   function weatherInfo() {
@@ -234,7 +250,8 @@
   function renderWeather(m) {
     var w = weatherInfo();
     var box = el("div", { class: "trtp-weather" });
-    box.appendChild(el("h4", { text: "Typical weather & what to pack" }));
+    var rangeLabel = tripDateRangeLabel();
+    box.appendChild(el("h4", { text: "Typical weather & what to pack" + (rangeLabel ? " · " + rangeLabel : "") }));
     if (!w) { box.appendChild(el("div", { class: "wnote", html: "Pick the month(s) you're considering on the <b>Season</b> step and we'll show typical Badlands weather and a tailored packing list." })); m.appendChild(box); return; }
     var strip = el("div", { class: "wmonths" });
     w.rows.forEach(function (r) {
@@ -256,6 +273,15 @@
     m.appendChild(box);
   }
   function toggle(bucket, id) { var a = S.picks[bucket]; var i = a.indexOf(id); if (i > -1) a.splice(i, 1); else a.push(id); render(); }
+  // Lodging is a base decision: a nearby drive-in town and in-Medora stays are
+  // mutually exclusive, and only one base town can be chosen at a time.
+  function toggleLodging(id) {
+    var l = byId(D.lodging.lodging, id), arr = S.picks.lodging, i = arr.indexOf(id);
+    if (i > -1) { arr.splice(i, 1); render(); return; }
+    if (l.nearbyBase) { S.picks.lodging = [id]; }             // one base, replaces any Medora/base pick
+    else { S.picks.lodging = arr.filter(function (x) { var o = byId(D.lodging.lodging, x); return o && !o.nearbyBase; }); S.picks.lodging.push(id); }
+    render();
+  }
   function isPicked(bucket, id) { return S.picks[bucket].indexOf(id) > -1; }
   function rentalOptions() {
     if (!S.airport) return [];
@@ -276,7 +302,15 @@
   }
 
   // ---- render root --------------------------------------------------------
-  function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; render(); }
+  function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; render(); scrollToTop(); }
+  function scrollToTop() {
+    var host = document.getElementById(CONTAINER_ID);
+    if (!host) return;
+    try {
+      var top = host.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0);
+      window.scrollTo({ top: Math.max(0, top - 12), behavior: "smooth" });
+    } catch (e) { if (host.scrollIntoView) host.scrollIntoView(); }
+  }
   function render() {
     var host = document.getElementById(CONTAINER_ID);
     var root = el("div", {});
@@ -623,25 +657,33 @@
             onclick: function (t) { S.tier = t.id; render(); }
           });
           if (S.tier) {
+            var baseChosen = D.lodging.lodging.filter(function (l) { return l.nearbyBase && isPicked("lodging", l.id); })[0];
             var stays = D.lodging.lodging.filter(function (l) { return !l.nearbyBase && l.area === "Medora" && l.tier === S.tier; });
             m.appendChild(el("div", { class: "trtp-sub-h", text: S.tier === "camp" ? "Camping & RV in Medora" : "Places to stay in Medora" }));
             cardGrid(m, stays, {
               wide: true, selected: function (l) { return isPicked("lodging", l.id); },
               blurb: function (l) { return l.blurb; },
               meta: function (l) { return (l.season ? MON[l.season[0] - 1] + "–" + MON[l.season[1] - 1] : "Year-round") + (l.priceHint ? " · " + l.priceHint : ""); },
-              onclick: function (l) { toggle("lodging", l.id); }
+              onclick: function (l) { toggleLodging(l.id); }
             });
-            // Nearby drive-in bases — highlighted for summer overflow
+            // Nearby drive-in bases — pick one INSTEAD of a Medora stay (mutually exclusive)
             var bases = D.lodging.lodging.filter(function (l) { return l.nearbyBase; });
             var summer = S.months.some(function (mo) { return mo >= 6 && mo <= 8; });
             m.appendChild(el("div", { class: "trtp-sub-h", text: "Or stay nearby and drive in" }));
-            m.appendChild(el("div", { class: summer ? "trtp-warn" : "trtp-note", html: (summer ? "<b>Heads up:</b> " : "") + "Medora books up fast and gets pricey in summer. These towns are a short drive on I-94 and often have more rooms for less — pick one to base your Medora days there instead." }));
+            m.appendChild(el("div", { class: summer ? "trtp-warn" : "trtp-note", html: (summer ? "<b>Heads up:</b> " : "") + "Medora books up fast and gets pricey in summer. These towns are a short drive on I-94 and often have more rooms for less — pick one to base your Medora days there <b>instead of</b> a Medora hotel." }));
             cardGrid(m, bases, {
               wide: true, selected: function (l) { return isPicked("lodging", l.id); },
               blurb: function (l) { return l.blurb; },
               meta: function (l) { return l.driveMin + " min / " + l.driveMiles + " mi to Medora" + (l.priceHint ? " · " + l.priceHint : ""); },
-              onclick: function (l) { toggle("lodging", l.id); }
+              onclick: function (l) { toggleLodging(l.id); }
             });
+            // Real hotels in the chosen base town
+            if (baseChosen && baseChosen.hotels) {
+              m.appendChild(el("div", { class: "trtp-sub-h", text: "Hotels in " + baseChosen.name }));
+              var hl = el("div", { class: "trtp-note" });
+              hl.innerHTML = baseChosen.hotels.map(function (h) { return "<div style='margin:3px 0'>• <a href='" + h.search + "' target='_blank' rel='noopener'>" + h.name + " ↗</a></div>"; }).join("") + (baseChosen.bookingSearch ? "<div style='margin-top:6px'><a href='" + baseChosen.bookingSearch + "' target='_blank' rel='noopener'>See all " + baseChosen.name + " hotels ↗</a></div>" : "");
+              m.appendChild(hl);
+            }
           }
         },
         canAdvance: function () { return !!S.tier; }, nextLabel: "See my day-by-day schedule →"
@@ -793,6 +835,25 @@
     var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), Math.ceil(totalLocal / budget));
     if (medoraDays < 1 && !far.length) medoraDays = 1;
 
+    // --- Respect the day budget. If the picks need more days than the guest has,
+    //     trim the farthest stops first, then shrink the Medora block (min 1),
+    //     and report what we cut so the schedule step can guide them. ---
+    function legDayCount() { return inbound.reduce(function (s, f) { return s + f.visitDays; }, 0) + outbound.reduce(function (s, f) { return s + f.visitDays; }, 0); }
+    var medoraNeeded = medoraDays;
+    var requiredDays = legDayCount() + medoraDays;
+    var trimmedFar = [];
+    if (S.days && requiredDays > S.days) {
+      while (legDayCount() + Math.max(1, medoraDays) > S.days && (inbound.length || outbound.length)) {
+        var pool = inbound.concat(outbound).sort(function (a, b) { return b.miles - a.miles; });
+        var victim = pool[0];
+        trimmedFar.push(victim);
+        var io = inbound.indexOf(victim); if (io > -1) inbound.splice(io, 1); else outbound.splice(outbound.indexOf(victim), 1);
+      }
+      var legs = legDayCount();
+      if (legs + medoraDays > S.days) medoraDays = Math.max(1, S.days - legs);
+    }
+    trimmedFar.forEach(function (f) { overflow.push({ item: f, reason: "would add " + f.visitDays + " day" + (f.visitDays > 1 ? "s" : "") + " beyond your " + S.days + "-day window — add days or drop another stop" }); });
+
     // Build the ordered plan: inbound legs → contiguous Medora block → outbound legs
     var plan = [];
     inbound.forEach(function (f) { for (var k = 0; k < f.visitDays; k++) plan.push({ kind: "leg", dir: "in", stop: f, baseCity: f.overnight ? f.overnight.city : null, contd: k > 0, lastOfStop: k === f.visitDays - 1 }); });
@@ -838,7 +899,14 @@
 
     days.forEach(function (d) { layoutDay(d); });
     var booking = buildBooking(days);
-    return { days: days, overflow: overflow, booking: booking, medoraDays: medoraDayObjs.length, medoraBase: medoraBase };
+    var capacity = {
+      setDays: S.days || null, requiredDays: requiredDays, plannedDays: N,
+      trimmedFar: trimmedFar.map(function (f) { return f.name; }),
+      medoraNeeded: medoraNeeded, medoraShown: medoraDayObjs.length,
+      over: !!(S.days && requiredDays > S.days),
+      spare: !!(S.days && N < S.days)
+    };
+    return { days: days, overflow: overflow, booking: booking, medoraDays: medoraDayObjs.length, medoraBase: medoraBase, capacity: capacity };
   }
 
   // Group consecutive same-city days into lodging bookings (the Medora block is contiguous).
@@ -947,6 +1015,22 @@
     m.appendChild(seg);
 
     if (!hasAnyPick()) m.appendChild(el("div", { class: "trtp-note", text: "You haven't added anything yet. Jump back to Road trip, Medora or Library and click what appeals — it'll lay out here by day and time." }));
+
+    // Over-capacity guidance: picks need more days than the guest set
+    var cap = sched.capacity;
+    if (cap.over) {
+      var overBox = el("div", { class: "trtp-overcap" });
+      var msg = "<b>This is more than your " + cap.setDays + " day" + (cap.setDays > 1 ? "s" : "") + " can hold.</b> Your selections would take about " + cap.requiredDays + " days at a " + S.pace + " pace. We fit what we could and trimmed the rest.";
+      var recs = [];
+      recs.push("Add days on the <b>Dates</b> step (you'd need about " + cap.requiredDays + ")");
+      if (cap.trimmedFar.length) recs.push("Or drop far stops: " + cap.trimmedFar.join(", "));
+      if (cap.medoraNeeded > cap.medoraShown) recs.push("Or trim some Medora activities (they don't all fit in " + cap.medoraShown + " day" + (cap.medoraShown > 1 ? "s" : "") + " here)");
+      recs.push("Or switch pace to <b>Packed</b> to squeeze in more per day");
+      overBox.innerHTML = msg + "<ul style='margin:8px 0 0;padding-left:20px'>" + recs.map(function (r) { return "<li>" + r + "</li>"; }).join("") + "</ul>";
+      m.appendChild(overBox);
+    } else if (cap.spare && hasAnyPick()) {
+      m.appendChild(el("div", { class: "trtp-note", text: "You've got room to spare — your plan fills " + cap.plannedDays + " of your " + cap.setDays + " days. Add a few more stops or a day trip to round it out." }));
+    }
 
     // Where to book — contiguous nights per town, with dates
     if (sched.booking.length) {

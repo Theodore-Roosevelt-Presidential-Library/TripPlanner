@@ -97,9 +97,25 @@ Lodging only offers **Medora** stays to pick (far legs show the city to book,
 not specific hotels). Because Medora fills up and gets pricey in summer, the
 step also surfaces **nearby drive-in bases** — Belfield, Dickinson, Beach (ND)
 and Glendive (MT) — flagged in summer; choosing one bases the Medora days there
-with a short drive in, and the booking panel updates accordingly. Gateway cities
+with a short drive in, and the booking panel updates accordingly. A base town
+and in-Medora stays are **mutually exclusive** (one base only), and picking a
+base reveals **real hotels in that town** (with search links). Gateway cities
 and drive-in bases live in `data/destinations.json` (`overnight`, `visitDays`)
-and `data/lodging.json` (`nearbyBase`).
+and `data/lodging.json` (`nearbyBase`, `hotels`).
+
+### Fitting the day budget
+
+The schedule respects the number of days the guest set. If the picks need more
+days than that, it **trims the farthest stops** (and, if needed, shrinks the
+Medora block), then shows an **over-capacity banner** explaining what didn't fit
+and how to fix it — add days, drop specific far stops, trim Medora activities,
+or switch to a Packed pace. Change the day count and the plan re-fits
+immediately. If there's spare capacity, it nudges the guest to add more.
+
+Advancing, going back, or jumping via the stepper **scrolls the widget back to
+the top**, and the weather block keys off the **actual trip dates** when set
+(the month[s] the trip spans, labeled with the date range) rather than a broad
+month range.
 
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the

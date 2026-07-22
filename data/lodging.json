@@ -255,7 +255,17 @@
       "blurb": "The closest drive-in town — a handful of motels 20 minutes east on I-94, often cheaper than in-town Medora.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Belfield%20ND",
       "phone": null,
-      "image": "assets/img/51c574d1ec.jpg"
+      "image": "assets/img/51c574d1ec.jpg",
+      "hotels": [
+        {
+          "name": "Trapper's Inn Motel",
+          "search": "https://www.google.com/search?q=Trappers%20Inn%20Motel%20Belfield%20ND"
+        },
+        {
+          "name": "Parkway Motel",
+          "search": "https://www.google.com/search?q=Parkway%20Motel%20Belfield%20ND"
+        }
+      ]
     },
     {
       "id": "dickinson-base",
@@ -269,7 +279,21 @@
       "blurb": "A full set of national-brand hotels 40 minutes east — the go-to base when Medora books up in summer.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Dickinson%20ND",
       "phone": null,
-      "image": "assets/img/5e1fecb2b8.jpg"
+      "image": "assets/img/5e1fecb2b8.jpg",
+      "hotels": [
+        {
+          "name": "Roosevelt Grand Dakota Hotel (BW Signature)",
+          "search": "https://www.google.com/search?q=Roosevelt%20Grand%20Dakota%20Hotel%20Dickinson%20ND"
+        },
+        {
+          "name": "Astoria Hotel & Event Center",
+          "search": "https://www.google.com/search?q=Astoria%20Hotel%20Event%20Center%20Dickinson%20ND"
+        },
+        {
+          "name": "Hampton Inn & Suites Dickinson",
+          "search": "https://www.google.com/search?q=Hampton%20Inn%20Suites%20Dickinson%20ND"
+        }
+      ]
     },
     {
       "id": "beach-base",
@@ -283,7 +307,13 @@
       "blurb": "A small town 25 minutes west on I-94 at the Montana line, with simple, affordable motels.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Beach%20ND",
       "phone": null,
-      "image": "assets/img/7426ce8669.jpg"
+      "image": "assets/img/7426ce8669.jpg",
+      "hotels": [
+        {
+          "name": "Buckboard Inn",
+          "search": "https://www.google.com/search?q=Buckboard%20Inn%20Beach%20ND"
+        }
+      ]
     },
     {
       "id": "glendive-base",
@@ -297,7 +327,25 @@
       "blurb": "A larger Montana town about 50 minutes west with chain hotels and Makoshika State Park nearby.",
       "bookingSearch": "https://www.google.com/search?q=hotels%20in%20Glendive%20MT",
       "phone": null,
-      "image": "assets/img/58d0385905.jpg"
+      "image": "assets/img/58d0385905.jpg",
+      "hotels": [
+        {
+          "name": "Astoria Hotel & Suites",
+          "search": "https://www.google.com/search?q=Astoria%20Hotel%20Suites%20Glendive%20MT"
+        },
+        {
+          "name": "La Quinta by Wyndham Glendive",
+          "search": "https://www.google.com/search?q=La%20Quinta%20Glendive%20MT"
+        },
+        {
+          "name": "Baymont by Wyndham Glendive",
+          "search": "https://www.google.com/search?q=Baymont%20Glendive%20MT"
+        },
+        {
+          "name": "Yellowstone River Inn",
+          "search": "https://www.google.com/search?q=Yellowstone%20River%20Inn%20Glendive%20MT"
+        }
+      ]
     }
   ]
 }
