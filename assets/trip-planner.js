@@ -54,6 +54,16 @@
   }
   function byId(list, id) { for (var i = 0; i < (list || []).length; i++) if (list[i].id === id) return list[i]; return null; }
   function uniq(a) { return a.filter(function (v, i) { return a.indexOf(v) === i; }); }
+  // A little pencil that jumps to the step where a chosen detail was set (sidebar edit).
+  function editBtn(step, label) {
+    return el("button", { class: "trtp-edit", type: "button", title: "Edit " + label, "aria-label": "Edit " + label + " — go to the " + STEP_LABELS[step] + " step", onclick: function () { goto(step); } }, ["✎"]);
+  }
+  function factRow(html, step, label) {
+    var row = el("div", { class: "fact" });
+    row.appendChild(el("span", { class: "ftxt", html: html }));
+    row.appendChild(editBtn(step, label));
+    return row;
+  }
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
   function hmToMin(s) { var p = s.split(":"); return (+p[0]) * 60 + (+p[1]); }
   function minToLabel(m) { var h = Math.floor(m / 60), mm = m % 60; var ap = h >= 12 ? "PM" : "AM"; var h12 = ((h + 11) % 12) + 1; return h12 + ":" + pad2(mm) + " " + ap; }
@@ -154,14 +164,21 @@
     .trtp-btn.ghost{background:transparent;color:var(--tr-secondary);border:1px solid var(--tr-muted);}
     .trtp-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
     .trtp-side h3{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--tr-primary);margin:0 0 4px;font-weight:600;}
+    .trtp-side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .trtp-reset{background:none;border:1px solid rgba(255,255,255,.28);color:#cdd8e6;font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600;padding:4px 10px;border-radius:3px;cursor:pointer;transition:background .12s,color .12s;white-space:nowrap;}
+    .trtp-reset:hover{background:rgba(255,255,255,.12);color:#fff;}
     .trtp-side .trip-name{font-family:'Clearface',Georgia,serif;font-size:21px;font-weight:600;margin:0 0 14px;color:#fff;}
     .trtp-side .empty{color:#9fb3cc;font-size:13.5px;font-style:italic;}
     .trtp-sec{margin-bottom:15px;}
     .trtp-sec .lbl{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.1em;font-size:10.5px;color:#9fb3cc;margin:0 0 6px;}
+    .trtp-sec .lblrow{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .trtp-edit{background:none;border:none;color:#9fb3cc;cursor:pointer;font-size:13px;line-height:1;padding:1px 5px;border-radius:3px;flex:none;}
+    .trtp-edit:hover{color:#fff;background:rgba(255,255,255,.14);}
     .trtp-item{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:13.5px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.14);}
     .trtp-item .x{background:none;border:none;color:#9fb3cc;cursor:pointer;font-size:15px;line-height:1;padding:0 2px;}
     .trtp-item .x:hover{color:#fff;}
-    .trtp-side .fact{font-size:13px;color:#cdd8e6;margin:2px 0;}
+    .trtp-side .fact{font-size:13px;color:#cdd8e6;margin:2px 0;display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+    .trtp-side .fact .ftxt{flex:1;min-width:0;}
     .trtp-side .fact b{color:#fff;font-weight:600;}
     .trtp-cta{display:block;text-align:center;background:var(--tr-primary);color:#25282a !important;text-decoration:none;font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:13px;padding:12px;border-radius:3px;margin-top:16px;}
     .trtp-note{background:#fff;border-left:3px solid var(--tr-primary);padding:10px 14px;font-size:13.5px;color:#5c5f62;border-radius:0 4px 4px 0;margin:14px 0;}
@@ -391,6 +408,15 @@
 
   // ---- render root --------------------------------------------------------
   function goto(i) { S.step = i; if (i > S.maxStep) S.maxStep = i; pendingFocus = "heading"; render(); scrollToTop(); track("wizard_step", { step_index: i, step_name: STEP_LABELS[i], arrival: S.arrival || "", pace: S.pace, days: S.days || 0 }); }
+  // Wipe every answer and pick and go back to the first step (the URL permalink resets
+  // to the default via syncURL on the re-render). Confirm first — it can't be undone.
+  function resetAll() {
+    if (typeof window.confirm === "function" && !window.confirm("Start over? This clears every answer and pick for this trip.")) return;
+    S.step = 0; S.maxStep = 0; S.origin = null; S.startDate = null; S.months = []; S.days = null; S.pace = "balanced";
+    S.arrival = null; S.airport = null; S.diffReturn = false; S.airportOut = null; S.rental = null; S.styles = []; S.tier = null;
+    S.picks = { route: [], lodging: [], medora: [], library: [] };
+    track("reset"); pendingFocus = "heading"; render(); scrollToTop();
+  }
   function scrollToTop() {
     var host = document.getElementById(CONTAINER_ID);
     if (!host) return;
@@ -516,31 +542,41 @@
   // ---- sidebar ------------------------------------------------------------
   function renderSidebar() {
     var side = el("div", { class: "trtp-side" });
-    side.appendChild(el("h3", { text: "Your Trip" }));
+    var sHead = el("div", { class: "trtp-side-head" });
+    sHead.appendChild(el("h3", { text: "Your Trip" }));
+    if (S.maxStep > 0 || hasAnyPick() || S.origin || S.styles.length || S.months.length || S.startDate) {
+      sHead.appendChild(el("button", { class: "trtp-reset", type: "button", title: "Start over", "aria-label": "Start over — clear this trip and begin again", onclick: resetAll }, ["↺ Start over"]));
+    }
+    side.appendChild(sHead);
     var planDays = hasAnyPick() ? buildSchedule().days.length : 0;
     side.appendChild(el("div", { class: "trip-name", text: (planDays ? planDays + "-Day " : "") + "Roosevelt Country Trip" }));
     if (S.origin) {
       var f = el("div", { class: "trtp-sec" });
-      f.appendChild(el("div", { class: "fact", html: "<b>From:</b> " + S.origin.label }));
-      if (S.startDate) { var d0 = dateForDay(0); f.appendChild(el("div", { class: "fact", html: "<b>Arriving:</b> " + DOW[d0.getDay()] + " " + MON[d0.getMonth()] + " " + d0.getDate() })); }
-      if (S.arrival === "air" && S.airport) f.appendChild(el("div", { class: "fact", html: "<b>Fly in:</b> " + S.airport + (S.diffReturn && S.airportOut ? " · <b>out:</b> " + S.airportOut : "") }));
-      if (S.rental) f.appendChild(el("div", { class: "fact", html: "<b>Rental:</b> " + S.rental }));
-      if (S.tier) f.appendChild(el("div", { class: "fact", html: "<b>Comfort:</b> " + byId(D.config.comfortTiers, S.tier).label + " · <b>Pace:</b> " + S.pace }));
+      f.appendChild(factRow("<b>From:</b> " + S.origin.label, 5, "starting point"));
+      if (S.startDate) { var d0 = dateForDay(0); f.appendChild(factRow("<b>Arriving:</b> " + DOW[d0.getDay()] + " " + MON[d0.getMonth()] + " " + d0.getDate(), 7, "dates")); }
+      if (S.arrival === "air" && S.airport) f.appendChild(factRow("<b>Fly in:</b> " + S.airport + (S.diffReturn && S.airportOut ? " · <b>out:</b> " + S.airportOut : ""), 6, "how you're getting here"));
+      else if (S.arrival === "car") f.appendChild(factRow("<b>Getting here:</b> Driving", 6, "how you're getting here"));
+      if (S.rental) f.appendChild(factRow("<b>Rental:</b> " + S.rental, 6, "rental car"));
+      if (S.tier) f.appendChild(factRow("<b>Comfort:</b> " + byId(D.config.comfortTiers, S.tier).label, 8, "comfort level"));
+      if (S.startDate || S.days) f.appendChild(factRow("<b>Pace:</b> " + S.pace, 7, "pace"));
       side.appendChild(f);
     }
     var any = false;
-    any = pickSec(side, "Road-trip stops", "route", D.destinations.destinations) || any;
-    any = pickSec(side, "Where you'll stay", "lodging", D.lodging.lodging) || any;
-    any = pickSec(side, "Your Medora day", "medora", D.medora.attractions) || any;
-    any = pickSec(side, "At the Library", "library", D.library._all) || any;
+    any = pickSec(side, "Road-trip stops", "route", D.destinations.destinations, 1) || any;
+    any = pickSec(side, "Where you'll stay", "lodging", D.lodging.lodging, 8) || any;
+    any = pickSec(side, "Your Medora day", "medora", D.medora.attractions, 3) || any;
+    any = pickSec(side, "At the Library", "library", D.library._all, 4) || any;
     if (!any && !S.origin) side.appendChild(el("div", { class: "empty", text: "Answer a few questions and click what you like — it collects here into a day-by-day plan you can print." }));
     side.appendChild(el("a", { class: "trtp-cta", href: D.library.ticketsUrl, target: "_blank", rel: "noopener" }, ["Book your Library visit"]));
     return side;
   }
-  function pickSec(side, label, bucket, source) {
+  function pickSec(side, label, bucket, source, step) {
     var ids = S.picks[bucket]; if (!ids.length) return false;
     var sec = el("div", { class: "trtp-sec" });
-    sec.appendChild(el("div", { class: "lbl", text: label }));
+    var lblRow = el("div", { class: "lbl lblrow" });
+    lblRow.appendChild(el("span", { text: label }));
+    if (step != null) lblRow.appendChild(editBtn(step, label));
+    sec.appendChild(lblRow);
     ids.forEach(function (id) {
       var it = byId(source, id); if (!it) return;
       var row = el("div", { class: "trtp-item" });

@@ -127,7 +127,13 @@ One IIFE. Key internals (search by name):
 - **`render()`** — rebuilds the whole widget for `S.step`; calls `syncURL()` at the
   end (permalink). **`goto(i)`** — set step + scroll to top. **`toggle(bucket,id)`**
   — add/remove a pick and re-render. **`removePick(id)`** — remove from whichever
-  pick bucket holds it (used by the over-capacity Remove buttons).
+  pick bucket holds it (used by the over-capacity Remove buttons). **`resetAll()`** —
+  a confirm-guarded "↺ Start over" (in the sidebar "Your Trip" header, shown once there's
+  any progress) that wipes `S` to defaults and re-renders to step 0; `syncURL()` then
+  resets the permalink to `#st=0`. The sidebar also shows a **✎ edit pencil** (`editBtn(step,label)`)
+  next to each chosen detail (facts via `factRow`, pick sections via `pickSec(...,step)`)
+  that jumps straight to the step that set it — origin→Coming from, dates/pace→Dates,
+  airport/rental→Getting here, comfort→Stay, and each pick list→its own step.
 - **`el(tag, attrs, children)`** — tiny DOM builder used everywhere.
 - **`boot()`** — fetches the 10 data files, injects CSS, `defineSteps()`,
   `decodeState(location.hash)`, `render()`.
