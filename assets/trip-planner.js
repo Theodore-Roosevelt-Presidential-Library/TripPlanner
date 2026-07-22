@@ -1076,6 +1076,26 @@
     var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), bigTrips.length + Math.ceil(Math.max(0, packLoad) / budget));
     if (medoraDays < 1 && !far.length) medoraDays = 1;
 
+    // Extend the Medora block so a day-of-week-restricted pick (e.g. a Library tour
+    // that skips some weekdays) lands on a weekday it actually runs — when the
+    // guest's window includes such a day and there's room. Otherwise a short stay
+    // that starts on an off-day would drop the tour even though a valid day is in
+    // reach. (Applies when the block starts on the arrival date — no inbound legs.)
+    if (S.startDate && S.days && !inbound.length && local.length) {
+      var blockStart = transitEstimate;   // day index the Medora block begins on
+      var restricted = local.filter(function (it) {
+        if (!it.avail || !it.avail.fixed || !it.avail.fixed.length) return false;
+        var allDays = it.avail.fixed.reduce(function (a, f) { return a.concat(f.days); }, []);
+        return uniq(allDays).length < 7;   // truly restricted (not open every day)
+      });
+      if (restricted.length) {
+        var blockWeekdays = function (md) { var s = {}; for (var i = 0; i < md; i++) { var dt = dateForDay(blockStart + i); if (dt) s[dt.getDay()] = 1; } return s; };
+        var runnable = function (it, cov) { return it.avail.fixed.some(function (f) { return f.days.some(function (d) { return cov[d]; }); }); };
+        var maxMedora = Math.max(medoraDays, S.days - legDayCount() - transitEstimate);
+        while (medoraDays < maxMedora && !restricted.every(function (it) { return runnable(it, blockWeekdays(medoraDays)); })) medoraDays++;
+      }
+    }
+
     // --- Respect the day budget. If the picks need more days than the guest has,
     //     trim the farthest stops first, then shrink the Medora block (min 1),
     //     and report what we cut so the schedule step can guide them. ---

@@ -221,6 +221,15 @@ These were added incrementally from user feedback. Preserve them:
   **Pitchfork Steak Fondue only on a Medora Musical day** (it's the pre-show dinner);
   **one breakfast/lunch/dinner per day** (Pitchfork counts as the dinner). Violations →
   `overflow`/notes with a clear reason.
+- **Day-of-week availability is enforced.** `avail.fixed[].days` (0=Sun..6=Sat) and
+  `avail.days` gate scheduling via `dayOk()`/`fixedWindowFor()` in `canPlace` — a tour
+  that skips a weekday is never placed on it (→ overflow with "doesn't run on your
+  travel days"). Verified by the stress harness's strict `wrong-weekday` invariant
+  (0 across 4,000 dated scenarios). When the stay would collapse to a single day that
+  falls on the pick's off-day, the Medora block **extends** (up to the guest's window)
+  to include a weekday the pick actually runs, rather than dropping it. Without a set
+  date, `fixedWindowFor(av,null)` returns the first window so items stay browsable
+  (approximate — the "set a date" nudge covers this).
 - **Meals are time-of-day aware.** Breakfast/lunch are assigned to a day with a free
   morning/midday (not one eaten by an arrival flight or long drive-in) so they schedule
   instead of dropping to a note. The `layoutDay` flex sort uses `ordOf()` (not
