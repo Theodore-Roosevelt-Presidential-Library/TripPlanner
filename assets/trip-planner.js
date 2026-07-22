@@ -121,11 +121,11 @@
     #${CONTAINER_ID} :focus-visible{outline:3px solid var(--tr-secondary);outline-offset:2px;border-radius:3px;}
     #${CONTAINER_ID} .trtp-card:focus-visible{outline-offset:-1px;}
     @media (prefers-reduced-motion: reduce){#${CONTAINER_ID} *{transition:none !important;animation:none !important;}}
-    .trtp-steps{display:flex;flex-wrap:wrap;gap:2px;background:var(--tr-secondary);padding:10px 14px;}
-    .trtp-step{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.04em;font-size:12.5px;font-weight:700;
-      color:#9fb3cc;background:transparent;border:none;padding:6px 9px;border-radius:3px;cursor:pointer;white-space:nowrap;}
+    .trtp-steps{display:flex;flex-wrap:wrap;gap:2px;background:var(--tr-secondary);padding:11px 14px;}
+    .trtp-step{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.02em;font-size:17.5px;font-weight:700;
+      color:#9fb3cc;background:transparent;border:none;padding:7px 10px;border-radius:3px;cursor:pointer;white-space:nowrap;}
     .trtp-step:hover{color:#fff;}
-    .trtp-step .n{display:inline-block;width:16px;height:16px;line-height:16px;text-align:center;border-radius:50%;background:#2a486b;margin-right:5px;font-size:10px;}
+    .trtp-step .n{display:inline-block;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:#2a486b;margin-right:6px;font-size:12px;}
     .trtp-step.on{color:#25282a;background:var(--tr-primary);}
     .trtp-step.on .n{background:rgba(0,0,0,.18);color:#fff;}
     .trtp-step.done{color:#fff;}
@@ -158,7 +158,7 @@
     .trtp-card .check{position:absolute;top:9px;right:9px;width:20px;height:20px;border-radius:50%;background:var(--tr-primary);color:#fff;display:none;align-items:center;justify-content:center;font-size:12px;}
     .trtp-card.sel .check{display:flex;}
     .trtp-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap;}
-    .trtp-btn{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:700;font-size:15px;border:none;border-radius:3px;padding:12px 22px;cursor:pointer;transition:filter .12s,transform .12s;}
+    .trtp-btn{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-weight:700;font-size:17px;border:none;border-radius:3px;padding:13px 24px;cursor:pointer;transition:filter .12s,transform .12s;}
     .trtp-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
     .trtp-btn.primary{background:var(--tr-primary);color:#25282a;}
     .trtp-btn.ghost{background:transparent;color:var(--tr-secondary);border:1px solid var(--tr-muted);}
@@ -170,7 +170,7 @@
     .trtp-side .trip-name{font-family:'Clearface',Georgia,serif;font-size:21px;font-weight:600;margin:0 0 14px;color:#fff;}
     .trtp-side .empty{color:#9fb3cc;font-size:13.5px;font-style:italic;}
     .trtp-sec{margin-bottom:15px;}
-    .trtp-sec .lbl{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:#9fb3cc;margin:0 0 6px;}
+    .trtp-sec .lbl{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:14px;font-weight:700;color:#9fb3cc;margin:0 0 6px;}
     .trtp-sec .lblrow{display:flex;align-items:center;justify-content:flex-start;gap:2px;}
     .trtp-edit{background:none;border:none;color:#9fb3cc;cursor:pointer;font-size:13px;line-height:1;padding:1px 4px;border-radius:3px;flex:none;}
     .trtp-edit:hover{color:#fff;background:rgba(255,255,255,.14);}
@@ -225,7 +225,7 @@
       #${CONTAINER_ID} .trtp-main{padding:18px 15px 26px;}
       #${CONTAINER_ID} .trtp-grid,#${CONTAINER_ID} .trtp-grid.wide{grid-template-columns:1fr;}
       #${CONTAINER_ID} .trtp-steps{padding:8px 8px;gap:3px;}
-      #${CONTAINER_ID} .trtp-step{font-size:11px;padding:8px 9px;}
+      #${CONTAINER_ID} .trtp-step{font-size:14.5px;padding:8px 9px;}
       #${CONTAINER_ID} .trtp-seg button{padding:11px 14px;}
       #${CONTAINER_ID} .trtp-chip{padding:10px 14px;}
       #${CONTAINER_ID} .trtp-side{padding:20px 16px;}
