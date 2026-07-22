@@ -65,7 +65,7 @@ visited step to change answers, no Back-button hunting.
 The flow leads with what the guest wants to see, then handles logistics:
 
 1. **What do you want to see & do?** → interests that surface the best stops
-2. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips)
+2. **Build your road trip** → national parks, monuments, towns, state parks (regional stops become day trips), ordered by relationship to the Library (its Medora home anchors the trip, so proximity = how easily a stop pairs with a Library visit) lifted by a `popularity` score, so the closest and best-loved stops lead and carry a "★ Popular" tag
 3. **Which months?** → the guest picks the month(s) they're considering; the next step is filtered to what's actually open then (the Musical, trail rides and many shops are summer-only)
 4. **Your Medora day** → a deep catalog (60+ items) grouped into See & do, Outdoors & recreation, Guided tours & rides, Shows & evenings, Where to eat, Where to shop, and Festivals & special events — all season-filtered
 5. **The Library** → general admission + the five specialty tours (each with its real days/times/price)
@@ -116,7 +116,14 @@ the printout.
 
 If no arrival date is set, the schedule shows a prominent flag explaining that
 tour/show availability is only exact with a date, and offers a **recommended
-date** (the first Saturday of the chosen month) to apply in one click.
+date** (the first Saturday of the chosen month) to apply in one click — which
+re-lays the itinerary **in place on the schedule step** rather than jumping back
+through the wizard.
+
+Activity durations aim to be realistic: the **Library** is budgeted at 3.5 hours
+for the exhibits plus an hour for the grounds and Boardwalk, and every
+**specialty tour** runs an hour. Durations live in each item's `duration` field
+(minutes) so they're easy to tune as real visit times are confirmed.
 
 ### Rental cars
 
@@ -163,6 +170,16 @@ month range.
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the
 return drive/flight into the last day, so the plan reflects real travel time.
+Flight arrivals build in **90 minutes to deplane, collect luggage and pick up
+the rental car** before the drive begins, and the return drive reminds the
+guest to arrive ~2 hours early for the flight.
+
+**Drive-time estimates** are deliberately generous so nobody feels rushed. Road
+distance is estimated from coordinates (with a straight-line→road correction),
+converted to time at a blended ~53 mph door-to-door speed (below the limit, to
+cover towns, grades and a stop), and rounded to the nearest 15 minutes with a
+small buffer. They're calibrated against known drives — Dickinson→Devils Tower
+(~3h50) shows about 4h, Dickinson→Medora (~40m) shows ~45m.
 
 There's also a **departure-airport sanity check**: when a trip ends in Medora
 with no outbound stops, the plan won't send the guest on a needless multi-hour

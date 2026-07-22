@@ -26,7 +26,8 @@
         "close": "20:00"
       },
       "image": "assets/img/f35d72f8fd.jpg",
-      "address": "TR National Park South Unit VC, 201 E River Rd N, Medora, ND 58645"
+      "address": "TR National Park South Unit VC, 201 E River Rd N, Medora, ND 58645",
+      "popularity": 5
     },
     {
       "id": "trnp-north",
@@ -54,7 +55,8 @@
         "close": "20:00"
       },
       "image": "assets/img/3793643f1f.jpg",
-      "address": "TR National Park North Unit Entrance, US-85, Watford City, ND 58854"
+      "address": "TR National Park North Unit Entrance, US-85, Watford City, ND 58854",
+      "popularity": 4
     },
     {
       "id": "painted-canyon",
@@ -81,7 +83,8 @@
         "close": "18:00"
       },
       "image": "assets/img/9e860227e0.jpg",
-      "address": "Painted Canyon Visitor Center, I-94 Exit 32, Medora, ND 58645"
+      "address": "Painted Canyon Visitor Center, I-94 Exit 32, Medora, ND 58645",
+      "popularity": 5
     },
     {
       "id": "elkhorn",
@@ -107,7 +110,8 @@
         "close": "18:00"
       },
       "image": "assets/img/488e7eec93.jpg",
-      "address": "Elkhorn Ranch Unit, Billings County, ND 58645"
+      "address": "Elkhorn Ranch Unit, Billings County, ND 58645",
+      "popularity": 4
     },
     {
       "id": "devils-tower",
@@ -139,7 +143,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Sundance%2C%20WY"
       },
       "visitDays": 1,
-      "address": "Devils Tower National Monument, WY-110, Devils Tower, WY 82714"
+      "address": "Devils Tower National Monument, WY-110, Devils Tower, WY 82714",
+      "popularity": 5
     },
     {
       "id": "mount-rushmore",
@@ -171,7 +176,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Keystone%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Mount Rushmore, 13000 SD-244, Keystone, SD 57751"
+      "address": "Mount Rushmore, 13000 SD-244, Keystone, SD 57751",
+      "popularity": 5
     },
     {
       "id": "wind-cave",
@@ -202,7 +208,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Hot%20Springs%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Wind Cave NP Visitor Center, 26611 US-385, Hot Springs, SD 57747"
+      "address": "Wind Cave NP Visitor Center, 26611 US-385, Hot Springs, SD 57747",
+      "popularity": 4
     },
     {
       "id": "badlands-np",
@@ -234,7 +241,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Wall%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Ben Reifel Visitor Center, 25216 Ben Reifel Rd, Interior, SD 57750"
+      "address": "Ben Reifel Visitor Center, 25216 Ben Reifel Rd, Interior, SD 57750",
+      "popularity": 5
     },
     {
       "id": "yellowstone",
@@ -266,7 +274,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Cody%2C%20WY"
       },
       "visitDays": 2,
-      "address": "Yellowstone East Entrance (from Cody), US-14/16/20, Cody, WY 82414"
+      "address": "Yellowstone East Entrance (from Cody), US-14/16/20, Cody, WY 82414",
+      "popularity": 5
     },
     {
       "id": "grand-teton",
@@ -298,7 +307,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Jackson%2C%20WY"
       },
       "visitDays": 2,
-      "address": "Craig Thomas Discovery & Visitor Center, 1 Teton Park Rd, Moose, WY 83012"
+      "address": "Craig Thomas Discovery & Visitor Center, 1 Teton Park Rd, Moose, WY 83012",
+      "popularity": 5
     },
     {
       "id": "glacier",
@@ -330,7 +340,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20West%20Glacier%2C%20MT"
       },
       "visitDays": 2,
-      "address": "West Glacier Entrance, Going-to-the-Sun Rd, West Glacier, MT 59936"
+      "address": "West Glacier Entrance, Going-to-the-Sun Rd, West Glacier, MT 59936",
+      "popularity": 5
     },
     {
       "id": "knife-river",
@@ -361,7 +372,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Bismarck%2C%20ND"
       },
       "visitDays": 1,
-      "address": "Knife River Indian Villages, 564 County Rd 37, Stanton, ND 58571"
+      "address": "Knife River Indian Villages, 564 County Rd 37, Stanton, ND 58571",
+      "popularity": 3
     },
     {
       "id": "fort-lincoln",
@@ -393,7 +405,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Bismarck%2C%20ND"
       },
       "visitDays": 1,
-      "address": "Fort Abraham Lincoln State Park, 4480 Fort Lincoln Rd, Mandan, ND 58554"
+      "address": "Fort Abraham Lincoln State Park, 4480 Fort Lincoln Rd, Mandan, ND 58554",
+      "popularity": 4
     },
     {
       "id": "custer-state-park",
@@ -426,7 +439,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Custer%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Custer State Park, 13329 US-16A, Custer, SD 57730"
+      "address": "Custer State Park, 13329 US-16A, Custer, SD 57730",
+      "popularity": 4
     },
     {
       "id": "sully-creek",
@@ -452,7 +466,8 @@
         "close": "18:00"
       },
       "image": "assets/img/c232cd2513.jpg",
-      "address": "Sully Creek State Park, Medora, ND 58645"
+      "address": "Sully Creek State Park, Medora, ND 58645",
+      "popularity": 3
     },
     {
       "id": "little-missouri-sp",
@@ -478,7 +493,8 @@
         "close": "18:00"
       },
       "image": "assets/img/ddb0960d4f.jpg",
-      "address": "Little Missouri State Park, Killdeer, ND 58640"
+      "address": "Little Missouri State Park, Killdeer, ND 58640",
+      "popularity": 3
     },
     {
       "id": "deadwood",
@@ -509,7 +525,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Deadwood%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Historic Main St, Deadwood, SD 57732"
+      "address": "Historic Main St, Deadwood, SD 57732",
+      "popularity": 4
     },
     {
       "id": "cody",
@@ -541,7 +558,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Cody%2C%20WY"
       },
       "visitDays": 1,
-      "address": "Buffalo Bill Center of the West, 720 Sheridan Ave, Cody, WY 82414"
+      "address": "Buffalo Bill Center of the West, 720 Sheridan Ave, Cody, WY 82414",
+      "popularity": 4
     },
     {
       "id": "spearfish-canyon",
@@ -572,7 +590,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Spearfish%2C%20SD"
       },
       "visitDays": 1,
-      "address": "Spearfish Canyon Scenic Byway (US-14A), Savoy, SD 57754"
+      "address": "Spearfish Canyon Scenic Byway (US-14A), Savoy, SD 57754",
+      "popularity": 4
     },
     {
       "id": "beartooth",
@@ -607,7 +626,8 @@
         "search": "https://www.google.com/search?q=hotels%20in%20Red%20Lodge%2C%20MT"
       },
       "visitDays": 1,
-      "address": "Beartooth Highway (US-212), Red Lodge, MT 59068"
+      "address": "Beartooth Highway (US-212), Red Lodge, MT 59068",
+      "popularity": 4
     },
     {
       "id": "enchanted-highway-stop",
@@ -634,7 +654,8 @@
         "close": "18:00"
       },
       "image": "assets/img/1206ece5b5.jpg",
-      "address": "Enchanted Highway, I-94 Exit 72, Gladstone, ND 58630"
+      "address": "Enchanted Highway, I-94 Exit 72, Gladstone, ND 58630",
+      "popularity": 4
     },
     {
       "id": "dickinson-museum",
@@ -672,7 +693,8 @@
         "close": "17:00"
       },
       "image": "assets/img/5e1fecb2b8.jpg",
-      "address": "Dickinson Museum Center, 188 Museum Dr E, Dickinson, ND 58601"
+      "address": "Dickinson Museum Center, 188 Museum Dr E, Dickinson, ND 58601",
+      "popularity": 3
     },
     {
       "id": "dick-dakota-dinosaur-museum",
@@ -705,7 +727,8 @@
       "url": "https://dakotadino.com/",
       "booking": "https://dakotadino.com/",
       "image": "assets/img/5e1fecb2b8.jpg",
-      "address": "Dakota Dinosaur Museum, 200 Museum Dr E, Dickinson, ND 58601"
+      "address": "Dakota Dinosaur Museum, 200 Museum Dr E, Dickinson, ND 58601",
+      "popularity": 3
     },
     {
       "id": "dick-prairie-outpost-park",
@@ -737,7 +760,8 @@
       "url": "https://www.dickinsongov.com/museum-center/page/prairie-outpost-park",
       "booking": "https://www.dickinsongov.com/museum-center/page/prairie-outpost-park",
       "image": "assets/img/8f2dfd0f78.jpg",
-      "address": "Prairie Outpost Park, 188 Museum Dr E, Dickinson, ND 58601"
+      "address": "Prairie Outpost Park, 188 Museum Dr E, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-ukrainian-cultural-institute",
@@ -765,7 +789,8 @@
       "url": "https://www.ucitoday.org/",
       "booking": "https://www.ucitoday.org/",
       "image": "assets/img/375b6a7979.jpg",
-      "address": "Ukrainian Cultural Institute, 2921 Ridgeview Dr, Dickinson, ND 58601"
+      "address": "Ukrainian Cultural Institute, 2921 Ridgeview Dr, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-theodore-roosevelt-center-at-dsu",
@@ -793,7 +818,8 @@
       "url": "https://www.theodorerooseveltcenter.org/about/visit-us/",
       "booking": "https://www.theodorerooseveltcenter.org/about/visit-us/",
       "image": "assets/img/c22b43a64d.jpg",
-      "address": "Theodore Roosevelt Center, DSU, 291 Campus Dr, Dickinson, ND 58601"
+      "address": "Theodore Roosevelt Center, DSU, 291 Campus Dr, Dickinson, ND 58601",
+      "popularity": 3
     },
     {
       "id": "dick-patterson-lake-recreation-area",
@@ -826,7 +852,8 @@
       "url": "https://dickinsonparks.org/patterson-lake-recreation-area/",
       "booking": "https://dickinsonparks.org/patterson-lake-recreation-area/",
       "image": "assets/img/f4673b76bf.jpg",
-      "address": "Patterson Lake Recreation Area, Dickinson, ND 58601"
+      "address": "Patterson Lake Recreation Area, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-crooked-crane-trail",
@@ -855,7 +882,8 @@
       "url": "https://dickinsonparks.org/groups/crooked-crane-trail/",
       "booking": "https://dickinsonparks.org/groups/crooked-crane-trail/",
       "image": "assets/img/bb25d31661.jpg",
-      "address": "Crooked Crane Trail, Patterson Lake, Dickinson, ND 58601"
+      "address": "Crooked Crane Trail, Patterson Lake, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-west-river-community-center",
@@ -883,7 +911,8 @@
       "url": "https://westrivercommunitycenter.com/",
       "booking": "https://westrivercommunitycenter.com/",
       "image": "assets/img/ad3915bc29.jpg",
-      "address": "West River Community Center, 2004 Fairway St, Dickinson, ND 58601"
+      "address": "West River Community Center, 2004 Fairway St, Dickinson, ND 58601",
+      "popularity": 1
     },
     {
       "id": "dick-heart-river-golf-course",
@@ -915,7 +944,8 @@
       "url": "https://heartrivergolfcourse.com/",
       "booking": "https://heartrivergolfcourse.com/",
       "image": "assets/img/741c25dcf8.jpg",
-      "address": "Heart River Golf Course, 2002 Fairway St, Dickinson, ND 58601"
+      "address": "Heart River Golf Course, 2002 Fairway St, Dickinson, ND 58601",
+      "popularity": 1
     },
     {
       "id": "dick-phat-fish-brewing",
@@ -943,7 +973,8 @@
       "url": "https://www.phatfishbrewing.com/",
       "booking": "https://www.phatfishbrewing.com/",
       "image": "assets/img/909e51968c.jpg",
-      "address": "Phat Fish Brewing, 2434 3rd Ave W, Dickinson, ND 58601"
+      "address": "Phat Fish Brewing, 2434 3rd Ave W, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-fluffy-fields-vineyard-winery",
@@ -971,7 +1002,8 @@
       "url": "http://www.fluffyfields.com/",
       "booking": "http://www.fluffyfields.com/",
       "image": "assets/img/70dbdbb061.jpg",
-      "address": "Fluffy Fields Vineyard & Winery, 6440 37th St SW, Dickinson, ND 58601"
+      "address": "Fluffy Fields Vineyard & Winery, 6440 37th St SW, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-badlands-art-gallery",
@@ -999,7 +1031,8 @@
       "url": "https://www.visitdickinson.com/business/badlands-art-gallery",
       "booking": "https://www.visitdickinson.com/business/badlands-art-gallery",
       "image": "assets/img/3f28694eb0.jpg",
-      "address": "Badlands Art Gallery, DSU, Dickinson, ND 58601"
+      "address": "Badlands Art Gallery, DSU, Dickinson, ND 58601",
+      "popularity": 2
     },
     {
       "id": "dick-k5-kayaks",
@@ -1032,7 +1065,8 @@
       "url": "https://www.visitdickinson.com/business/k5-kayaks",
       "booking": "https://www.visitdickinson.com/business/k5-kayaks",
       "image": "assets/img/f4673b76bf.jpg",
-      "address": "K5 Kayaks, Dickinson, ND 58601"
+      "address": "K5 Kayaks, Dickinson, ND 58601",
+      "popularity": 2
     }
   ]
 }

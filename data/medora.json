@@ -28,7 +28,7 @@
       "id": "trnp-loop",
       "name": "TR National Park — South Unit Scenic Loop",
       "category": "attraction",
-      "duration": 240,
+      "duration": 180,
       "lat": 46.979,
       "lng": -103.5387,
       "tags": [
@@ -99,7 +99,7 @@
       "id": "chateau",
       "name": "Chateau de Mores State Historic Site",
       "category": "attraction",
-      "duration": 120,
+      "duration": 90,
       "lat": 46.9075,
       "lng": -103.531,
       "tags": [
@@ -118,7 +118,7 @@
         "open": "08:30",
         "close": "18:00"
       },
-      "image": "assets/img/1fb0374047.jpg",
+      "image": "assets/img/d5bc49addd.jpg",
       "address": "Chateau de Mores, 3426 Chateau Rd, Medora, ND 58645"
     },
     {
@@ -138,7 +138,7 @@
         "open": "08:00",
         "close": "20:00"
       },
-      "image": "assets/img/1fb0374047.jpg",
+      "image": "assets/img/e6a4e20861.jpg",
       "address": "Chimney Park, 3rd Ave, Medora, ND 58645"
     },
     {
@@ -435,7 +435,7 @@
       "id": "medora-riding-stables-trail-rides",
       "name": "Medora Riding Stables & Trail Rides",
       "category": "tour",
-      "duration": 60,
+      "duration": 90,
       "tags": [
         "culture",
         "outdoors"
@@ -1140,7 +1140,7 @@
       "id": "north-unit-scenic-drive",
       "name": "North Unit Scenic Drive",
       "category": "recreation",
-      "duration": 90,
+      "duration": 120,
       "tags": [
         "parks",
         "outdoors",

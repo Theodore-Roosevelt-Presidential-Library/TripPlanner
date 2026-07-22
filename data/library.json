@@ -9,8 +9,8 @@
     "name": "General Admission",
     "kind": "admission",
     "price": 0,
-    "duration": 150,
-    "blurb": "Self-guided, full access to the galleries and grounds on your own schedule. Includes the Boardwalk overlooking the Little Missouri.",
+    "duration": 270,
+    "blurb": "Self-guided, full access to the galleries and grounds on your own schedule. Plan on about 3.5 hours for the exhibits and another hour for the grounds and Boardwalk overlooking the Little Missouri.",
     "booking": "https://www.trlibrary.com/tickets",
     "phone": "+1-701-892-6070",
     "avail": {
@@ -26,7 +26,7 @@
       "kind": "tour",
       "price": 0,
       "priceLabel": "Included with admission",
-      "duration": 45,
+      "duration": 60,
       "blurb": "An engaging overview of Theodore Roosevelt's life and the Library's mission and design. Indoors & outdoors.",
       "booking": "https://access.trlibrary.com/orders/613/calendar?eventId=69fcf159f0be7a9b5875eabc&cart",
       "phone": "+1-701-892-6070",
@@ -43,7 +43,7 @@
               6
             ],
             "start": "10:30",
-            "end": "11:15"
+            "end": "11:30"
           }
         ]
       },
@@ -54,7 +54,7 @@
       "name": "Architecture and Sustainability Tour",
       "kind": "tour",
       "price": 25,
-      "duration": 75,
+      "duration": 60,
       "blurb": "How the Library honors TR's conservation legacy through its own design — sustainable materials, land stewardship, and architecture shaped by the landscape. Indoors & outdoors.",
       "booking": "https://access.trlibrary.com/orders/613/calendar?eventId=69fcf9cc7d7e6856656ae3bd&cart",
       "phone": "+1-701-892-6070",
@@ -69,7 +69,7 @@
               5
             ],
             "start": "13:00",
-            "end": "14:15"
+            "end": "14:00"
           }
         ]
       },
@@ -80,7 +80,7 @@
       "name": "Badlands Landscape Tour",
       "kind": "tour",
       "price": 35,
-      "duration": 75,
+      "duration": 60,
       "blurb": "The striking natural features of the Badlands and the native plants that call it home, ending with a seasonal offering from Salt + Scoria. Mostly outdoors.",
       "booking": "https://access.trlibrary.com/orders/613/calendar?eventId=69fcf832e1c12ce53718b810&cart",
       "phone": "+1-701-892-6070",
@@ -95,7 +95,7 @@
               6
             ],
             "start": "11:30",
-            "end": "12:45"
+            "end": "12:30"
           }
         ]
       },
@@ -106,7 +106,7 @@
       "name": "T.R. Deep-Dive Tour",
       "kind": "tour",
       "price": 25,
-      "duration": 75,
+      "duration": 60,
       "blurb": "Theodore Roosevelt's life through the objects he left behind — what material culture reveals about his identity, philosophy, and legacy. Indoors.",
       "booking": "https://access.trlibrary.com/orders/613/calendar?eventId=69fcf5a22c25b6c6db7897e2&cart",
       "phone": "+1-701-892-6070",
@@ -118,7 +118,7 @@
               2
             ],
             "start": "11:30",
-            "end": "12:45"
+            "end": "12:30"
           },
           {
             "days": [
@@ -126,7 +126,7 @@
               6
             ],
             "start": "13:00",
-            "end": "14:15"
+            "end": "14:00"
           }
         ]
       },
@@ -139,7 +139,7 @@
       "price": 0,
       "priceLabel": "Free to members",
       "membersOnly": true,
-      "duration": 45,
+      "duration": 60,
       "blurb": "An exclusive, members-only behind-the-scenes look at the Library. Offered select dates (e.g. July 6–31). Indoors & outdoors.",
       "booking": "https://www.trlibrary.com/support",
       "phone": "+1-701-892-6070",
@@ -160,7 +160,7 @@
               6
             ],
             "start": "15:00",
-            "end": "15:45"
+            "end": "16:00"
           }
         ]
       },

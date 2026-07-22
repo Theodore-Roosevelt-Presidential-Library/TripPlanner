@@ -454,12 +454,16 @@
           m.appendChild(el("p", { class: "trtp-kicker", text: "The ultimate road trip" }));
           m.appendChild(el("h1", { class: "trtp-h", text: "Add stops you want to see" }));
           m.appendChild(el("p", { class: "trtp-sub", text: "National parks, monuments, great Western towns and state parks within reach of Medora. Pick the ones you want — regional stops become their own day trips in your schedule." }));
-          var items = D.destinations.destinations.filter(function (d) { return matchesStyle(d.tags); }).sort(function (a, b) { return a.milesFromMedora - b.milesFromMedora; });
+          // Order by relationship to the Library (its Medora home is the trip's
+          // anchor, so proximity = how easily a stop pairs with a Library visit)
+          // lifted by popularity, so the closest and best-loved stops lead.
+          function relScore(d) { return d.milesFromMedora * (1 - 0.08 * ((d.popularity || 3) - 1)); }
+          var items = D.destinations.destinations.filter(function (d) { return matchesStyle(d.tags); }).sort(function (a, b) { return relScore(a) - relScore(b); });
           var tl = { national_park: "National Park", national_monument: "National Monument", state_park: "State Park", town: "Western Town", cultural: "History & Culture", scenic: "Scenic", outdoors: "Outdoors", recreation: "Recreation", family: "Family" };
           cardGrid(m, items, {
             wide: true, selected: function (d) { return isPicked("route", d.id); },
             blurb: function (d) { return d.blurb; },
-            meta: function (d) { return (d.area && d.area !== "Medora" && d.area !== "National Park" ? d.area + " · " : "") + (tl[d.type] || "Stop") + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
+            meta: function (d) { return ((d.popularity || 0) >= 4 ? "★ Popular · " : "") + (d.area && d.area !== "Medora" && d.area !== "National Park" ? d.area + " · " : "") + (tl[d.type] || "Stop") + " · " + (d.milesFromMedora <= 1 ? "in Medora" : d.milesFromMedora + " mi · ~" + Math.round(d.duration / 60) + "h"); },
             onclick: function (d) { toggle("route", d.id); }
           });
           m.appendChild(el("div", { class: "trtp-note", html: "Just 40 minutes east, <b>Dickinson</b> adds dinosaur museums, the Ukrainian Cultural Institute, Patterson Lake and more — a great half-day or a cheaper place to stay. It's mixed into the list above; see everything at <a href='https://www.visitdickinson.com' target='_blank' rel='noopener'>VisitDickinson ↗</a>." }));
@@ -835,7 +839,20 @@
     var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
     return 2 * R * Math.asin(Math.sqrt(h)) * 1.15; // ×1.15 straight-line → road fudge
   }
-  function driveHrs(mi) { return Math.max(1, Math.round((mi || 0) / 60)); }
+  // Turn a distance into a drive time. The miles fed here are already road-ish
+  // (haversine() applies a ×1.15 straight-line→road fudge, and the data's
+  // milesFromMedora values are real road miles), so we DON'T re-inflate. We use
+  // a blended door-to-door speed (below the limit, to cover towns, grades and a
+  // stop), add a small buffer, and round to the nearest 15 minutes — landing a
+  // touch generous so nobody feels rushed. Calibrated against known drives
+  // (Dickinson→Devils Tower ~3h50 → shows ~4h; Dickinson→Medora ~40m → ~45m).
+  var DRIVE_MPH = 53;         // blended average incl. towns, grades, a stop
+  var DRIVE_BUFFER = 5;       // minutes of generosity before rounding
+  function driveMin(mi) {
+    var raw = (mi || 0) / DRIVE_MPH * 60 + DRIVE_BUFFER;
+    return Math.max(15, Math.round(raw / 15) * 15);   // nearest 15, slightly generous
+  }
+  function driveHrs(mi) { return driveMin(mi) / 60; }
   function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
   function fmtD(d) { return MON[d.getMonth()] + " " + d.getDate(); }
   function entryPoint() {
@@ -868,7 +885,7 @@
     var near = dest.filter(function (d) { return d.miles <= NEAR_MI; });
     var far = dest.filter(function (d) { return d.miles > NEAR_MI; });
     // near stops fold into the Medora block as day trips (visit + round-trip drive)
-    var nearLocal = near.map(function (n) { var rt = driveHrs(n.miles) * 2 * 60; return { id: n.id, name: n.name, duration: n.duration + rt, avail: n.avail, phone: n.phone, booking: n.booking, image: n.image, address: n.address, lat: n.lat, lng: n.lng, gps: n.gps, kind: "daytrip", miles: n.miles }; });
+    var nearLocal = near.map(function (n) { var rt = driveMin(n.miles) * 2; return { id: n.id, name: n.name, duration: n.duration + rt, avail: n.avail, phone: n.phone, booking: n.booking, image: n.image, address: n.address, lat: n.lat, lng: n.lng, gps: n.gps, kind: "daytrip", miles: n.miles }; });
     var local = lib.concat(med, nearLocal);
     var overflow = [];
 
@@ -1041,13 +1058,13 @@
     var entries = [];
     var cursor = 9 * 60, limit = 22 * 60;
     // flight arrival on the very first day
-    if (day._arriveAir) { entries.push({ start: 11 * 60, dur: 60, name: "Arrive at " + day._arriveAir.label + " (" + day._arriveAir.code + ")", ds: "Land and pick up your " + (S.rental || "rental") + " car" }); cursor = 12 * 60 + 15; }
+    if (day._arriveAir) { entries.push({ start: 11 * 60, dur: 90, name: "Arrive at " + day._arriveAir.label + " (" + day._arriveAir.code + ")", ds: "Deplane, collect luggage and pick up your " + (S.rental || "rental") + " car — allow about 1.5 hours" }); cursor = 12 * 60 + 30 + 15; }
     // drive to reach this day's place (from the previous overnight / airport / home)
     if (day._driveInMi != null) {
-      var h = driveHrs(day._driveInMi), sd = Math.max(cursor, 8 * 60);
+      var dm = driveMin(day._driveInMi), sd = Math.max(cursor, 8 * 60);
       var dn = day.kind === "medora" ? "Medora" : day.stop.name.replace(/ \(.*\)/, "");
-      entries.push({ start: sd, dur: h * 60, drive: true, name: "Drive to " + dn, ds: "~" + h + "h from " + day._driveFrom });
-      cursor = sd + h * 60 + 15;
+      entries.push({ start: sd, dur: dm, drive: true, name: "Drive to " + dn, ds: "~" + durLabel(dm) + " from " + day._driveFrom });
+      cursor = sd + dm + 15;
     }
 
     if (day.kind === "leg") {
@@ -1086,9 +1103,9 @@
 
     // exit travel on the final day (drive to airport + depart, or drive home)
     if (day._exit) {
-      var h2 = driveHrs(day._exit.driveMi);
-      entries.push({ start: cursor, dur: h2 * 60, drive: true, name: day._exit.air ? "Drive to " + day._exit.to + " (" + day._exit.code + ")" : "Drive home to " + day._exit.to, ds: "~" + h2 + "h" + (day._exit.air ? " — leave time for your flight" : "") });
-      cursor += h2 * 60 + 15;
+      var dm2 = driveMin(day._exit.driveMi);
+      entries.push({ start: cursor, dur: dm2, drive: true, name: day._exit.air ? "Drive to " + day._exit.to + " (" + day._exit.code + ")" : "Drive home to " + day._exit.to, ds: "~" + durLabel(dm2) + (day._exit.air ? " — plus arrive ~2h early for your flight" : "") });
+      cursor += dm2 + 15;
       if (day._exit.air) entries.push({ start: cursor, dur: 0, name: "Depart " + day._exit.code, ds: "Return flight home" });
     }
     day.entries = entries.sort(function (a, b) { return a.start - b.start; });
@@ -1123,7 +1140,7 @@
       var recD = recommendDate();
       var db = el("div", { class: "trtp-overcap" });
       db.innerHTML = "<b>Set an arrival date for real availability.</b> Tours and shows run on specific days and times — the Badlands Landscape Tour skips Sundays, the Musical is summer-only — so without a date this schedule is approximate. ";
-      var btn = el("button", { class: "trtp-btn primary", style: "margin-top:9px;padding:8px 15px;font-size:12px", onclick: function () { S.startDate = recD.iso; goto(6); } }, ["Use " + recD.label + " →"]);
+      var btn = el("button", { class: "trtp-btn primary", style: "margin-top:9px;padding:8px 15px;font-size:12px", onclick: function () { S.startDate = recD.iso; if (!S.days) S.days = buildSchedule().capacity.requiredDays; render(); } }, ["Use " + recD.label + " →"]);
       db.appendChild(btn);
       db.appendChild(el("span", { style: "font-size:12px;opacity:.8;margin-left:8px", text: "(you can change it on the Dates step)" }));
       m.appendChild(db);
