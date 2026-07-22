@@ -21,7 +21,8 @@
         "close": "19:00"
       },
       "image": "assets/img/9e860227e0.jpg",
-      "address": "Painted Canyon Visitor Center, I-94 Exit 32, Medora, ND 58645"
+      "address": "Painted Canyon Visitor Center, I-94 Exit 32, Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "trnp-loop",
@@ -44,7 +45,8 @@
         "close": "20:00"
       },
       "image": "assets/img/b8c2658b13.jpg",
-      "address": "TR National Park South Unit, 201 E River Rd N, Medora, ND 58645"
+      "address": "TR National Park South Unit, 201 E River Rd N, Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "maltese-cross",
@@ -136,7 +138,8 @@
         "open": "08:00",
         "close": "20:00"
       },
-      "image": "assets/img/1fb0374047.jpg"
+      "image": "assets/img/1fb0374047.jpg",
+      "address": "Chimney Park, 3rd Ave, Medora, ND 58645"
     },
     {
       "id": "bully-pulpit",
@@ -180,7 +183,9 @@
         "open": "06:00",
         "close": "20:00"
       },
-      "image": "assets/img/ddb0960d4f.jpg"
+      "image": "assets/img/ddb0960d4f.jpg",
+      "gps": true,
+      "address": "Maah Daah Hey Trailhead (Sully Creek), Medora, ND 58645"
     },
     {
       "id": "medora-musical",
@@ -328,7 +333,8 @@
         "open": "11:00",
         "close": "22:00"
       },
-      "image": "assets/img/9a81464162.jpg"
+      "image": "assets/img/9a81464162.jpg",
+      "address": "Little Missouri Saloon & Dining, 440 3rd St, Medora, ND 58645"
     },
     {
       "id": "boots-bar",
@@ -352,7 +358,8 @@
         "open": "11:00",
         "close": "21:00"
       },
-      "image": "assets/img/d8d7a64a5c.jpg"
+      "image": "assets/img/d8d7a64a5c.jpg",
+      "address": "Boots Bar & Grill, 300 Pacific Ave, Medora, ND 58645"
     },
     {
       "id": "farmhouse-cafe",
@@ -372,7 +379,8 @@
         "open": "07:00",
         "close": "13:00"
       },
-      "image": "assets/img/13337ae5a4.jpg"
+      "image": "assets/img/13337ae5a4.jpg",
+      "address": "Farmhouse Café, 314 Pacific Ave, Medora, ND 58645"
     },
     {
       "id": "western-edge",
@@ -395,7 +403,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Western Edge Books & Art, Medora, ND 58645"
     },
     {
       "id": "ferris-store",
@@ -419,7 +428,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "image": "assets/img/d43b777a1a.jpg"
+      "image": "assets/img/d43b777a1a.jpg",
+      "address": "Joe Ferris General Store, Medora, ND 58645"
     },
     {
       "id": "medora-riding-stables-trail-rides",
@@ -444,7 +454,8 @@
         "open": "09:00",
         "close": "17:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Medora Riding Stables & Trail Rides, Medora, ND 58645"
     },
     {
       "id": "little-bully-pulpit-mini-golf",
@@ -469,7 +480,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Little Bully Pulpit Mini Golf, Medora, ND 58645"
     },
     {
       "id": "manitou-zipline",
@@ -494,7 +506,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Manitou Zipline, Medora, ND 58645"
     },
     {
       "id": "lazy-lil-mo-lazy-river-wade-in-pool",
@@ -519,7 +532,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Lazy Lil Mo Lazy River & Wade-In Pool, Medora, ND 58645"
     },
     {
       "id": "perception-illusion-house",
@@ -544,7 +558,8 @@
         "open": "08:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Perception Illusion House, Medora, ND 58645"
     },
     {
       "id": "point-to-point-park-splash-pad-jump-pill",
@@ -569,7 +584,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Point to Point Park Splash Pad & Jump Pillow, Medora, ND 58645"
     },
     {
       "id": "pickleball-at-point-to-point-park",
@@ -590,7 +606,8 @@
         "close": "19:00"
       },
       "area": "medora",
-      "image": "assets/img/3a5b950bb9.jpg"
+      "image": "assets/img/3a5b950bb9.jpg",
+      "address": "Pickleball at Point to Point Park, Medora, ND 58645"
     },
     {
       "id": "point-to-point-trails",
@@ -610,7 +627,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Point to Point Trails, Medora, ND 58645"
     },
     {
       "id": "medora-children-s-park",
@@ -630,7 +648,8 @@
         "open": "08:00",
         "close": "19:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Medora Children's Park, Medora, ND 58645"
     },
     {
       "id": "free-medora-trolley",
@@ -654,7 +673,8 @@
         "close": "19:00"
       },
       "area": "medora",
-      "image": "assets/img/4b755c8fb7.jpg"
+      "image": "assets/img/4b755c8fb7.jpg",
+      "address": "Free Medora Trolley, Medora, ND 58645"
     },
     {
       "id": "ruff-riders-dog-park",
@@ -674,7 +694,8 @@
         "close": "19:00"
       },
       "area": "medora",
-      "image": "assets/img/af6c8bb9f6.jpg"
+      "image": "assets/img/af6c8bb9f6.jpg",
+      "address": "Ruff Riders Dog Park, Medora, ND 58645"
     },
     {
       "id": "medora-musical-backstage-tour",
@@ -698,7 +719,8 @@
         "close": "17:00"
       },
       "area": "medora",
-      "image": "assets/img/9985216fe7.jpg"
+      "image": "assets/img/9985216fe7.jpg",
+      "address": "Medora Musical Backstage Tour, Medora, ND 58645"
     },
     {
       "id": "footsteps-into-medora-s-past-walking-tou",
@@ -722,7 +744,8 @@
         "close": "17:00"
       },
       "area": "medora",
-      "image": "assets/img/fd5f931b80.jpg"
+      "image": "assets/img/fd5f931b80.jpg",
+      "address": "Footsteps into Medora's Past Walking Tour, Medora, ND 58645"
     },
     {
       "id": "the-von-hoffman-house",
@@ -745,7 +768,8 @@
         "close": "18:00"
       },
       "area": "medora",
-      "image": "assets/img/ca1a2d262c.jpg"
+      "image": "assets/img/ca1a2d262c.jpg",
+      "address": "The Von Hoffman House, Medora, ND 58645"
     },
     {
       "id": "harold-schafer-heritage-center",
@@ -769,7 +793,8 @@
         "close": "18:00"
       },
       "area": "medora",
-      "image": "assets/img/ed6aa1bcec.jpg"
+      "image": "assets/img/ed6aa1bcec.jpg",
+      "address": "Harold Schafer Heritage Center, Medora, ND 58645"
     },
     {
       "id": "de-mores-park",
@@ -789,7 +814,8 @@
         "close": "18:00"
       },
       "area": "medora",
-      "image": "assets/img/98b455840e.jpg"
+      "image": "assets/img/98b455840e.jpg",
+      "address": "De Mores Park, Medora, ND 58645"
     },
     {
       "id": "medora-gospel-brunch",
@@ -813,7 +839,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/2989b778ea.jpg"
+      "image": "assets/img/2989b778ea.jpg",
+      "address": "Medora Gospel Brunch, Medora, ND 58645"
     },
     {
       "id": "the-teddy-roosevelt-show",
@@ -837,7 +864,8 @@
         "open": "17:00",
         "close": "21:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "The Teddy Roosevelt Show, Medora, ND 58645"
     },
     {
       "id": "t-r-the-strenuous-life",
@@ -861,7 +889,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/a1cd41d9e3.jpg"
+      "image": "assets/img/a1cd41d9e3.jpg",
+      "address": "T.R. – The Strenuous Life, Medora, ND 58645"
     },
     {
       "id": "the-great-american-folk-show",
@@ -885,7 +914,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/917dfa62df.jpg"
+      "image": "assets/img/917dfa62df.jpg",
+      "address": "The Great American Folk Show, Medora, ND 58645"
     },
     {
       "id": "live-music-on-the-town-square-patio",
@@ -922,7 +952,8 @@
         ]
       },
       "area": "medora",
-      "image": "assets/img/fe581fb665.jpg"
+      "image": "assets/img/fe581fb665.jpg",
+      "address": "Live Music on the Town Square Patio, Medora, ND 58645"
     },
     {
       "id": "badlands-pizza-saloon",
@@ -946,7 +977,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/e0fd67d4e7.jpg"
+      "image": "assets/img/e0fd67d4e7.jpg",
+      "address": "Badlands Pizza & Saloon, Medora, ND 58645"
     },
     {
       "id": "sheriff-bear-s-ice-cream-burgers",
@@ -969,7 +1001,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/bd4f25f008.jpg"
+      "image": "assets/img/bd4f25f008.jpg",
+      "address": "Sheriff Bear's Ice Cream & Burgers, Medora, ND 58645"
     },
     {
       "id": "medora-fudge-ice-cream-depot",
@@ -991,7 +1024,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/f1e216e1d8.jpg"
+      "image": "assets/img/f1e216e1d8.jpg",
+      "address": "Medora Fudge & Ice Cream Depot, Medora, ND 58645"
     },
     {
       "id": "tr-s-tavern",
@@ -1011,7 +1045,8 @@
         "close": "21:00"
       },
       "area": "medora",
-      "image": "assets/img/3c88a290d7.jpg"
+      "image": "assets/img/3c88a290d7.jpg",
+      "address": "TR's Tavern (Rough Riders Hotel), 301 3rd Ave, Medora, ND 58645"
     },
     {
       "id": "cowboy-lyle-s-candy-barn",
@@ -1033,7 +1068,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Cowboy Lyle's Candy Barn, Medora, ND 58645"
     },
     {
       "id": "rough-riders-gift",
@@ -1051,7 +1087,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Rough Riders Gift, Medora, ND 58645"
     },
     {
       "id": "buffalo-gap-gift-shop",
@@ -1073,7 +1110,8 @@
         "open": "09:00",
         "close": "18:00"
       },
-      "area": "medora"
+      "area": "medora",
+      "address": "Buffalo Gap Gift Shop, Medora, ND 58645"
     },
     {
       "id": "teddy-s-bears",
@@ -1095,7 +1133,8 @@
         "close": "18:00"
       },
       "area": "medora",
-      "image": "assets/img/cf15bb12f5.jpg"
+      "image": "assets/img/cf15bb12f5.jpg",
+      "address": "Teddy's Bears, Medora, ND 58645"
     },
     {
       "id": "north-unit-scenic-drive",
@@ -1116,7 +1155,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/89059c3cb5.jpg"
+      "image": "assets/img/89059c3cb5.jpg",
+      "lat": 47.5966,
+      "lng": -103.3777,
+      "address": "TR National Park North Unit Entrance, US-85, Watford City, ND 58854",
+      "gps": true
     },
     {
       "id": "wind-canyon-trail",
@@ -1137,7 +1180,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/508c01a08d.jpg"
+      "image": "assets/img/508c01a08d.jpg",
+      "lat": 46.9345,
+      "lng": -103.5497,
+      "address": "Wind Canyon Trailhead, Scenic Loop Dr, TR National Park (South Unit), ND",
+      "gps": true
     },
     {
       "id": "boicourt-overlook-trail",
@@ -1158,7 +1205,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/e187b73c30.jpg"
+      "image": "assets/img/e187b73c30.jpg",
+      "lat": 46.9174,
+      "lng": -103.5288,
+      "address": "Boicourt Overlook Trailhead, Scenic Loop Dr, TR National Park (South Unit), ND",
+      "gps": true
     },
     {
       "id": "coal-vein-trail",
@@ -1179,7 +1230,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/c20e45ebdc.jpg"
+      "image": "assets/img/c20e45ebdc.jpg",
+      "lat": 46.9009,
+      "lng": -103.4534,
+      "address": "Coal Vein Trailhead, Scenic Loop Dr, TR National Park (South Unit), ND",
+      "gps": true
     },
     {
       "id": "little-mo-nature-trail",
@@ -1200,7 +1255,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/f67d05a2a4.jpg"
+      "image": "assets/img/f67d05a2a4.jpg",
+      "lat": 47.593,
+      "lng": -103.379,
+      "address": "Little Mo Nature Trail, TR National Park (North Unit), Watford City, ND",
+      "gps": true
     },
     {
       "id": "skyline-vista-trail",
@@ -1221,7 +1280,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/26670a9b60.jpg"
+      "image": "assets/img/26670a9b60.jpg",
+      "lat": 46.9536,
+      "lng": -103.53,
+      "address": "Skyline Vista Trailhead, Scenic Loop Dr, TR National Park (South Unit), ND",
+      "gps": true
     },
     {
       "id": "buck-hill",
@@ -1242,7 +1305,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/b8462870f1.jpg"
+      "image": "assets/img/b8462870f1.jpg",
+      "lat": 46.9258,
+      "lng": -103.4381,
+      "address": "Buck Hill Trailhead, Scenic Loop Dr, TR National Park (South Unit), ND",
+      "gps": true
     },
     {
       "id": "badlands-wildlife-viewing",
@@ -1263,7 +1330,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/b8c2658b13.jpg"
+      "image": "assets/img/b8c2658b13.jpg",
+      "lat": 46.979,
+      "lng": -103.5387,
+      "address": "Scenic Loop Drive, TR National Park (South Unit), Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "birding-the-badlands",
@@ -1288,7 +1359,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/2a203dbd5f.jpg"
+      "image": "assets/img/2a203dbd5f.jpg",
+      "lat": 46.979,
+      "lng": -103.5387,
+      "address": "Scenic Loop Drive, TR National Park (South Unit), Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "junior-ranger-program",
@@ -1310,7 +1385,11 @@
         "close": "19:00"
       },
       "area": "park",
-      "image": "assets/img/11662b56b8.jpg"
+      "image": "assets/img/11662b56b8.jpg",
+      "lat": 46.9146,
+      "lng": -103.5236,
+      "address": "South Unit Visitor Center, 201 E River Rd N, Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "ranger-led-program",
@@ -1336,7 +1415,11 @@
         "close": "17:00"
       },
       "area": "park",
-      "image": "assets/img/ad2c616cda.jpg"
+      "image": "assets/img/ad2c616cda.jpg",
+      "lat": 46.9146,
+      "lng": -103.5236,
+      "address": "South Unit Visitor Center, 201 E River Rd N, Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "dakota-nights-astronomy-festival",
@@ -1363,7 +1446,11 @@
         "close": "22:00"
       },
       "area": "park",
-      "image": "assets/img/d8317168f6.jpg"
+      "image": "assets/img/d8317168f6.jpg",
+      "lat": 46.9146,
+      "lng": -103.5236,
+      "address": "TR National Park (South Unit), Medora, ND 58645",
+      "gps": true
     },
     {
       "id": "maah-daah-hey-100-bike-race",
@@ -1386,7 +1473,8 @@
         "close": "22:00"
       },
       "area": "medora",
-      "image": "assets/img/0c3bb5fd97.jpg"
+      "image": "assets/img/0c3bb5fd97.jpg",
+      "address": "Maah Daah Hey 100 Bike Race, Medora, ND 58645"
     },
     {
       "id": "champions-ride-saddle-bronc-rodeo",
@@ -1409,7 +1497,8 @@
         "close": "22:00"
       },
       "area": "medora",
-      "image": "assets/img/4cbde2baad.jpg"
+      "image": "assets/img/4cbde2baad.jpg",
+      "address": "Champions Ride Saddle Bronc Rodeo, Medora, ND 58645"
     },
     {
       "id": "spring-into-summer-wine-walk",
@@ -1432,7 +1521,8 @@
         "close": "22:00"
       },
       "area": "medora",
-      "image": "assets/img/555e25d11c.jpg"
+      "image": "assets/img/555e25d11c.jpg",
+      "address": "Spring Into Summer Wine Walk, Medora, ND 58645"
     },
     {
       "id": "wild-west-fall-fest",
@@ -1456,7 +1546,8 @@
         "close": "22:00"
       },
       "area": "medora",
-      "image": "assets/img/f5bc5588bd.jpg"
+      "image": "assets/img/f5bc5588bd.jpg",
+      "address": "Wild West Fall Fest, Medora, ND 58645"
     },
     {
       "id": "cowboy-christmas",
@@ -1493,7 +1584,8 @@
         ]
       },
       "area": "medora",
-      "image": "assets/img/ffcf75fa65.jpg"
+      "image": "assets/img/ffcf75fa65.jpg",
+      "address": "Cowboy Christmas, Medora, ND 58645"
     },
     {
       "id": "dakota-nights-new-year-s-eve-gala",
@@ -1517,7 +1609,8 @@
         "close": "22:00"
       },
       "area": "medora",
-      "image": "assets/img/f26b03708a.jpg"
+      "image": "assets/img/f26b03708a.jpg",
+      "address": "Dakota Nights New Year's Eve Gala, Medora, ND 58645"
     },
     {
       "id": "medora-uncork-d",
@@ -1540,7 +1633,8 @@
       "meal": "dinner",
       "phone": "+1-833-623-2675",
       "booking": "https://www.medorauncorkd.wine/",
-      "image": "assets/img/f812bec383.jpg"
+      "image": "assets/img/f812bec383.jpg",
+      "address": "Medora Uncork'd, 355 Broadway, Medora, ND 58645"
     },
     {
       "id": "hidden-springs-java",
@@ -1559,7 +1653,8 @@
       "meal": "breakfast",
       "phone": "+1-701-623-4700",
       "booking": "https://discovermedora.com/experience-medora/hidden-springs-java/",
-      "image": "assets/img/a2ad43757e.jpg"
+      "image": "assets/img/a2ad43757e.jpg",
+      "address": "Hidden Springs Java, I-94 Exit 24, Medora, ND 58645"
     },
     {
       "id": "l-amour-bistro",
@@ -1582,7 +1677,8 @@
       "meal": "dinner",
       "phone": "+1-701-623-4343",
       "booking": "https://discovermedora.com/experience-medora/lamour-bistro/",
-      "image": "assets/img/08cd856cc0.jpg"
+      "image": "assets/img/08cd856cc0.jpg",
+      "address": "L'Amour Bistro, 215 4th St, Medora, ND 58645"
     },
     {
       "id": "bread-butter",
@@ -1605,7 +1701,8 @@
       "meal": "lunch",
       "phone": "+1-701-623-1311",
       "booking": "https://discovermedora.com/experience-medora/bread-butter/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Bread + Butter, Medora, ND 58645"
     },
     {
       "id": "hatlee-brae",
@@ -1628,7 +1725,8 @@
       "meal": "breakfast",
       "phone": "+1-701-623-1311",
       "booking": "https://discovermedora.com/experience-medora/hatlee-brae/",
-      "image": "assets/img/5fc7a58300.jpg"
+      "image": "assets/img/5fc7a58300.jpg",
+      "address": "Hatlee + Brae, Medora, ND 58645"
     },
     {
       "id": "medora-boot-western-wear",
@@ -1651,7 +1749,8 @@
       },
       "phone": "+1-701-623-1005",
       "booking": "https://discovermedora.com/experience-medora/medora-boot-western-wear/",
-      "image": "assets/img/7dfc8c89ac.jpg"
+      "image": "assets/img/7dfc8c89ac.jpg",
+      "address": "Medora Boot & Western Wear, Medora, ND 58645"
     },
     {
       "id": "jq-clothing-co",
@@ -1674,7 +1773,8 @@
       },
       "phone": "+1-701-710-0234",
       "booking": "https://discovermedora.com/experience-medora/jq-clothing-co/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "JQ Clothing Co., Medora, ND 58645"
     },
     {
       "id": "bar-diamond-bar-boutique-gallery",
@@ -1697,7 +1797,8 @@
       },
       "phone": "+1-701-623-0155",
       "booking": "https://discovermedora.com/experience-medora/bar-diamond-bar-boutique-gallery/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Bar Diamond Bar Boutique & Gallery, Medora, ND 58645"
     },
     {
       "id": "chasing-horses",
@@ -1720,7 +1821,8 @@
       },
       "phone": "+1-701-623-4773",
       "booking": "https://discovermedora.com/experience-medora/chasing-horses/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Chasing Horses, Medora, ND 58645"
     },
     {
       "id": "the-home-merchant",
@@ -1743,7 +1845,8 @@
       },
       "phone": "+1-701-623-2219",
       "booking": "https://discovermedora.com/experience-medora/the-home-merchant/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "The Home Merchant, Medora, ND 58645"
     },
     {
       "id": "black-hills-gold-gift-outlet",
@@ -1766,7 +1869,8 @@
       },
       "phone": "+1-701-623-5057",
       "booking": "https://discovermedora.com/experience-medora/black-hills-gold-gift-outlet/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Black Hills Gold & Gift Outlet, Medora, ND 58645"
     },
     {
       "id": "todd-s-old-time-photo-parlor",
@@ -1789,7 +1893,8 @@
       },
       "phone": "+1-701-623-4339",
       "booking": "https://discovermedora.com/experience-medora/todds-old-time-photo-parlor-gift-shop/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Todd's Old Time Photo Parlor, Medora, ND 58645"
     },
     {
       "id": "chateau-nuts",
@@ -1812,7 +1917,8 @@
       },
       "phone": "+1-701-623-4825",
       "booking": "https://discovermedora.com/experience-medora/chateau-nuts/",
-      "image": "assets/img/dbb6830154.jpg"
+      "image": "assets/img/dbb6830154.jpg",
+      "address": "Chateau Nuts, Medora, ND 58645"
     },
     {
       "id": "rushmore-mountain-taffy",
@@ -1835,7 +1941,8 @@
       },
       "phone": "+1-701-623-4885",
       "booking": "https://discovermedora.com/experience-medora/rushmore-mountain-taffy/",
-      "image": "assets/img/0d1359f292.jpg"
+      "image": "assets/img/0d1359f292.jpg",
+      "address": "Rushmore Mountain Taffy, Medora, ND 58645"
     },
     {
       "id": "sacajawea-trading-post",
@@ -1858,7 +1965,8 @@
       },
       "phone": "+1-701-623-5050",
       "booking": "https://discovermedora.com/experience-medora/sacajawea-trading-post/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Sacajawea Trading Post, Medora, ND 58645"
     },
     {
       "id": "hitching-post",
@@ -1881,7 +1989,8 @@
       },
       "phone": "+1-701-623-4488",
       "booking": "https://discovermedora.com/experience-medora/hitching-post/",
-      "image": "assets/img/4c78cb0fe0.jpg"
+      "image": "assets/img/4c78cb0fe0.jpg",
+      "address": "Hitching Post, Medora, ND 58645"
     }
   ]
 }

@@ -133,8 +133,12 @@ Every scheduled stop carries an **address** and a **Directions** link (Google
 Maps) in both the on-screen schedule and the printout, so guests can route by
 GPS. Big multi-entrance parks point at the **right entrance** — e.g. Yellowstone
 resolves to its **East Entrance** (the one you reach from Cody), not the park
-centroid. Addresses live in each item's `address` field; where one isn't set,
-the link falls back to the item's coordinates.
+centroid. **Every Medora item now has an address** (real street where known,
+e.g. L'Amour Bistro at 215 4th St; otherwise "<name>, Medora, ND 58645"), and
+**NPS trail stops carry their trailhead coordinates** (`gps: true` + `lat`/`lng`)
+so "Directions" drops you at the trailhead — not the park centroid or a visitor
+center. Addresses live in each item's `address` field; when an item is marked
+`gps: true`, the link prefers its exact coordinates over the street address.
 
 ### How many days you'll need
 
@@ -159,6 +163,14 @@ month range.
 The schedule includes **getting-to-Medora travel**: the drive from the origin
 (or flight arrival + airport-to-Medora drive) is built into day 1, and the
 return drive/flight into the last day, so the plan reflects real travel time.
+
+There's also a **departure-airport sanity check**: when a trip ends in Medora
+with no outbound stops, the plan won't send the guest on a needless multi-hour
+drive to a distant fly-out airport (e.g. a Medora-ending trip departing from
+Billings 5h away). If the chosen return airport is more than ~90 minutes farther
+from Medora than the nearest one, the schedule reroutes the departure to the
+nearest airport and surfaces a flag explaining the switch — the guest can still
+override it on the Getting-here step.
 
 Selections collect in the right-hand panel the whole way through.
 
