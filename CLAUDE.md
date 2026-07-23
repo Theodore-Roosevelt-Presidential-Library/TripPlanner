@@ -320,7 +320,16 @@ These were added incrementally from user feedback. Preserve them:
   outside-window items become "Also consider" notes rather than mis-timed rows.
 - **Over-capacity UI** — "Make it N days →" (bumps `S.days` to the required number),
   "Switch to Packed", "Edit dates", and per-overflow **Remove** buttons that
-  recalculate in real time.
+  recalculate in real time. The **"Also consider" chips** also carry an inline
+  **"+ Add a day"** button (bumps `S.days` by 1 and re-renders) so a guest can grow the
+  trip right where the dropped item is shown.
+- **Use the days the guest allotted.** `medoraDays` starts from the raw activity load,
+  but the load estimate ignores the per-day RULES (one breakfast/lunch/dinner + one
+  evening show per day). So after the load calc, if `S.days` leaves room, the block grows
+  to `max(load, slotNeed)` — where `slotNeed` = max(count of breakfast/lunch/dinner picks,
+  count of evening-show picks) — capped at `S.days − legs − transit`. A 3rd picked dinner
+  or 2nd show then uses the day you gave instead of dropping to "Also consider" (verified:
+  allot 3 days for 3 daily dinners → 3 Medora days, all fit; allot 4 → stays at 3, no padding).
 - **Headline & sidebar show the ACTUAL day count** (`sched.days.length`), not the
   day-bucket max the guest picked (S.days can be 12 for "8+ days" while the plan is 5).
 - **"Also consider" = picks that didn't fit the timeline.** They're collected on

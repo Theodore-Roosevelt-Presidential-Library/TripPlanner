@@ -214,6 +214,8 @@
     .consider-chip{font:inherit;font-size:12.5px;background:var(--tr-paper);border:1px solid #d8cfb9;border-radius:20px;padding:6px 12px;cursor:pointer;color:var(--tr-secondary);display:inline-flex;align-items:center;gap:2px;}
     .consider-chip:hover{border-color:var(--tr-primary);background:#fff;}
     .consider-chip .cx{color:var(--tr-primary-text);font-weight:700;}
+    .consider-addday{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;font-weight:700;background:var(--tr-primary);color:#25282a;border:none;border-radius:20px;padding:6px 14px;cursor:pointer;}
+    .consider-addday:hover{filter:brightness(1.05);}
     .da-chip .cat{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.04em;font-size:11.5px;font-weight:700;color:#9a8a6a;margin-left:5px;}
     .trtp-weather{background:#fff;border:1px solid #e4ddcd;border-radius:6px;padding:15px 18px;margin:16px 0;}
     .trtp-weather h4{font-family:'Dharma Gothic E',Oswald,sans-serif;text-transform:uppercase;letter-spacing:.07em;font-size:14px;color:var(--tr-primary-text);margin:0 0 12px;font-weight:700;}
@@ -1180,6 +1182,19 @@
     var packLoad = totalLocal - bigTrips.reduce(function (s, n) { return s + n.duration; }, 0);
     var medoraDays = Math.max(local.length ? 1 : (far.length ? 0 : 1), bigTrips.length + Math.ceil(Math.max(0, packLoad) / budget));
     if (medoraDays < 1 && !far.length) medoraDays = 1;
+    // The raw load estimate above ignores the per-day RULES (one breakfast/lunch/dinner and
+    // one evening show per day). If the guest allotted more days than the load needs, grow
+    // the Medora block to honor those slots — so a 3rd picked dinner or 2nd show uses the
+    // day you gave us instead of dropping to "Also consider". Capped by the days you set.
+    if (S.days) {
+      var medLocal = local.filter(function (it) { return it.area === "medora"; });
+      var mc = { breakfast: 0, lunch: 0, dinner: 0 };
+      medLocal.forEach(function (it) { if (it.meal && mc[it.meal] != null) mc[it.meal]++; });
+      var eveNights = medLocal.filter(function (it) { if (it.category !== "evening") return false; var f = it.avail && it.avail.fixed; return f ? f.some(function (w) { return hmToMin(w.start) >= 17 * 60; }) : true; }).length;
+      var slotNeed = Math.max(mc.breakfast, mc.lunch, mc.dinner, eveNights);
+      var availMedora = S.days - legDayCount() - transitEstimate;
+      if (slotNeed > medoraDays && availMedora > medoraDays) medoraDays = Math.min(slotNeed, availMedora);
+    }
 
     // Extend the Medora block so a day-of-week-restricted pick (e.g. a Library tour
     // that skips some weekdays) lands on a weekday it actually runs — when the
@@ -1468,7 +1483,7 @@
     if (it.avail.season && !localDays.some(function (d) { return seasonOk(it.avail, d.month); })) return "closed on your dates (seasonal)";
     // Does it run on ANY of your Medora weekdays at all? If not, that's the reason —
     // before we blame a Library closure (which only applies if it would otherwise run).
-    if (it.avail.fixed && !localDays.some(function (d) { return dayOk(it.avail, d.wd); })) return "runs only on days that aren't in your Medora stay — add a day or shift your dates to catch it";
+    if ((it.avail.fixed || it.avail.days) && !localDays.some(function (d) { return dayOk(it.avail, d.wd); })) return "runs only on days that aren't in your Medora stay — add a day or shift your dates to catch it";
     if (it.area === "library" && !localDays.some(function (d) { return dayOk(it.avail, d.wd) && (!d.date || libraryHours(d.date) !== null); }))
       return "the Library is closed the day(s) this runs during your visit (off-season weekday closures) — see trlibrary.com/visit/hours";
     return "no room left in your days at this pace";
@@ -1742,6 +1757,7 @@
         day.considerItems.forEach(function (ci) {
           cwrap.appendChild(el("button", { class: "consider-chip", type: "button", title: "Remove " + ci.name, "aria-label": "Remove " + ci.name + " from your trip", "data-fk": "consider:" + ci.id, onclick: function () { removePick(ci.id); } }, [ci.name, el("span", { class: "cx", "aria-hidden": "true" }, [" ✕"])]));
         });
+        cwrap.appendChild(el("button", { class: "consider-addday", type: "button", "aria-label": "Add a day to your trip to fit these", onclick: function () { S.days = (S.days || sched.days.length) + 1; if (S.maxStep < 7) S.maxStep = 7; track("consider_add_day", { days: S.days }); render(); } }, ["+ Add a day"]));
         card.appendChild(cwrap);
       }
       m.appendChild(card);
